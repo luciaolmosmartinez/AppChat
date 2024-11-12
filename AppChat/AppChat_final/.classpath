@@ -27,5 +27,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/chatWindowLib.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/chatWindowLib-JDK8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/DriverPersistencia.jar"/>
+	<classpathentry kind="lib" path="lib/javax.persistence-api-2.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
