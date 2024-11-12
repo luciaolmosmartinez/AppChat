@@ -23,6 +23,8 @@ import javax.swing.border.BevelBorder;
 import java.awt.Cursor;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 
 public class Ventana_inicio {
 
@@ -56,6 +58,7 @@ public class Ventana_inicio {
 	 */
 	private void initialize() {
 		frmAppchat = new JFrame();
+		frmAppchat.setIconImage(Toolkit.getDefaultToolkit().getImage(Ventana_inicio.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setBackground(new Color(255, 255, 255));
 		frmAppchat.getContentPane().setBackground(new Color(255, 255, 255));
@@ -68,16 +71,16 @@ public class Ventana_inicio {
 		
 		JLabel lblAppChat = new JLabel("AppChat");
 		lblAppChat.setForeground(new Color(255, 128, 192));
-		lblAppChat.setFont(new Font("Bernard MT Condensed", Font.PLAIN, 59));
+		lblAppChat.setFont(new Font("Brush Script MT", Font.BOLD, 70));
 		panelSuperior.add(lblAppChat);
 		
 		JPanel panelCentral = new JPanel();
 		panelCentral.setBackground(new Color(255, 255, 255));
 		frmAppchat.getContentPane().add(panelCentral, BorderLayout.CENTER);
 		GridBagLayout gbl_panelCentral = new GridBagLayout();
-		gbl_panelCentral.columnWidths = new int[]{20, 146, 0, 0};
+		gbl_panelCentral.columnWidths = new int[]{162, 92, 146, 0, 0};
 		gbl_panelCentral.rowHeights = new int[]{0, 48, 0, 51, 0, 0};
-		gbl_panelCentral.columnWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelCentral.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelCentral.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panelCentral.setLayout(gbl_panelCentral);
 		
@@ -85,9 +88,20 @@ public class Ventana_inicio {
 		separadorSuperior.setPreferredSize(new Dimension(0, 70));
 		GridBagConstraints gbc_separadorSuperior = new GridBagConstraints();
 		gbc_separadorSuperior.insets = new Insets(0, 0, 5, 5);
-		gbc_separadorSuperior.gridx = 1;
+		gbc_separadorSuperior.gridx = 2;
 		gbc_separadorSuperior.gridy = 0;
 		panelCentral.add(separadorSuperior, gbc_separadorSuperior);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setPreferredSize(new Dimension(128, 128));
+		lblNewLabel.setMaximumSize(new Dimension(256, 256));
+		lblNewLabel.setIcon(new ImageIcon(Ventana_inicio.class.getResource("/imagenes/gatoVentana_128.png")));
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 1;
+		gbc_lblNewLabel.gridy = 1;
+		panelCentral.add(lblNewLabel, gbc_lblNewLabel);
 		
 		JButton btnInicioSesion = new JButton("Iniciar Sesión");
 		btnInicioSesion.setPreferredSize(new Dimension(180, 50));
@@ -98,14 +112,14 @@ public class Ventana_inicio {
 		btnInicioSesion.setBackground(Color.WHITE);
 		GridBagConstraints gbc_btnInicioSesion = new GridBagConstraints();
 		gbc_btnInicioSesion.insets = new Insets(0, 0, 5, 5);
-		gbc_btnInicioSesion.gridx = 1;
+		gbc_btnInicioSesion.gridx = 2;
 		gbc_btnInicioSesion.gridy = 1;
 		panelCentral.add(btnInicioSesion, gbc_btnInicioSesion);
 		
 		Component separadorCentral = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_separadorCentral = new GridBagConstraints();
 		gbc_separadorCentral.insets = new Insets(0, 0, 5, 5);
-		gbc_separadorCentral.gridx = 1;
+		gbc_separadorCentral.gridx = 2;
 		gbc_separadorCentral.gridy = 2;
 		panelCentral.add(separadorCentral, gbc_separadorCentral);
 		
@@ -122,7 +136,7 @@ public class Ventana_inicio {
 		btnRegistro.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		GridBagConstraints gbc_btnRegistro = new GridBagConstraints();
 		gbc_btnRegistro.insets = new Insets(0, 0, 5, 5);
-		gbc_btnRegistro.gridx = 1;
+		gbc_btnRegistro.gridx = 2;
 		gbc_btnRegistro.gridy = 3;
 		panelCentral.add(btnRegistro, gbc_btnRegistro);
 	}
