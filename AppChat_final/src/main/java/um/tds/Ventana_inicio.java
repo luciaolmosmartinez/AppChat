@@ -20,11 +20,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
+
 import java.awt.Cursor;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
+import java.awt.Dialog.ModalExclusionType;
 
 public class Ventana_inicio {
 
@@ -52,12 +55,18 @@ public class Ventana_inicio {
 	public Ventana_inicio() {
 		initialize();
 	}
+	
+	public void mostrarVentana() {
+		//setLocationRelativeTo(null);
+		//setVisible(true);
+	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
 		frmAppchat = new JFrame();
+		frmAppchat.setForeground(new Color(254, 127, 154));
 		frmAppchat.setIconImage(Toolkit.getDefaultToolkit().getImage(Ventana_inicio.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setBackground(new Color(255, 255, 255));
@@ -67,10 +76,11 @@ public class Ventana_inicio {
 		
 		JPanel panelSuperior = new JPanel();
 		panelSuperior.setBackground(new Color(255, 255, 255));
+		//panelSuperior.setBorder(new LineBorder(Color.WHITE,2));
 		frmAppchat.getContentPane().add(panelSuperior, BorderLayout.NORTH);
 		
 		JLabel lblAppChat = new JLabel("AppChat");
-		lblAppChat.setForeground(new Color(255, 128, 192));
+		lblAppChat.setForeground(new Color(254, 127, 154));
 		lblAppChat.setFont(new Font("Brush Script MT", Font.BOLD, 70));
 		panelSuperior.add(lblAppChat);
 		
@@ -78,24 +88,15 @@ public class Ventana_inicio {
 		panelCentral.setBackground(new Color(255, 255, 255));
 		frmAppchat.getContentPane().add(panelCentral, BorderLayout.CENTER);
 		GridBagLayout gbl_panelCentral = new GridBagLayout();
-		gbl_panelCentral.columnWidths = new int[]{162, 92, 146, 0, 0};
-		gbl_panelCentral.rowHeights = new int[]{0, 48, 0, 51, 0, 0};
+		gbl_panelCentral.columnWidths = new int[]{93, 92, 146, 0, 0};
+		gbl_panelCentral.rowHeights = new int[]{0, 97, 75, 0, 0};
 		gbl_panelCentral.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelCentral.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelCentral.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panelCentral.setLayout(gbl_panelCentral);
-		
-		Component separadorSuperior = Box.createVerticalStrut(20);
-		separadorSuperior.setPreferredSize(new Dimension(0, 70));
-		GridBagConstraints gbc_separadorSuperior = new GridBagConstraints();
-		gbc_separadorSuperior.insets = new Insets(0, 0, 5, 5);
-		gbc_separadorSuperior.gridx = 2;
-		gbc_separadorSuperior.gridy = 0;
-		panelCentral.add(separadorSuperior, gbc_separadorSuperior);
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setPreferredSize(new Dimension(128, 128));
 		lblNewLabel.setMaximumSize(new Dimension(256, 256));
-		lblNewLabel.setIcon(new ImageIcon(Ventana_inicio.class.getResource("/imagenes/gatoVentana_128.png")));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
@@ -116,13 +117,6 @@ public class Ventana_inicio {
 		gbc_btnInicioSesion.gridy = 1;
 		panelCentral.add(btnInicioSesion, gbc_btnInicioSesion);
 		
-		Component separadorCentral = Box.createVerticalStrut(20);
-		GridBagConstraints gbc_separadorCentral = new GridBagConstraints();
-		gbc_separadorCentral.insets = new Insets(0, 0, 5, 5);
-		gbc_separadorCentral.gridx = 2;
-		gbc_separadorCentral.gridy = 2;
-		panelCentral.add(separadorCentral, gbc_separadorCentral);
-		
 		JButton btnRegistro = new JButton("Registrarse");
 		btnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -137,7 +131,7 @@ public class Ventana_inicio {
 		GridBagConstraints gbc_btnRegistro = new GridBagConstraints();
 		gbc_btnRegistro.insets = new Insets(0, 0, 5, 5);
 		gbc_btnRegistro.gridx = 2;
-		gbc_btnRegistro.gridy = 3;
+		gbc_btnRegistro.gridy = 2;
 		panelCentral.add(btnRegistro, gbc_btnRegistro);
 	}
 
