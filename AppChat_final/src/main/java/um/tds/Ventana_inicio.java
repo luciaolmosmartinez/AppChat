@@ -79,30 +79,32 @@ public class Ventana_inicio {
 		//panelSuperior.setBorder(new LineBorder(Color.WHITE,2));
 		frmAppchat.getContentPane().add(panelSuperior, BorderLayout.NORTH);
 		
-		JLabel lblAppChat = new JLabel("AppChat");
-		lblAppChat.setForeground(new Color(254, 127, 154));
-		lblAppChat.setFont(new Font("Brush Script MT", Font.BOLD, 70));
-		panelSuperior.add(lblAppChat);
+		JLabel titulo = new JLabel("AppChat");
+		titulo.setForeground(new Color(254, 127, 154));
+		titulo.setFont(new Font("Brush Script MT", Font.BOLD, 70));
+		panelSuperior.add(titulo);
 		
 		JPanel panelCentral = new JPanel();
 		panelCentral.setBackground(new Color(255, 255, 255));
 		frmAppchat.getContentPane().add(panelCentral, BorderLayout.CENTER);
 		GridBagLayout gbl_panelCentral = new GridBagLayout();
-		gbl_panelCentral.columnWidths = new int[]{93, 92, 146, 0, 0};
-		gbl_panelCentral.rowHeights = new int[]{0, 97, 75, 0, 0};
-		gbl_panelCentral.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelCentral.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelCentral.columnWidths = new int[]{93, 55, 146, 0, 0};
+		gbl_panelCentral.rowHeights = new int[]{0, 0, 97, 75, 0, 0};
+		gbl_panelCentral.columnWeights = new double[]{1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_panelCentral.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panelCentral.setLayout(gbl_panelCentral);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setPreferredSize(new Dimension(128, 128));
-		lblNewLabel.setMaximumSize(new Dimension(256, 256));
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 1;
-		panelCentral.add(lblNewLabel, gbc_lblNewLabel);
+		JLabel gato = new JLabel("");
+		gato.setIcon(new ImageIcon(Ventana_inicio.class.getResource("/imagenes/gatoVentana_256.png")));
+		gato.setPreferredSize(new Dimension(128, 128));
+		gato.setMaximumSize(new Dimension(256, 256));
+		GridBagConstraints gbc_gato = new GridBagConstraints();
+		gbc_gato.gridheight = 2;
+		gbc_gato.anchor = GridBagConstraints.EAST;
+		gbc_gato.insets = new Insets(0, 0, 5, 5);
+		gbc_gato.gridx = 1;
+		gbc_gato.gridy = 2;
+		panelCentral.add(gato, gbc_gato);
 		
 		JButton btnInicioSesion = new JButton("Iniciar Sesión");
 		btnInicioSesion.setPreferredSize(new Dimension(180, 50));
@@ -114,7 +116,7 @@ public class Ventana_inicio {
 		GridBagConstraints gbc_btnInicioSesion = new GridBagConstraints();
 		gbc_btnInicioSesion.insets = new Insets(0, 0, 5, 5);
 		gbc_btnInicioSesion.gridx = 2;
-		gbc_btnInicioSesion.gridy = 1;
+		gbc_btnInicioSesion.gridy = 2;
 		panelCentral.add(btnInicioSesion, gbc_btnInicioSesion);
 		
 		JButton btnRegistro = new JButton("Registrarse");
@@ -131,7 +133,7 @@ public class Ventana_inicio {
 		GridBagConstraints gbc_btnRegistro = new GridBagConstraints();
 		gbc_btnRegistro.insets = new Insets(0, 0, 5, 5);
 		gbc_btnRegistro.gridx = 2;
-		gbc_btnRegistro.gridy = 2;
+		gbc_btnRegistro.gridy = 3;
 		panelCentral.add(btnRegistro, gbc_btnRegistro);
 	}
 

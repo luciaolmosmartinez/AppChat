@@ -21,27 +21,28 @@ import javax.swing.ImageIcon;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Toolkit;
+import javax.swing.JPasswordField;
 
 public class Ventana_registro extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JLabel lblNewLabel_5;
-	private JLabel lblNewLabel_6;
-	private JTextArea textArea;
-	private JPanel panel;
-	private JButton btnNewButton;
-	private JButton btnNewButton_1;
+	private JTextField testNombre;
+	private JTextField testApellidos;
+	private JTextField testTelefono;
+	private JLabel fecha;
+	private JLabel saludo;
+	private JTextArea testSaludo;
+	private JPanel panelBotones;
+	private JButton aceptar;
+	private JButton cancelar;
 	private JScrollPane scrollPane;
 	private Component horizontalGlue;
-	private JLabel lblNewLabel_7;
-	private JLabel lblNewLabel_8;
-	private JTextField textField_6;
+	private JLabel imagen;
+	private JLabel foto;
+	private JTextField URLimagen;
 	private JDateChooser dateChooser;
+	private JPasswordField testContraseña;
+	private JPasswordField testConfirmar;
 
 	/**
 	 * Create the frame.
@@ -52,7 +53,7 @@ public class Ventana_registro extends JFrame {
 		setBackground(new Color(255, 255, 255));
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 633, 409);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -61,121 +62,120 @@ public class Ventana_registro extends JFrame {
 		gbl_contentPane.columnWidths = new int[] { 20, 0, 0, 0, 0, 0, 0 };
 		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_contentPane.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0,
+		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
 				Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
 
-		JLabel lblNewLabel = new JLabel("Nombre:");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 1;
-		contentPane.add(lblNewLabel, gbc_lblNewLabel);
+		JLabel nombre = new JLabel("Nombre:");
+		GridBagConstraints gbc_nombre = new GridBagConstraints();
+		gbc_nombre.anchor = GridBagConstraints.EAST;
+		gbc_nombre.insets = new Insets(0, 0, 5, 5);
+		gbc_nombre.gridx = 1;
+		gbc_nombre.gridy = 1;
+		contentPane.add(nombre, gbc_nombre);
 
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 3;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 1;
-		contentPane.add(textField, gbc_textField);
-		textField.setColumns(10);
+		testNombre = new JTextField();
+		GridBagConstraints gbc_testNombre = new GridBagConstraints();
+		gbc_testNombre.gridwidth = 3;
+		gbc_testNombre.insets = new Insets(0, 0, 5, 5);
+		gbc_testNombre.fill = GridBagConstraints.HORIZONTAL;
+		gbc_testNombre.gridx = 2;
+		gbc_testNombre.gridy = 1;
+		contentPane.add(testNombre, gbc_testNombre);
+		testNombre.setColumns(10);
 
-		JLabel lblNewLabel_1 = new JLabel("Apellidos:");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 1;
-		gbc_lblNewLabel_1.gridy = 2;
-		contentPane.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		JLabel apellidos = new JLabel("Apellidos:");
+		GridBagConstraints gbc_apellidos = new GridBagConstraints();
+		gbc_apellidos.anchor = GridBagConstraints.EAST;
+		gbc_apellidos.insets = new Insets(0, 0, 5, 5);
+		gbc_apellidos.gridx = 1;
+		gbc_apellidos.gridy = 2;
+		contentPane.add(apellidos, gbc_apellidos);
 
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.gridwidth = 3;
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 2;
-		gbc_textField_1.gridy = 2;
-		contentPane.add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
+		testApellidos = new JTextField();
+		GridBagConstraints gbc_testApellidos = new GridBagConstraints();
+		gbc_testApellidos.gridwidth = 3;
+		gbc_testApellidos.insets = new Insets(0, 0, 5, 5);
+		gbc_testApellidos.fill = GridBagConstraints.HORIZONTAL;
+		gbc_testApellidos.gridx = 2;
+		gbc_testApellidos.gridy = 2;
+		contentPane.add(testApellidos, gbc_testApellidos);
+		testApellidos.setColumns(10);
 
-		JLabel lblNewLabel_2 = new JLabel("Telefono:");
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_2.gridx = 1;
-		gbc_lblNewLabel_2.gridy = 3;
-		contentPane.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		JLabel telefono = new JLabel("Telefono:");
+		GridBagConstraints gbc_telefono = new GridBagConstraints();
+		gbc_telefono.anchor = GridBagConstraints.EAST;
+		gbc_telefono.insets = new Insets(0, 0, 5, 5);
+		gbc_telefono.gridx = 1;
+		gbc_telefono.gridy = 3;
+		contentPane.add(telefono, gbc_telefono);
 
-		textField_2 = new JTextField();
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 2;
-		gbc_textField_2.gridy = 3;
-		contentPane.add(textField_2, gbc_textField_2);
-		textField_2.setColumns(10);
+		testTelefono = new JTextField();
+		GridBagConstraints gbc_testTelefono = new GridBagConstraints();
+		gbc_testTelefono.insets = new Insets(0, 0, 5, 5);
+		gbc_testTelefono.fill = GridBagConstraints.HORIZONTAL;
+		gbc_testTelefono.gridx = 2;
+		gbc_testTelefono.gridy = 3;
+		contentPane.add(testTelefono, gbc_testTelefono);
+		testTelefono.setColumns(10);
 
-		JLabel lblNewLabel_3 = new JLabel("Contraseña:");
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_3.gridx = 1;
-		gbc_lblNewLabel_3.gridy = 4;
-		contentPane.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		JLabel contraseña = new JLabel("Contraseña:");
+		GridBagConstraints gbc_contraseña = new GridBagConstraints();
+		gbc_contraseña.anchor = GridBagConstraints.EAST;
+		gbc_contraseña.insets = new Insets(0, 0, 5, 5);
+		gbc_contraseña.gridx = 1;
+		gbc_contraseña.gridy = 4;
+		contentPane.add(contraseña, gbc_contraseña);
+				
+				testContraseña = new JPasswordField();
+				GridBagConstraints gbc_testContraseña = new GridBagConstraints();
+				gbc_testContraseña.insets = new Insets(0, 0, 5, 5);
+				gbc_testContraseña.fill = GridBagConstraints.HORIZONTAL;
+				gbc_testContraseña.gridx = 2;
+				gbc_testContraseña.gridy = 4;
+				contentPane.add(testContraseña, gbc_testContraseña);
+		
+				JLabel confirmar = new JLabel("Confirmar contraseña:");
+				GridBagConstraints gbc_confirmar = new GridBagConstraints();
+				gbc_confirmar.anchor = GridBagConstraints.EAST;
+				gbc_confirmar.insets = new Insets(0, 0, 5, 5);
+				gbc_confirmar.gridx = 3;
+				gbc_confirmar.gridy = 4;
+				contentPane.add(confirmar, gbc_confirmar);
+		
+		testConfirmar = new JPasswordField();
+		GridBagConstraints gbc_testConfirmar = new GridBagConstraints();
+		gbc_testConfirmar.insets = new Insets(0, 0, 5, 5);
+		gbc_testConfirmar.fill = GridBagConstraints.HORIZONTAL;
+		gbc_testConfirmar.gridx = 4;
+		gbc_testConfirmar.gridy = 4;
+		contentPane.add(testConfirmar, gbc_testConfirmar);
 
-		textField_3 = new JTextField();
-		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
-		gbc_textField_3.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_3.gridx = 2;
-		gbc_textField_3.gridy = 4;
-		contentPane.add(textField_3, gbc_textField_3);
-		textField_3.setColumns(10);
-
-		JLabel lblNewLabel_4 = new JLabel("Confirmar contraseña:");
-		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
-		gbc_lblNewLabel_4.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_4.gridx = 3;
-		gbc_lblNewLabel_4.gridy = 4;
-		contentPane.add(lblNewLabel_4, gbc_lblNewLabel_4);
-
-		textField_4 = new JTextField();
-		GridBagConstraints gbc_textField_4 = new GridBagConstraints();
-		gbc_textField_4.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_4.gridx = 4;
-		gbc_textField_4.gridy = 4;
-		contentPane.add(textField_4, gbc_textField_4);
-		textField_4.setColumns(10);
-
-		lblNewLabel_5 = new JLabel("Fecha:");
-		GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
-		gbc_lblNewLabel_5.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_5.gridx = 1;
-		gbc_lblNewLabel_5.gridy = 5;
-		contentPane.add(lblNewLabel_5, gbc_lblNewLabel_5);
+		fecha = new JLabel("Fecha:");
+		GridBagConstraints gbc_fecha = new GridBagConstraints();
+		gbc_fecha.anchor = GridBagConstraints.EAST;
+		gbc_fecha.insets = new Insets(0, 0, 5, 5);
+		gbc_fecha.gridx = 1;
+		gbc_fecha.gridy = 5;
+		contentPane.add(fecha, gbc_fecha);
 
 		dateChooser = new JDateChooser();
 		dateChooser.getCalendarButton().setBackground(new Color(255, 255, 255));
 		GridBagConstraints gbc_dateChooser = new GridBagConstraints();
 		gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
-		gbc_dateChooser.fill = GridBagConstraints.BOTH;
+		gbc_dateChooser.fill = GridBagConstraints.HORIZONTAL;
 		gbc_dateChooser.gridx = 2;
 		gbc_dateChooser.gridy = 5;
 		contentPane.add(dateChooser, gbc_dateChooser);
 
-		lblNewLabel_6 = new JLabel("Saludo:");
-		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
-		gbc_lblNewLabel_6.gridheight = 2;
-		gbc_lblNewLabel_6.anchor = GridBagConstraints.NORTHEAST;
-		gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_6.gridx = 1;
-		gbc_lblNewLabel_6.gridy = 6;
-		contentPane.add(lblNewLabel_6, gbc_lblNewLabel_6);
+		saludo = new JLabel("Saludo:");
+		GridBagConstraints gbc_saludo = new GridBagConstraints();
+		gbc_saludo.gridheight = 2;
+		gbc_saludo.anchor = GridBagConstraints.NORTHEAST;
+		gbc_saludo.insets = new Insets(0, 0, 5, 5);
+		gbc_saludo.gridx = 1;
+		gbc_saludo.gridy = 6;
+		contentPane.add(saludo, gbc_saludo);
 
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -186,52 +186,54 @@ public class Ventana_registro extends JFrame {
 		gbc_scrollPane.gridy = 6;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
-		textArea = new JTextArea();
-		scrollPane.setViewportView(textArea);
+		testSaludo = new JTextArea();
+		scrollPane.setViewportView(testSaludo);
 
-		lblNewLabel_7 = new JLabel("Imagen:");
-		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
-		gbc_lblNewLabel_7.anchor = GridBagConstraints.NORTHEAST;
-		gbc_lblNewLabel_7.gridheight = 2;
-		gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_7.gridx = 3;
-		gbc_lblNewLabel_7.gridy = 6;
-		contentPane.add(lblNewLabel_7, gbc_lblNewLabel_7);
+		imagen = new JLabel("Imagen:");
+		GridBagConstraints gbc_imagen = new GridBagConstraints();
+		gbc_imagen.anchor = GridBagConstraints.NORTHEAST;
+		gbc_imagen.gridheight = 2;
+		gbc_imagen.insets = new Insets(0, 0, 5, 5);
+		gbc_imagen.gridx = 3;
+		gbc_imagen.gridy = 6;
+		contentPane.add(imagen, gbc_imagen);
 
-		textField_6 = new JTextField();
-		GridBagConstraints gbc_textField_6 = new GridBagConstraints();
-		gbc_textField_6.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_6.gridx = 4;
-		gbc_textField_6.gridy = 6;
-		contentPane.add(textField_6, gbc_textField_6);
-		textField_6.setColumns(10);
+		URLimagen = new JTextField();
+		GridBagConstraints gbc_URLimagen = new GridBagConstraints();
+		gbc_URLimagen.anchor = GridBagConstraints.NORTH;
+		gbc_URLimagen.fill = GridBagConstraints.HORIZONTAL;
+		gbc_URLimagen.insets = new Insets(0, 0, 5, 5);
+		gbc_URLimagen.gridx = 4;
+		gbc_URLimagen.gridy = 6;
+		contentPane.add(URLimagen, gbc_URLimagen);
+		URLimagen.setColumns(10);
 
-		lblNewLabel_8 = new JLabel("");
-		lblNewLabel_8.setIcon(new ImageIcon(Ventana_registro.class.getResource("/vista/imagenes/gente.png")));
-		GridBagConstraints gbc_lblNewLabel_8 = new GridBagConstraints();
-		gbc_lblNewLabel_8.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_8.gridx = 4;
-		gbc_lblNewLabel_8.gridy = 7;
-		contentPane.add(lblNewLabel_8, gbc_lblNewLabel_8);
+		foto = new JLabel("");
+		foto.setIcon(new ImageIcon(Ventana_registro.class.getResource("/vista/imagenes/gente.png")));
+		GridBagConstraints gbc_foto = new GridBagConstraints();
+		gbc_foto.insets = new Insets(0, 0, 5, 5);
+		gbc_foto.gridx = 4;
+		gbc_foto.gridy = 7;
+		contentPane.add(foto, gbc_foto);
 
-		panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 255));
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.insets = new Insets(0, 0, 5, 5);
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 2;
-		gbc_panel.gridy = 8;
-		contentPane.add(panel, gbc_panel);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panelBotones = new JPanel();
+		panelBotones.setBackground(new Color(255, 255, 255));
+		GridBagConstraints gbc_panelBotones = new GridBagConstraints();
+		gbc_panelBotones.insets = new Insets(0, 0, 5, 5);
+		gbc_panelBotones.fill = GridBagConstraints.BOTH;
+		gbc_panelBotones.gridx = 2;
+		gbc_panelBotones.gridy = 8;
+		contentPane.add(panelBotones, gbc_panelBotones);
+		panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.X_AXIS));
 
-		btnNewButton = new JButton("Aceptar");
-		panel.add(btnNewButton);
+		aceptar = new JButton("Aceptar");
+		panelBotones.add(aceptar);
 
 		horizontalGlue = Box.createHorizontalGlue();
-		panel.add(horizontalGlue);
+		panelBotones.add(horizontalGlue);
 
-		btnNewButton_1 = new JButton("Cancelar");
-		panel.add(btnNewButton_1);
+		cancelar = new JButton("Cancelar");
+		panelBotones.add(cancelar);
 
 	}
 
