@@ -22,6 +22,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Toolkit;
 import javax.swing.JPasswordField;
+import java.awt.Font;
 
 public class Ventana_registro extends JFrame {
 
@@ -67,6 +68,7 @@ public class Ventana_registro extends JFrame {
 		contentPane.setLayout(gbl_contentPane);
 
 		JLabel nombre = new JLabel("Nombre:");
+		nombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_nombre = new GridBagConstraints();
 		gbc_nombre.anchor = GridBagConstraints.EAST;
 		gbc_nombre.insets = new Insets(0, 0, 5, 5);
@@ -85,6 +87,7 @@ public class Ventana_registro extends JFrame {
 		testNombre.setColumns(10);
 
 		JLabel apellidos = new JLabel("Apellidos:");
+		apellidos.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_apellidos = new GridBagConstraints();
 		gbc_apellidos.anchor = GridBagConstraints.EAST;
 		gbc_apellidos.insets = new Insets(0, 0, 5, 5);
@@ -103,6 +106,7 @@ public class Ventana_registro extends JFrame {
 		testApellidos.setColumns(10);
 
 		JLabel telefono = new JLabel("Telefono:");
+		telefono.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_telefono = new GridBagConstraints();
 		gbc_telefono.anchor = GridBagConstraints.EAST;
 		gbc_telefono.insets = new Insets(0, 0, 5, 5);
@@ -120,6 +124,7 @@ public class Ventana_registro extends JFrame {
 		testTelefono.setColumns(10);
 
 		JLabel contraseña = new JLabel("Contraseña:");
+		contraseña.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_contraseña = new GridBagConstraints();
 		gbc_contraseña.anchor = GridBagConstraints.EAST;
 		gbc_contraseña.insets = new Insets(0, 0, 5, 5);
@@ -136,6 +141,7 @@ public class Ventana_registro extends JFrame {
 				contentPane.add(testContraseña, gbc_testContraseña);
 		
 				JLabel confirmar = new JLabel("Confirmar contraseña:");
+				confirmar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 				GridBagConstraints gbc_confirmar = new GridBagConstraints();
 				gbc_confirmar.anchor = GridBagConstraints.EAST;
 				gbc_confirmar.insets = new Insets(0, 0, 5, 5);
@@ -152,6 +158,7 @@ public class Ventana_registro extends JFrame {
 		contentPane.add(testConfirmar, gbc_testConfirmar);
 
 		fecha = new JLabel("Fecha:");
+		fecha.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_fecha = new GridBagConstraints();
 		gbc_fecha.anchor = GridBagConstraints.EAST;
 		gbc_fecha.insets = new Insets(0, 0, 5, 5);
@@ -169,6 +176,7 @@ public class Ventana_registro extends JFrame {
 		contentPane.add(dateChooser, gbc_dateChooser);
 
 		saludo = new JLabel("Saludo:");
+		saludo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_saludo = new GridBagConstraints();
 		gbc_saludo.gridheight = 2;
 		gbc_saludo.anchor = GridBagConstraints.NORTHEAST;
@@ -190,6 +198,7 @@ public class Ventana_registro extends JFrame {
 		scrollPane.setViewportView(testSaludo);
 
 		imagen = new JLabel("Imagen:");
+		imagen.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_imagen = new GridBagConstraints();
 		gbc_imagen.anchor = GridBagConstraints.NORTHEAST;
 		gbc_imagen.gridheight = 2;
@@ -227,12 +236,14 @@ public class Ventana_registro extends JFrame {
 		panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.X_AXIS));
 
 		aceptar = new JButton("Aceptar");
+		aceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		panelBotones.add(aceptar);
 
 		horizontalGlue = Box.createHorizontalGlue();
 		panelBotones.add(horizontalGlue);
 
 		cancelar = new JButton("Cancelar");
+		cancelar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		panelBotones.add(cancelar);
 
 	}

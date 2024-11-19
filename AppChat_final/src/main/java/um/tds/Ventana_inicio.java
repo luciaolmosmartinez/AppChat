@@ -28,6 +28,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import java.awt.Dialog.ModalExclusionType;
+import java.awt.Point;
 
 public class Ventana_inicio {
 
@@ -88,22 +89,22 @@ public class Ventana_inicio {
 		panelCentral.setBackground(new Color(255, 255, 255));
 		frmAppchat.getContentPane().add(panelCentral, BorderLayout.CENTER);
 		GridBagLayout gbl_panelCentral = new GridBagLayout();
-		gbl_panelCentral.columnWidths = new int[]{93, 55, 146, 0, 0};
-		gbl_panelCentral.rowHeights = new int[]{0, 0, 97, 75, 0, 0};
-		gbl_panelCentral.columnWeights = new double[]{1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
-		gbl_panelCentral.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelCentral.columnWidths = new int[]{93, 55, 146, 150, 0, 0};
+		gbl_panelCentral.rowHeights = new int[]{30, 0, 97, 75, 50, 0, 0};
+		gbl_panelCentral.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelCentral.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		panelCentral.setLayout(gbl_panelCentral);
 		
 		JLabel gato = new JLabel("");
 		gato.setIcon(new ImageIcon(Ventana_inicio.class.getResource("/imagenes/gatoVentana_256.png")));
-		gato.setPreferredSize(new Dimension(128, 128));
-		gato.setMaximumSize(new Dimension(256, 256));
+		gato.setPreferredSize(new Dimension(170, 170));
+		gato.setMaximumSize(new Dimension(512, 512));
 		GridBagConstraints gbc_gato = new GridBagConstraints();
-		gbc_gato.gridheight = 2;
 		gbc_gato.anchor = GridBagConstraints.EAST;
+		gbc_gato.gridheight = 2;
 		gbc_gato.insets = new Insets(0, 0, 5, 5);
 		gbc_gato.gridx = 1;
-		gbc_gato.gridy = 2;
+		gbc_gato.gridy = 1;
 		panelCentral.add(gato, gbc_gato);
 		
 		JButton btnInicioSesion = new JButton("Iniciar Sesión");
