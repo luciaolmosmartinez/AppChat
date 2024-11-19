@@ -46,13 +46,15 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JPasswordField;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Ventana_login {
 
 	private JFrame frmAppchat;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JTextField textField;
 	private JPasswordField passwordField;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -89,35 +91,44 @@ public class Ventana_login {
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel panelCentro = new JPanel();
+		panelCentro.setMaximumSize(new Dimension(100, 50));
+		panelCentro.setBounds(0, 0, 436, 224);
 		panelCentro.setBackground(new Color(255, 255, 255));
 		panelCentro.setBorder(null);
 		GridBagLayout gbl_panelCentro = new GridBagLayout();
-		gbl_panelCentro.columnWidths = new int[] { 20, 0, 0, 20, 0 };
-		gbl_panelCentro.rowHeights = new int[] { 20, 0, 0, 0, 0, 20, 0 };
-		gbl_panelCentro.columnWeights = new double[] { 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
-		gbl_panelCentro.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panelCentro.columnWidths = new int[] { 20, 0, 0, 20, 20, 0 };
+		gbl_panelCentro.rowHeights = new int[] { 20, 0, 0, 0, 0, 0, 20, 0 };
+		gbl_panelCentro.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		gbl_panelCentro.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panelCentro.setLayout(gbl_panelCentro);
-
+		
+		JButton btnAcceder = new JButton("Acceder");
+		btnAcceder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		
 		JLabel lblTelefono = new JLabel("Teléfono:");
 		GridBagConstraints gbc_lblTelefono = new GridBagConstraints();
-		gbc_lblTelefono.anchor = GridBagConstraints.EAST;
 		gbc_lblTelefono.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTelefono.anchor = GridBagConstraints.EAST;
 		gbc_lblTelefono.gridx = 1;
-		gbc_lblTelefono.gridy = 1;
+		gbc_lblTelefono.gridy = 2;
 		panelCentro.add(lblTelefono, gbc_lblTelefono);
-
+		
 		textField = new JTextField();
 		textField.setColumns(20);
 		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 1;
+		gbc_textField.gridy = 2;
 		panelCentro.add(textField, gbc_textField);
-		
-		JButton btnAcceder = new JButton("Acceder");
+		btnAcceder.setMaximumSize(new Dimension(100, 50));
 		GridBagConstraints gbc_btnAcceder = new GridBagConstraints();
-		gbc_btnAcceder.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAcceder.gridheight = 3;
+		gbc_btnAcceder.fill = GridBagConstraints.BOTH;
+		gbc_btnAcceder.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAcceder.gridx = 3;
 		gbc_btnAcceder.gridy = 2;
 		panelCentro.add(btnAcceder, gbc_btnAcceder);
@@ -127,7 +138,7 @@ public class Ventana_login {
 		gbc_lblContrasea.anchor = GridBagConstraints.EAST;
 		gbc_lblContrasea.insets = new Insets(0, 0, 5, 5);
 		gbc_lblContrasea.gridx = 1;
-		gbc_lblContrasea.gridy = 3;
+		gbc_lblContrasea.gridy = 4;
 		panelCentro.add(lblContrasea, gbc_lblContrasea);
 
 		passwordField = new JPasswordField();
@@ -136,23 +147,20 @@ public class Ventana_login {
 		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_passwordField.insets = new Insets(0, 0, 5, 5);
 		gbc_passwordField.gridx = 2;
-		gbc_passwordField.gridy = 3;
+		gbc_passwordField.gridy = 4;
 		panelCentro.add(passwordField, gbc_passwordField);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		frmAppchat.getContentPane().add(panel, BorderLayout.CENTER);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWeights = new double[] { 1.0 };
-		gbl_panel.columnWidths = new int[] { 0 };
-		panel.setLayout(gbl_panel);
+		panel.setLayout(null);
 		panel.add(panelCentro);
 		
 		JButton btnNoRecuerdo = new JButton("No recuerdo la contraseña");
 		GridBagConstraints gbc_btnNoRecuerdo = new GridBagConstraints();
 		gbc_btnNoRecuerdo.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNoRecuerdo.gridx = 2;
-		gbc_btnNoRecuerdo.gridy = 4;
+		gbc_btnNoRecuerdo.gridy = 5;
 		panelCentro.add(btnNoRecuerdo, gbc_btnNoRecuerdo);
 
 		JLabel logo = new JLabel("");
