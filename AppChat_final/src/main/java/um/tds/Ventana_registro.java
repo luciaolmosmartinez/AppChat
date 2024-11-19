@@ -47,6 +47,7 @@ public class Ventana_registro extends JFrame {
 	 * Create the frame.
 	 */
 	public Ventana_registro() {
+		setTitle("AppChat");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Ventana_registro.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		setBackground(new Color(255, 255, 255));
 		setVisible(true);
@@ -134,7 +135,7 @@ public class Ventana_registro extends JFrame {
 		contentPane.add(textField_3, gbc_textField_3);
 		textField_3.setColumns(10);
 
-		JLabel lblNewLabel_4 = new JLabel("Contraseña:");
+		JLabel lblNewLabel_4 = new JLabel("Confirmar contraseña:");
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
 		gbc_lblNewLabel_4.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
