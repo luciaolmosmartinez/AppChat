@@ -2,5 +2,12 @@ package modelado;
 
 public class Contacto {
 	private String nombre;
-	private Usuario usuario; //poner esto o poner simplemente el numero de telefono?
+
+	public Contacto(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}	
 }
