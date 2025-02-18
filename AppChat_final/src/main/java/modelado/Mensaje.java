@@ -11,6 +11,10 @@ public class Mensaje {
 	private Usuario receptor;
 	private LocalDateTime fechaHora;
 
+	public int getLength() {
+		return this.texto.length();
+	}
+
 	public Mensaje(String texto, Usuario emisor, Usuario receptor) {
 		this(texto, -1, emisor, receptor);
 	}
@@ -45,6 +49,11 @@ public class Mensaje {
 
 	public LocalDateTime getFechaHora() {
 		return fechaHora;
+	}
+
+	public Mensaje enviarMensaje(Contacto receptor, String texto, int emoticono, Usuario emisor) {
+		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, emisor);
+		return mensaje;
 	}
 
 }

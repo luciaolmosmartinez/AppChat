@@ -15,6 +15,7 @@ public class Usuario {
 	private LocalDate fechaRegistro; // fecha en la que el usuario se registro, para poder calcular el descuento
 	private boolean premium;
 	private LinkedList<Contacto> contactos; //lista de contactos que tiene el usuario
+	private Descuento descuento;
 
 	public Usuario(String nombre, String contrasena, int numTelefono, String email, LocalDate fechaNacimiento,
 			String mensajeSaludo) {
@@ -73,6 +74,12 @@ public class Usuario {
 	
 	public LinkedList<Contacto> getContactos() {
 		return new LinkedList<Contacto>(contactos);
+	}
+	
+	public Mensaje enviarMensaje(Contacto receptor, String texto, int emoticono, Usuario emisor) {
+		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, emisor);
+		mensaje = mensaje.enviarMensaje(receptor,texto,emoticono,emisor);
+		return mensaje;
 	}
 
 }
