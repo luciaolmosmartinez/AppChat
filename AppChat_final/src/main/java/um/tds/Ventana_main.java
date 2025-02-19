@@ -61,6 +61,7 @@ public class Ventana_main extends JFrame {
 	private GridBagConstraints gbc_bubble_1;
 	private JScrollPane scrollPane;
 	private JPanel panelMensajes;
+	private GridBagConstraints gbc_bubble;
 
 	/**
 	 * Create the frame.
@@ -91,7 +92,7 @@ public class Ventana_main extends JFrame {
 		mntmNewMenuItem_3 = new JMenuItem("Perfil");
 		menuBar.add(mntmNewMenuItem_3);
 		contentPane = new JPanel();
-		contentPane.setMaximumSize(new Dimension(494, 32767));
+		contentPane.setMaximumSize(new Dimension(494, 400));
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -107,7 +108,7 @@ public class Ventana_main extends JFrame {
 		panelCentral = new JPanel();
 		panelCentral.setBackground(new Color(255, 255, 255));
 		panelCentral.setPreferredSize(new Dimension(494, 10));
-		panelCentral.setMaximumSize(new Dimension(494, 32767));
+		panelCentral.setMaximumSize(new Dimension(494, 400));
 		contentPane.add(panelCentral, BorderLayout.CENTER);
 		panelCentral.setLayout(new BorderLayout(0, 0));
 		
@@ -119,8 +120,9 @@ public class Ventana_main extends JFrame {
 		panelCentral.add(scrollPane, BorderLayout.WEST);
 		
 		panelMensajes = new JPanel();
+		panelMensajes.setMinimumSize(new Dimension(5, 5));
 		panelMensajes.setBackground(new Color(255, 255, 255));
-		panelMensajes.setMaximumSize(new Dimension(494, 200));
+		panelMensajes.setMaximumSize(new Dimension(50, 50));
 		scrollPane.setViewportView(panelMensajes);
 
 		panelContacto = new JPanel();
@@ -182,124 +184,53 @@ public class Ventana_main extends JFrame {
 		gbc_btnEnviar.gridy = 0;
 		panelEscribir.add(btnEnviar, gbc_btnEnviar);
 		GridBagLayout gbl_panelMensajes = new GridBagLayout();
-		gbl_panelMensajes.columnWidths = new int[]{499, 0};
-		gbl_panelMensajes.rowHeights = new int[]{82, 30, 82, 30, 85, 85, 85, 85, 85, 85, 72, 40, 72, 40, 72, 0};
-		gbl_panelMensajes.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panelMensajes.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelMensajes.columnWidths = new int[]{451, 0, 0};
+		gbl_panelMensajes.rowHeights = new int[]{82, 30, 82, 62, 0};
+		gbl_panelMensajes.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelMensajes.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
 		panelMensajes.setLayout(gbl_panelMensajes);
+		panelMensajes.setSize(118, 118);
+		panelMensajes.setMinimumSize(new Dimension(118, 118));
+		panelMensajes.setMaximumSize(new Dimension(118, 118));
+		panelMensajes.setPreferredSize(new Dimension(118, 118));
+		panelMensajes.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
-		BubbleText bubble = new BubbleText(panelMensajes, 0, Color.PINK, "jaja", BubbleText.RECEIVED, 10);
-		bubble.setAlignmentX(Component.LEFT_ALIGNMENT);
-		bubble.setPreferredSize(new Dimension(494, 112));
-		bubble.setSize(new Dimension(118, 118));
+		BubbleText bubble = new BubbleText(panelMensajes, "Adios", Color.PINK, "jaja", BubbleText.SENT, 10);
+
 		GridBagConstraints gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.NORTH;
+		gbc_bubble_1.anchor = GridBagConstraints.SOUTH;
 		gbc_bubble_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
+		gbc_bubble_1.insets = new Insets(0, 0, 5, 5);
 		gbc_bubble_1.gridx = 0;
 		gbc_bubble_1.gridy = 0;
 		panelMensajes.add(bubble, gbc_bubble_1);
-		bubble = new BubbleText(panelMensajes, 0, Color.PINK, "jaja", BubbleText.SENT, 10);
-		bubble.setAlignmentX(Component.LEFT_ALIGNMENT);
-		bubble.setPreferredSize(new Dimension(494, 112));
-		bubble.setSize(new Dimension(118, 118));
+		bubble = new BubbleText(panelMensajes, "adiós", Color.PINK, "jaja", BubbleText.SENT, 10);
+
 		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.NORTH;
+		gbc_bubble_1.anchor = GridBagConstraints.SOUTH;
 		gbc_bubble_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
+		gbc_bubble_1.insets = new Insets(0, 0, 5, 5);
 		gbc_bubble_1.gridx = 0;
 		gbc_bubble_1.gridy = 2;
 		panelMensajes.add(bubble, gbc_bubble_1);
 		bubble = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
-		bubble.setAlignmentX(Component.LEFT_ALIGNMENT);
-		bubble.setPreferredSize(new Dimension(494, 112));
-		bubble.setSize(new Dimension(118, 118));
+
 		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
+		gbc_bubble_1.anchor = GridBagConstraints.SOUTHWEST;
+		gbc_bubble_1.insets = new Insets(0, 0, 5, 5);
+		gbc_bubble_1.gridx = 0;
+		gbc_bubble_1.gridy = 3;
+		panelMensajes.add(bubble, gbc_bubble_1);
+		bubble = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
+
+		gbc_bubble_1 = new GridBagConstraints();
+		gbc_bubble_1.anchor = GridBagConstraints.SOUTHWEST;
+		gbc_bubble_1.insets = new Insets(0, 0, 0, 5);
 		gbc_bubble_1.gridx = 0;
 		gbc_bubble_1.gridy = 4;
 		panelMensajes.add(bubble, gbc_bubble_1);
-		bubble = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
-		bubble.setAlignmentX(Component.LEFT_ALIGNMENT);
-		bubble.setPreferredSize(new Dimension(494, 112));
-		bubble.setSize(new Dimension(118, 118));
-		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
-		gbc_bubble_1.gridx = 0;
-		gbc_bubble_1.gridy = 5;
-		panelMensajes.add(bubble, gbc_bubble_1);
-		bubble = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
-		bubble.setAlignmentX(Component.LEFT_ALIGNMENT);
-		bubble.setPreferredSize(new Dimension(494, 112));
-		bubble.setSize(new Dimension(118, 118));
-		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
-		gbc_bubble_1.gridx = 0;
-		gbc_bubble_1.gridy = 6;
-		panelMensajes.add(bubble, gbc_bubble_1);
-		bubble = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
-		bubble.setAlignmentX(Component.LEFT_ALIGNMENT);
-		bubble.setPreferredSize(new Dimension(494, 112));
-		bubble.setSize(new Dimension(118, 118));
-		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
-		gbc_bubble_1.gridx = 0;
-		gbc_bubble_1.gridy = 7;
-		panelMensajes.add(bubble, gbc_bubble_1);
 		
-		bubble = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
-		bubble.setAlignmentX(Component.LEFT_ALIGNMENT);
-		bubble.setPreferredSize(new Dimension(494, 112));
-		bubble.setSize(new Dimension(118, 118));
-		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
-		gbc_bubble_1.gridx = 0;
-		gbc_bubble_1.gridy = 8;
-		panelMensajes.add(bubble, gbc_bubble_1);
-		bubble = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
-		bubble.setAlignmentX(Component.LEFT_ALIGNMENT);
-		bubble.setPreferredSize(new Dimension(494, 112));
-		bubble.setSize(new Dimension(118, 118));
-		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
-		gbc_bubble_1.gridx = 0;
-		gbc_bubble_1.gridy = 9;
-		panelMensajes.add(bubble, gbc_bubble_1);
-		bubble = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
-		bubble.setAlignmentX(Component.LEFT_ALIGNMENT);
-		bubble.setPreferredSize(new Dimension(494, 112));
-		bubble.setSize(new Dimension(118, 118));
-		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
-		gbc_bubble_1.gridx = 0;
-		gbc_bubble_1.gridy = 10;
-		panelMensajes.add(bubble, gbc_bubble_1);
-		bubble = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
-		bubble.setAlignmentX(Component.LEFT_ALIGNMENT);
-		bubble.setPreferredSize(new Dimension(494, 112));
-		bubble.setSize(new Dimension(118, 118));
-		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
-		gbc_bubble_1.gridx = 0;
-		gbc_bubble_1.gridy = 12;
-		panelMensajes.add(bubble, gbc_bubble_1);
-		bubble = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
-		bubble.setAlignmentX(Component.LEFT_ALIGNMENT);
-		bubble.setPreferredSize(new Dimension(494, 112));
-		bubble.setSize(new Dimension(118, 118));
-		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_bubble_1.gridx = 0;
-		gbc_bubble_1.gridy = 14;
-		panelMensajes.add(bubble, gbc_bubble_1);
+		
 	}
 
 }

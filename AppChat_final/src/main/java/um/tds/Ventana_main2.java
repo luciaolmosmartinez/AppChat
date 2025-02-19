@@ -63,10 +63,10 @@ public class Ventana_main2 extends JFrame {
 	private Button button_1;
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
-	private JList list;
 	private JPanel panel_4;
 	private JScrollPane scrollPane;
 	private JList list_1;
+	private JScrollPane scrollPane_1;
 
 	/**
 	 * Create the frame.
@@ -106,8 +106,8 @@ public class Ventana_main2 extends JFrame {
 		panel = new JPanel();
 		contentPane.add(panel, BorderLayout.WEST);
 		
-		list = new JList();
-		panel.add(list);
+		scrollPane_1 = new JScrollPane();
+		panel.add(scrollPane_1);
 		
 		panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
@@ -179,6 +179,8 @@ public class Ventana_main2 extends JFrame {
 		panel_3.add(btnNewButton_1, gbc_btnNewButton_1);
 		
 		panel_4 = new JPanel();
+		panel_4.setPreferredSize(new Dimension(50, 50));
+		panel_4.setMinimumSize(new Dimension(50, 50));
 		panel_1.add(panel_4, BorderLayout.CENTER);
 		
 		scrollPane = new JScrollPane();
