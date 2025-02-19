@@ -44,6 +44,8 @@ public class Ventana_registro extends JFrame {
 	private JDateChooser dateChooser;
 	private JPasswordField testContraseña;
 	private JPasswordField testConfirmar;
+	private JLabel lblEmail;
+	private JTextField textField;
 
 	/**
 	 * Create the frame.
@@ -61,9 +63,9 @@ public class Ventana_registro extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[] { 20, 0, 0, 0, 0, 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_contentPane.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
 				Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
 
@@ -105,7 +107,7 @@ public class Ventana_registro extends JFrame {
 		contentPane.add(testApellidos, gbc_testApellidos);
 		testApellidos.setColumns(10);
 
-		JLabel telefono = new JLabel("Telefono:");
+		JLabel telefono = new JLabel("Teléfono:");
 		telefono.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_telefono = new GridBagConstraints();
 		gbc_telefono.anchor = GridBagConstraints.EAST;
@@ -122,6 +124,24 @@ public class Ventana_registro extends JFrame {
 		gbc_testTelefono.gridy = 3;
 		contentPane.add(testTelefono, gbc_testTelefono);
 		testTelefono.setColumns(10);
+		
+		lblEmail = new JLabel("Email:");
+		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
+		gbc_lblEmail.anchor = GridBagConstraints.EAST;
+		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
+		gbc_lblEmail.gridx = 1;
+		gbc_lblEmail.gridy = 4;
+		contentPane.add(lblEmail, gbc_lblEmail);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.insets = new Insets(0, 0, 5, 5);
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.gridx = 2;
+		gbc_textField.gridy = 4;
+		contentPane.add(textField, gbc_textField);
 
 		JLabel contraseña = new JLabel("Contraseña:");
 		contraseña.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -129,7 +149,7 @@ public class Ventana_registro extends JFrame {
 		gbc_contraseña.anchor = GridBagConstraints.EAST;
 		gbc_contraseña.insets = new Insets(0, 0, 5, 5);
 		gbc_contraseña.gridx = 1;
-		gbc_contraseña.gridy = 4;
+		gbc_contraseña.gridy = 5;
 		contentPane.add(contraseña, gbc_contraseña);
 				
 				testContraseña = new JPasswordField();
@@ -137,7 +157,7 @@ public class Ventana_registro extends JFrame {
 				gbc_testContraseña.insets = new Insets(0, 0, 5, 5);
 				gbc_testContraseña.fill = GridBagConstraints.HORIZONTAL;
 				gbc_testContraseña.gridx = 2;
-				gbc_testContraseña.gridy = 4;
+				gbc_testContraseña.gridy = 5;
 				contentPane.add(testContraseña, gbc_testContraseña);
 		
 				JLabel confirmar = new JLabel("Confirmar contraseña:");
@@ -146,7 +166,7 @@ public class Ventana_registro extends JFrame {
 				gbc_confirmar.anchor = GridBagConstraints.EAST;
 				gbc_confirmar.insets = new Insets(0, 0, 5, 5);
 				gbc_confirmar.gridx = 3;
-				gbc_confirmar.gridy = 4;
+				gbc_confirmar.gridy = 5;
 				contentPane.add(confirmar, gbc_confirmar);
 		
 		testConfirmar = new JPasswordField();
@@ -154,7 +174,7 @@ public class Ventana_registro extends JFrame {
 		gbc_testConfirmar.insets = new Insets(0, 0, 5, 5);
 		gbc_testConfirmar.fill = GridBagConstraints.HORIZONTAL;
 		gbc_testConfirmar.gridx = 4;
-		gbc_testConfirmar.gridy = 4;
+		gbc_testConfirmar.gridy = 5;
 		contentPane.add(testConfirmar, gbc_testConfirmar);
 
 		fecha = new JLabel("Fecha:");
@@ -163,7 +183,7 @@ public class Ventana_registro extends JFrame {
 		gbc_fecha.anchor = GridBagConstraints.EAST;
 		gbc_fecha.insets = new Insets(0, 0, 5, 5);
 		gbc_fecha.gridx = 1;
-		gbc_fecha.gridy = 5;
+		gbc_fecha.gridy = 6;
 		contentPane.add(fecha, gbc_fecha);
 
 		dateChooser = new JDateChooser();
@@ -172,7 +192,7 @@ public class Ventana_registro extends JFrame {
 		gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
 		gbc_dateChooser.fill = GridBagConstraints.HORIZONTAL;
 		gbc_dateChooser.gridx = 2;
-		gbc_dateChooser.gridy = 5;
+		gbc_dateChooser.gridy = 6;
 		contentPane.add(dateChooser, gbc_dateChooser);
 
 		saludo = new JLabel("Saludo:");
@@ -182,7 +202,7 @@ public class Ventana_registro extends JFrame {
 		gbc_saludo.anchor = GridBagConstraints.NORTHEAST;
 		gbc_saludo.insets = new Insets(0, 0, 5, 5);
 		gbc_saludo.gridx = 1;
-		gbc_saludo.gridy = 6;
+		gbc_saludo.gridy = 7;
 		contentPane.add(saludo, gbc_saludo);
 
 		scrollPane = new JScrollPane();
@@ -191,7 +211,7 @@ public class Ventana_registro extends JFrame {
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane.gridx = 2;
-		gbc_scrollPane.gridy = 6;
+		gbc_scrollPane.gridy = 7;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
 		testSaludo = new JTextArea();
@@ -204,7 +224,7 @@ public class Ventana_registro extends JFrame {
 		gbc_imagen.gridheight = 2;
 		gbc_imagen.insets = new Insets(0, 0, 5, 5);
 		gbc_imagen.gridx = 3;
-		gbc_imagen.gridy = 6;
+		gbc_imagen.gridy = 7;
 		contentPane.add(imagen, gbc_imagen);
 
 		URLimagen = new JTextField();
@@ -213,7 +233,7 @@ public class Ventana_registro extends JFrame {
 		gbc_URLimagen.fill = GridBagConstraints.HORIZONTAL;
 		gbc_URLimagen.insets = new Insets(0, 0, 5, 5);
 		gbc_URLimagen.gridx = 4;
-		gbc_URLimagen.gridy = 6;
+		gbc_URLimagen.gridy = 7;
 		contentPane.add(URLimagen, gbc_URLimagen);
 		URLimagen.setColumns(10);
 
@@ -222,7 +242,7 @@ public class Ventana_registro extends JFrame {
 		GridBagConstraints gbc_foto = new GridBagConstraints();
 		gbc_foto.insets = new Insets(0, 0, 5, 5);
 		gbc_foto.gridx = 4;
-		gbc_foto.gridy = 7;
+		gbc_foto.gridy = 8;
 		contentPane.add(foto, gbc_foto);
 
 		panelBotones = new JPanel();
@@ -231,7 +251,7 @@ public class Ventana_registro extends JFrame {
 		gbc_panelBotones.insets = new Insets(0, 0, 5, 5);
 		gbc_panelBotones.fill = GridBagConstraints.BOTH;
 		gbc_panelBotones.gridx = 2;
-		gbc_panelBotones.gridy = 8;
+		gbc_panelBotones.gridy = 9;
 		contentPane.add(panelBotones, gbc_panelBotones);
 		panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.X_AXIS));
 
