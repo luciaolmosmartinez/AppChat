@@ -49,85 +49,81 @@ import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Ventana_login {
+@SuppressWarnings("serial")
+public class Ventana_login extends JFrame implements ActionListener {
 
 	private JFrame frmAppchat;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JPasswordField passwordField;
 	private JTextField textField;
+	private JPanel panelCentro, panel;
+	private GridBagLayout gbl_panelCentro;
+	private JButton btnAcceder, btnNoRecuerdo;
+	private JLabel lblTelefono, lblContrasea, logo;
+	private GridBagConstraints gbc_lblTelefono, gbc_textField, gbc_btnAcceder, gbc_lblContrasea, gbc_passwordField, gbc_btnNoRecuerdo;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Ventana_login window = new Ventana_login();
-					window.frmAppchat.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public void mostrarLogin() {
+		setVisible(true);
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public Ventana_login() {
-		initialize();
+	public Ventana_login(Ventana_inicio v) {
+		initialize(v);
+		frmAppchat.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(Ventana_inicio v) {
 		frmAppchat = new JFrame();
 		frmAppchat.setBackground(new Color(255, 255, 255));
-		frmAppchat.setIconImage(Toolkit.getDefaultToolkit().getImage(Ventana_login.class.getResource("/imagenes/gatoVentana2_2048.png")));
+		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(Ventana_login.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setBounds(300, 300, 517, 334);
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JPanel panelCentro = new JPanel();
+		panelCentro = new JPanel();
 		panelCentro.setMaximumSize(new Dimension(100, 50));
 		panelCentro.setBackground(new Color(255, 255, 255));
 		panelCentro.setBorder(null);
-		GridBagLayout gbl_panelCentro = new GridBagLayout();
+		gbl_panelCentro = new GridBagLayout();
 		gbl_panelCentro.columnWidths = new int[] { 20, 0, 0, 20, 20, 0 };
 		gbl_panelCentro.rowHeights = new int[] { 20, 0, 0, 0, 0, 20, 0 };
 		gbl_panelCentro.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		gbl_panelCentro.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		panelCentro.setLayout(gbl_panelCentro);
-		
-		JButton btnAcceder = new JButton("Acceder");
+
+		btnAcceder = new JButton("Acceder");
 		btnAcceder.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAcceder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		
-		JLabel lblTelefono = new JLabel("Teléfono:");
+
+		lblTelefono = new JLabel("Teléfono:");
 		lblTelefono.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		GridBagConstraints gbc_lblTelefono = new GridBagConstraints();
+		gbc_lblTelefono = new GridBagConstraints();
 		gbc_lblTelefono.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTelefono.anchor = GridBagConstraints.EAST;
 		gbc_lblTelefono.gridx = 1;
 		gbc_lblTelefono.gridy = 1;
 		panelCentro.add(lblTelefono, gbc_lblTelefono);
-		
+
 		textField = new JTextField();
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textField.setColumns(20);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField = new GridBagConstraints();
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.gridx = 2;
 		gbc_textField.gridy = 1;
 		panelCentro.add(textField, gbc_textField);
 		btnAcceder.setMaximumSize(new Dimension(100, 50));
-		GridBagConstraints gbc_btnAcceder = new GridBagConstraints();
+		gbc_btnAcceder = new GridBagConstraints();
 		gbc_btnAcceder.gridheight = 3;
 		gbc_btnAcceder.fill = GridBagConstraints.BOTH;
 		gbc_btnAcceder.insets = new Insets(0, 0, 5, 5);
@@ -135,9 +131,9 @@ public class Ventana_login {
 		gbc_btnAcceder.gridy = 1;
 		panelCentro.add(btnAcceder, gbc_btnAcceder);
 
-		JLabel lblContrasea = new JLabel("Contraseña:");
+		lblContrasea = new JLabel("Contraseña:");
 		lblContrasea.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		GridBagConstraints gbc_lblContrasea = new GridBagConstraints();
+		gbc_lblContrasea = new GridBagConstraints();
 		gbc_lblContrasea.anchor = GridBagConstraints.EAST;
 		gbc_lblContrasea.insets = new Insets(0, 0, 5, 5);
 		gbc_lblContrasea.gridx = 1;
@@ -147,34 +143,38 @@ public class Ventana_login {
 		passwordField = new JPasswordField();
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		passwordField.setColumns(20);
-		GridBagConstraints gbc_passwordField = new GridBagConstraints();
+		gbc_passwordField = new GridBagConstraints();
 		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_passwordField.insets = new Insets(0, 0, 5, 5);
 		gbc_passwordField.gridx = 2;
 		gbc_passwordField.gridy = 3;
 		panelCentro.add(passwordField, gbc_passwordField);
 
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		frmAppchat.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.add(panelCentro);
-		
-		JButton btnNoRecuerdo = new JButton("No recuerdo la contraseña");
+
+		btnNoRecuerdo = new JButton("No recuerdo la contraseña");
 		btnNoRecuerdo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		GridBagConstraints gbc_btnNoRecuerdo = new GridBagConstraints();
+		gbc_btnNoRecuerdo = new GridBagConstraints();
 		gbc_btnNoRecuerdo.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNoRecuerdo.gridx = 2;
 		gbc_btnNoRecuerdo.gridy = 4;
 		panelCentro.add(btnNoRecuerdo, gbc_btnNoRecuerdo);
 
-		JLabel logo = new JLabel("");
+		logo = new JLabel("");
 		logo.setHorizontalAlignment(SwingConstants.CENTER);
-		logo.setIcon(new ImageIcon(Ventana_login.class.getResource("/vista/imagenes/chat.png")));
 		frmAppchat.getContentPane().add(logo, BorderLayout.NORTH);
 
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+	}
+	
 	private static void addPopup(Component component, final JPopupMenu popup) {
 	}
 }

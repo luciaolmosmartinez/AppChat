@@ -25,29 +25,23 @@ import javax.swing.border.LineBorder;
 import java.awt.Cursor;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
+import javax.swing.border.TitledBorder;
+
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.Point;
 
-public class Ventana_inicio {
+@SuppressWarnings("serial")
+public class Ventana_inicio extends JFrame implements ActionListener {
 
 	private JFrame frmAppchat;
+	private JPanel panelSuperior, panelCentral;
+	private JLabel titulo, lblNewLabel;
+	private JButton btnInicioSesion, btnRegistro;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Ventana_inicio window = new Ventana_inicio();
-					window.frmAppchat.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public void mostrarInicio() {
+		setVisible(true);
 	}
 
 	/**
@@ -55,11 +49,7 @@ public class Ventana_inicio {
 	 */
 	public Ventana_inicio() {
 		initialize();
-	}
-	
-	public void mostrarVentana() {
-		//setLocationRelativeTo(null);
-		//setVisible(true);
+		frmAppchat.setVisible(true);
 	}
 
 	/**
@@ -68,74 +58,108 @@ public class Ventana_inicio {
 	private void initialize() {
 		frmAppchat = new JFrame();
 		frmAppchat.setForeground(new Color(254, 127, 154));
-		frmAppchat.setIconImage(Toolkit.getDefaultToolkit().getImage(Ventana_inicio.class.getResource("/imagenes/gatoVentana2_2048.png")));
+		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(Ventana_inicio.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setBackground(new Color(255, 255, 255));
 		frmAppchat.getContentPane().setBackground(new Color(255, 255, 255));
-		frmAppchat.setBounds(100, 100, 655, 492);
+		frmAppchat.setBounds(100, 100, 942, 680);
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JPanel panelSuperior = new JPanel();
-		panelSuperior.setBackground(new Color(255, 255, 255));
-		//panelSuperior.setBorder(new LineBorder(Color.WHITE,2));
+
+		panelSuperior = new JPanel();
+		panelSuperior.setBackground(new Color(255, 244, 244));
 		frmAppchat.getContentPane().add(panelSuperior, BorderLayout.NORTH);
-		
-		JLabel titulo = new JLabel("AppChat");
+
+		titulo = new JLabel("AppChat");
 		titulo.setForeground(new Color(254, 127, 154));
-		titulo.setFont(new Font("Brush Script MT", Font.BOLD, 70));
+		titulo.setFont(new Font("Brush Script MT", Font.BOLD, 75));
 		panelSuperior.add(titulo);
-		
-		JPanel panelCentral = new JPanel();
-		panelCentral.setBackground(new Color(255, 255, 255));
+
+		panelCentral = new JPanel();
+		panelCentral.setBackground(new Color(255, 244, 244));
 		frmAppchat.getContentPane().add(panelCentral, BorderLayout.CENTER);
 		GridBagLayout gbl_panelCentral = new GridBagLayout();
-		gbl_panelCentral.columnWidths = new int[]{93, 55, 146, 150, 0, 0};
-		gbl_panelCentral.rowHeights = new int[]{30, 0, 97, 75, 50, 0, 0};
-		gbl_panelCentral.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelCentral.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_panelCentral.columnWidths = new int[] { 0, 93, 120, 120, 0, 255, 0, 0 };
+		gbl_panelCentral.rowHeights = new int[] { 30, 0, 141, 75, 50, 0, 0 };
+		gbl_panelCentral.columnWeights = new double[] { 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE };
+		gbl_panelCentral.rowWeights = new double[] { 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE };
 		panelCentral.setLayout(gbl_panelCentral);
-		
-		JLabel gato = new JLabel("");
-		gato.setIcon(new ImageIcon(Ventana_inicio.class.getResource("/imagenes/gatoVentana_256.png")));
-		gato.setPreferredSize(new Dimension(170, 170));
-		gato.setMaximumSize(new Dimension(512, 512));
-		GridBagConstraints gbc_gato = new GridBagConstraints();
-		gbc_gato.anchor = GridBagConstraints.EAST;
-		gbc_gato.gridheight = 2;
-		gbc_gato.insets = new Insets(0, 0, 5, 5);
-		gbc_gato.gridx = 1;
-		gbc_gato.gridy = 1;
-		panelCentral.add(gato, gbc_gato);
-		
-		JButton btnInicioSesion = new JButton("Iniciar Sesión");
+
+		lblNewLabel = new JLabel("");
+		lblNewLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		lblNewLabel.setPreferredSize(new Dimension(300, 300));
+		lblNewLabel.setIconTextGap(0);
+		lblNewLabel.setSize(300, 300);
+		lblNewLabel.setIcon(new ImageIcon(Ventana_inicio.class.getResource("/imagenes/gatoVentana2_2048.png")));
+		ImageInJLabel.resizeImage(lblNewLabel, Ventana_Perfil.class.getResource("/imagenes/gatoVentana2_2048.png"));
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel.fill = GridBagConstraints.VERTICAL;
+		gbc_lblNewLabel.gridheight = 2;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 2;
+		gbc_lblNewLabel.gridy = 2;
+		panelCentral.add(lblNewLabel, gbc_lblNewLabel);
+
+		btnInicioSesion = new JButton("Iniciar Sesión");
+		btnInicioSesion.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		btnInicioSesion.setPreferredSize(new Dimension(180, 50));
-		btnInicioSesion.setMinimumSize(new Dimension(20, 20));
+		btnInicioSesion.setMinimumSize(new Dimension(140, 50));
 		btnInicioSesion.setMaximumSize(new Dimension(150, 60));
 		btnInicioSesion.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		btnInicioSesion.setBorder(new MatteBorder(0, 1, 4, 4, (Color) new Color(192, 192, 192)));
 		btnInicioSesion.setBackground(Color.WHITE);
 		GridBagConstraints gbc_btnInicioSesion = new GridBagConstraints();
+		gbc_btnInicioSesion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnInicioSesion.insets = new Insets(0, 0, 5, 5);
-		gbc_btnInicioSesion.gridx = 2;
+		gbc_btnInicioSesion.gridx = 3;
 		gbc_btnInicioSesion.gridy = 2;
 		panelCentral.add(btnInicioSesion, gbc_btnInicioSesion);
-		
-		JButton btnRegistro = new JButton("Registrarse");
+
+		btnRegistro = new JButton("Registrarse");
 		btnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		btnRegistro.setBackground(new Color(255, 255, 255));
-		btnRegistro.setBorder(new MatteBorder(0, 1, 4, 4, (Color) new Color(192, 192, 192)));
-		btnRegistro.setMinimumSize(new Dimension(20, 20));
+		btnRegistro.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		btnRegistro.setMinimumSize(new Dimension(140, 50));
 		btnRegistro.setMaximumSize(new Dimension(150, 60));
 		btnRegistro.setPreferredSize(new Dimension(180, 50));
 		btnRegistro.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		GridBagConstraints gbc_btnRegistro = new GridBagConstraints();
 		gbc_btnRegistro.insets = new Insets(0, 0, 5, 5);
-		gbc_btnRegistro.gridx = 2;
+		gbc_btnRegistro.gridx = 3;
 		gbc_btnRegistro.gridy = 3;
 		panelCentral.add(btnRegistro, gbc_btnRegistro);
+
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	    int x = (int) ((dimension.getWidth() - frmAppchat.getWidth()) / 2);
+	    int y = (int) ((dimension.getHeight() - frmAppchat.getHeight()) / 2);
+	    frmAppchat.setLocation(x, y);
+		
+		// Manejadores
+		btnInicioSesion.addActionListener(this);
+		btnRegistro.addActionListener(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnInicioSesion) {
+			Ventana_login login = new Ventana_login(this);
+			login.setLocationRelativeTo(this);
+			login.mostrarLogin();
+			validate();
+			return;
+		}
+		
+		if (e.getSource() == btnRegistro) {
+			Ventana_registro registro = new Ventana_registro(this);
+			registro.setLocationRelativeTo(this);
+			registro.mostrarRegistro();
+			validate();
+			return;
+		}
+		return;
 	}
 
 }

@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import tds.BubbleText;
 import java.awt.color.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -40,44 +42,38 @@ import java.awt.Scrollbar;
 import java.awt.Dimension;
 import java.awt.Panel;
 
-public class Ventana_main extends JFrame {
+@SuppressWarnings("serial")
+public class Ventana_main extends JFrame implements ActionListener {
 
-	private JPanel contentPane;
-	private JPanel panelOeste;
-	private JPanel panelCentral;
+	private JFrame frmAppchat;
+	private JPanel contentPane, panelOeste, panelCentral, panelContacto, panelEscribir, panelMensajes;
 	private JMenuBar menuBar;
-	private JPanel panelContacto;
-	private JPanel panelEscribir;
-	private JLabel lblImagen;
-	private JLabel lblConrtacto;
-	private JButton btnEmoticono;
+	private JLabel lblImagen, lblConrtacto;
+	private JButton btnEmoticono, btnEnviar;
 	private JTextField textField;
-	private JButton btnEnviar;
-	private JMenuItem mntmNewMenuItem;
-	private JMenuItem mntmNewMenuItem_1;
-	private JMenuItem mntmNewMenuItem_2;
-	private JMenuItem mntmNewMenuItem_3;
+	private JMenuItem mntmNewMenuItem, mntmNewMenuItem_1, mntmNewMenuItem_2, mntmNewMenuItem_3;
 	private List list;
-	private GridBagConstraints gbc_bubble_1;
+	private GridBagConstraints gbc_bubble_1, gbc_bubble, gbc_lblImagen, gbc_lblConrtacto, gbc_btnEmoticono,
+			gbc_textField, gbc_btnEnviar;
 	private JScrollPane scrollPane;
-	private JPanel panelMensajes;
-	private GridBagConstraints gbc_bubble;
+	private GridBagLayout gbl_panelContacto, gbl_panelEscribir, gbl_panelMensajes;
+	private BubbleText bubble;
 
 	/**
 	 * Create the frame.
 	 */
 	public Ventana_main() {
-		setTitle("AppChat");
-		setIconImage(Toolkit.getDefaultToolkit()
+		frmAppchat.setTitle("AppChat");
+		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Ventana_main.class.getResource("/imagenes/gatoVentana2_2048.png")));
-		setBackground(new Color(255, 255, 255));
-		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 633, 409);
+		frmAppchat.setBackground(new Color(255, 255, 255));
+		frmAppchat.setVisible(true);
+		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAppchat.setBounds(100, 100, 633, 409);
 
 		menuBar = new JMenuBar();
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
-		setJMenuBar(menuBar);
+		frmAppchat.setJMenuBar(menuBar);
 
 		mntmNewMenuItem = new JMenuItem("PREMIUM");
 		mntmNewMenuItem.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -95,7 +91,7 @@ public class Ventana_main extends JFrame {
 		contentPane.setMaximumSize(new Dimension(494, 400));
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		frmAppchat.setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
 		panelOeste = new JPanel();
@@ -111,14 +107,14 @@ public class Ventana_main extends JFrame {
 		panelCentral.setMaximumSize(new Dimension(494, 400));
 		contentPane.add(panelCentral, BorderLayout.CENTER);
 		panelCentral.setLayout(new BorderLayout(0, 0));
-		
+
 		scrollPane = new JScrollPane();
 		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setMaximumSize(new Dimension(1400, 200));
 		scrollPane.setPreferredSize(new Dimension(1400, 100));
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		panelCentral.add(scrollPane, BorderLayout.WEST);
-		
+
 		panelMensajes = new JPanel();
 		panelMensajes.setMinimumSize(new Dimension(5, 5));
 		panelMensajes.setBackground(new Color(255, 255, 255));
@@ -128,7 +124,7 @@ public class Ventana_main extends JFrame {
 		panelContacto = new JPanel();
 		panelContacto.setBackground(new Color(255, 255, 255));
 		panelCentral.add(panelContacto, BorderLayout.NORTH);
-		GridBagLayout gbl_panelContacto = new GridBagLayout();
+		gbl_panelContacto = new GridBagLayout();
 		gbl_panelContacto.columnWidths = new int[] { 0, 97, 65, 81, 0 };
 		gbl_panelContacto.rowHeights = new int[] { 14, 0 };
 		gbl_panelContacto.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
@@ -136,7 +132,7 @@ public class Ventana_main extends JFrame {
 		panelContacto.setLayout(gbl_panelContacto);
 
 		lblImagen = new JLabel("foto contacto");
-		GridBagConstraints gbc_lblImagen = new GridBagConstraints();
+		gbc_lblImagen = new GridBagConstraints();
 		gbc_lblImagen.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblImagen.insets = new Insets(0, 0, 0, 5);
 		gbc_lblImagen.gridx = 1;
@@ -144,7 +140,7 @@ public class Ventana_main extends JFrame {
 		panelContacto.add(lblImagen, gbc_lblImagen);
 
 		lblConrtacto = new JLabel("nombre contacto");
-		GridBagConstraints gbc_lblConrtacto = new GridBagConstraints();
+		gbc_lblConrtacto = new GridBagConstraints();
 		gbc_lblConrtacto.insets = new Insets(0, 0, 0, 5);
 		gbc_lblConrtacto.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblConrtacto.gridx = 2;
@@ -154,7 +150,7 @@ public class Ventana_main extends JFrame {
 		panelEscribir = new JPanel();
 		panelEscribir.setBackground(new Color(255, 255, 255));
 		panelCentral.add(panelEscribir, BorderLayout.SOUTH);
-		GridBagLayout gbl_panelEscribir = new GridBagLayout();
+		gbl_panelEscribir = new GridBagLayout();
 		gbl_panelEscribir.columnWidths = new int[] { 89, 0, 0, 0 };
 		gbl_panelEscribir.rowHeights = new int[] { 23, 0 };
 		gbl_panelEscribir.columnWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
@@ -162,7 +158,7 @@ public class Ventana_main extends JFrame {
 		panelEscribir.setLayout(gbl_panelEscribir);
 
 		btnEmoticono = new JButton("emoticonos");
-		GridBagConstraints gbc_btnEmoticono = new GridBagConstraints();
+		gbc_btnEmoticono = new GridBagConstraints();
 		gbc_btnEmoticono.insets = new Insets(0, 0, 0, 5);
 		gbc_btnEmoticono.anchor = GridBagConstraints.NORTHWEST;
 		gbc_btnEmoticono.gridx = 0;
@@ -170,7 +166,7 @@ public class Ventana_main extends JFrame {
 		panelEscribir.add(btnEmoticono, gbc_btnEmoticono);
 
 		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField = new GridBagConstraints();
 		gbc_textField.insets = new Insets(0, 0, 0, 5);
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.gridx = 1;
@@ -179,25 +175,25 @@ public class Ventana_main extends JFrame {
 		textField.setColumns(10);
 
 		btnEnviar = new JButton("Enviar");
-		GridBagConstraints gbc_btnEnviar = new GridBagConstraints();
+		gbc_btnEnviar = new GridBagConstraints();
 		gbc_btnEnviar.gridx = 2;
 		gbc_btnEnviar.gridy = 0;
 		panelEscribir.add(btnEnviar, gbc_btnEnviar);
-		GridBagLayout gbl_panelMensajes = new GridBagLayout();
-		gbl_panelMensajes.columnWidths = new int[]{451, 0, 0};
-		gbl_panelMensajes.rowHeights = new int[]{82, 30, 82, 62, 0};
-		gbl_panelMensajes.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_panelMensajes.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_panelMensajes = new GridBagLayout();
+		gbl_panelMensajes.columnWidths = new int[] { 451, 0, 0 };
+		gbl_panelMensajes.rowHeights = new int[] { 82, 30, 82, 62, 0 };
+		gbl_panelMensajes.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panelMensajes.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		panelMensajes.setLayout(gbl_panelMensajes);
 		panelMensajes.setSize(118, 118);
 		panelMensajes.setMinimumSize(new Dimension(118, 118));
 		panelMensajes.setMaximumSize(new Dimension(118, 118));
 		panelMensajes.setPreferredSize(new Dimension(118, 118));
 		panelMensajes.setAlignmentX(Component.LEFT_ALIGNMENT);
-		
-		BubbleText bubble = new BubbleText(panelMensajes, "Adios", Color.PINK, "jaja", BubbleText.SENT, 10);
 
-		GridBagConstraints gbc_bubble_1 = new GridBagConstraints();
+		bubble = new BubbleText(panelMensajes, "Adios", Color.PINK, "jaja", BubbleText.SENT, 10);
+
+		gbc_bubble_1 = new GridBagConstraints();
 		gbc_bubble_1.anchor = GridBagConstraints.SOUTH;
 		gbc_bubble_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_bubble_1.insets = new Insets(0, 0, 5, 5);
@@ -229,8 +225,11 @@ public class Ventana_main extends JFrame {
 		gbc_bubble_1.gridx = 0;
 		gbc_bubble_1.gridy = 4;
 		panelMensajes.add(bubble, gbc_bubble_1);
-		
-		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
 	}
 
 }
