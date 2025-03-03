@@ -19,7 +19,7 @@ public class Aplicacion {
 				try {
 					Properties propiedades = new Properties();
 					propiedades.put("windowTitleBackgroundColor", "254 127 154");
-		            propiedades.put("foregroundColor", "254 127 154");    // Color del texto
+		            propiedades.put("foregroundColor", "118 5 65");    // Color del texto
 		            propiedades.put("controlColor", "255 255 255");    // Color de botones y paneles
 		            propiedades.put("buttonColor", "255 255 255");     // Color de los botones
 		            propiedades.put("frameColor", "254 127 154");      // Color del marco de la ventana

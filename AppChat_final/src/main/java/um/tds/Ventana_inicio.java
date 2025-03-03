@@ -49,7 +49,6 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 	 */
 	public Ventana_inicio() {
 		initialize();
-		frmAppchat.setVisible(true);
 	}
 
 	/**
@@ -57,6 +56,7 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 	 */
 	private void initialize() {
 		frmAppchat = new JFrame();
+		frmAppchat.setVisible(true);
 		frmAppchat.setForeground(new Color(254, 127, 154));
 		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Ventana_inicio.class.getResource("/imagenes/gatoVentana2_2048.png")));
@@ -96,7 +96,7 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.fill = GridBagConstraints.VERTICAL;
 		gbc_lblNewLabel.gridheight = 2;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.insets = new Insets(0, 0, 0, 0);
 		gbc_lblNewLabel.gridx = 2;
 		gbc_lblNewLabel.gridy = 2;
 		panelCentral.add(lblNewLabel, gbc_lblNewLabel);
@@ -145,18 +145,18 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnInicioSesion) {
+			frmAppchat.dispose();
 			Ventana_login login = new Ventana_login(this);
 			login.setLocationRelativeTo(this);
 			login.mostrarLogin();
-			validate();
 			return;
 		}
 		
 		if (e.getSource() == btnRegistro) {
+			frmAppchat.dispose();
 			Ventana_registro registro = new Ventana_registro(this);
 			registro.setLocationRelativeTo(this);
 			registro.mostrarRegistro();
-			validate();
 			return;
 		}
 		return;

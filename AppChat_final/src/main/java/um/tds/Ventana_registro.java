@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
 import java.awt.Component;
+import java.awt.Cursor;
+
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import com.toedter.calendar.JDateChooser;
@@ -25,6 +27,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JPopupMenu;
 
 import java.awt.Font;
+import java.awt.Dimension;
 
 @SuppressWarnings("serial")
 public class Ventana_registro extends JFrame implements ActionListener {
@@ -44,6 +47,7 @@ public class Ventana_registro extends JFrame implements ActionListener {
 			gbc_testTelefono, gbc_contraseña, gbc_textField, gbc_confirmar, gbc_lblEmail, gbc_testConfirmar,
 			gbc_testContraseña, gbc_fecha, gbc_dateChooser, gbc_saludo, gbc_scrollPane, gbc_imagen, gbc_foto,
 			gbc_panelBotones, gbc_textField_1;
+	private JButton btnAtras;
 
 	public void mostrarRegistro() {
 		setVisible(true);
@@ -83,6 +87,19 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		gbl_contentPane.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0,
 				Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
+
+		btnAtras = new JButton("");
+		btnAtras.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnAtras.setPreferredSize(new Dimension(32, 32));
+		btnAtras.setBackground(new Color(255, 255, 255));
+		btnAtras.setIcon(new ImageIcon(Ventana_login.class.getResource("/imagenes/mod_boton-de-retroceso.png")));
+		btnAtras.setSize(new Dimension(32, 32));
+		GridBagConstraints gbc_btnAtras = new GridBagConstraints();
+		gbc_btnAtras.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnAtras.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAtras.gridx = 0;
+		gbc_btnAtras.gridy = 0;
+		contentPane.add(btnAtras, gbc_btnAtras);
 
 		nombre = new JLabel("Nombre:");
 		nombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -283,11 +300,19 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		gbc_textField_1.gridx = 4;
 		gbc_textField_1.gridy = 9;
 		contentPane.add(textField_1, gbc_textField_1);
+
+		btnAtras.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+		if (e.getSource() == btnAtras) {
+			frmAppchat.dispose();
+			Ventana_inicio inicio = new Ventana_inicio();
+			inicio.setLocationRelativeTo(this);
+			inicio.mostrarInicio();
+			return;
+		}
 	}
 
 	private static void addPopup(Component component, final JPopupMenu popup) {
