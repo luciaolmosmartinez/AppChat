@@ -41,7 +41,7 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 	private JButton btnInicioSesion, btnRegistro;
 
 	public void mostrarInicio() {
-		setVisible(true);
+		frmAppchat.setVisible(true);
 	}
 
 	/**
@@ -66,6 +66,8 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 		frmAppchat.setBounds(100, 100, 942, 680);
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		frmAppchat.setAutoRequestFocus(true);
+		
 		panelSuperior = new JPanel();
 		panelSuperior.setBackground(new Color(255, 244, 244));
 		frmAppchat.getContentPane().add(panelSuperior, BorderLayout.NORTH);
@@ -102,6 +104,7 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 		panelCentral.add(lblNewLabel, gbc_lblNewLabel);
 
 		btnInicioSesion = new JButton("Iniciar Sesión");
+		btnInicioSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInicioSesion.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		btnInicioSesion.setPreferredSize(new Dimension(180, 50));
 		btnInicioSesion.setMinimumSize(new Dimension(140, 50));
@@ -116,6 +119,7 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 		panelCentral.add(btnInicioSesion, gbc_btnInicioSesion);
 
 		btnRegistro = new JButton("Registrarse");
+		btnRegistro.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -133,10 +137,10 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 		panelCentral.add(btnRegistro, gbc_btnRegistro);
 
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-	    int x = (int) ((dimension.getWidth() - frmAppchat.getWidth()) / 2);
-	    int y = (int) ((dimension.getHeight() - frmAppchat.getHeight()) / 2);
-	    frmAppchat.setLocation(x, y);
-		
+		int x = (int) ((dimension.getWidth() - frmAppchat.getWidth()) / 2);
+		int y = (int) ((dimension.getHeight() - frmAppchat.getHeight()) / 2);
+		frmAppchat.setLocation(x, y);
+
 		// Manejadores
 		btnInicioSesion.addActionListener(this);
 		btnRegistro.addActionListener(this);
@@ -145,17 +149,17 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnInicioSesion) {
+			Ventana_login login = new Ventana_login();
+			login.setLocation(frmAppchat.getX(),frmAppchat.getY());
 			frmAppchat.dispose();
-			Ventana_login login = new Ventana_login(this);
-			login.setLocationRelativeTo(this);
 			login.mostrarLogin();
 			return;
 		}
-		
+
 		if (e.getSource() == btnRegistro) {
+			Ventana_registro registro = new Ventana_registro();
+			registro.setLocation(frmAppchat.getX(),frmAppchat.getY());
 			frmAppchat.dispose();
-			Ventana_registro registro = new Ventana_registro(this);
-			registro.setLocationRelativeTo(this);
 			registro.mostrarRegistro();
 			return;
 		}

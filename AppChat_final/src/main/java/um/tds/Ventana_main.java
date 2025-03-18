@@ -26,6 +26,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Toolkit;
 import javax.swing.JPasswordField;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
 
 import java.awt.Font;
@@ -64,7 +65,19 @@ public class Ventana_main extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
+	public void mostrarMain() {
+		frmAppchat.setVisible(true);
+	}
+
+	/**
+	 * Create the application.
+	 */
 	public Ventana_main() {
+		initialize();
+	}
+	
+	public void initialize() {
+		frmAppchat = new JFrame();
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Ventana_main.class.getResource("/imagenes/gatoVentana2_2048.png")));
@@ -245,7 +258,9 @@ public class Ventana_main extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+	}
 
+	private static void addPopup(Component component, final JPopupMenu popup) {
 	}
 
 }

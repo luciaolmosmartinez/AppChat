@@ -19,17 +19,17 @@ public class Aplicacion {
 				try {
 					Properties propiedades = new Properties();
 					propiedades.put("windowTitleBackgroundColor", "254 127 154");
-		            propiedades.put("foregroundColor", "118 5 65");    // Color del texto
-		            propiedades.put("controlColor", "255 255 255");    // Color de botones y paneles
-		            propiedades.put("buttonColor", "255 255 255");     // Color de los botones
-		            propiedades.put("frameColor", "254 127 154");      // Color del marco de la ventana
-		            propiedades.put("rolloverColor", "254 127 154");   // Color al pasar el mouse
-		            propiedades.put("selectionBackgroundColor", "255 255 255"); // Fondo de selección
-		            FastLookAndFeel.setTheme(propiedades);
+					propiedades.put("foregroundColor", "118 5 65"); // Color del texto
+					propiedades.put("controlColor", "255 255 255"); // Color de botones y paneles
+					propiedades.put("buttonColor", "255 255 255"); // Color de los botones
+					propiedades.put("frameColor", "254 127 154"); // Color del marco de la ventana
+					propiedades.put("rolloverColor", "254 127 154"); // Color al pasar el mouse
+					propiedades.put("selectionBackgroundColor", "255 255 255"); // Fondo de selección
+					FastLookAndFeel.setTheme(propiedades);
 					UIManager.setLookAndFeel(new FastLookAndFeel());
 					Ventana_inicio ventana = new Ventana_inicio();
 					ventana.mostrarInicio();
-				} catch (Exception e) {				
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

@@ -40,6 +40,8 @@ import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -50,6 +52,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JToolBar;
 import javax.swing.Box;
 import java.awt.Cursor;
+import java.awt.Rectangle;
+import java.awt.event.WindowAdapter;
 
 @SuppressWarnings("serial")
 public class Ventana_login extends JFrame implements ActionListener {
@@ -60,29 +64,29 @@ public class Ventana_login extends JFrame implements ActionListener {
 	private JPanel panelCentro, panel;
 	private GridBagLayout gbl_panelCentro;
 	private JButton btnAcceder, btnNoRecuerdo;
-	private JLabel lblTelefono, lblContrasea, logo;
-	private GridBagConstraints gbc_lblTelefono, gbc_textField, gbc_btnAcceder, gbc_lblContrasea, gbc_passwordField, gbc_btnNoRecuerdo;
+	private JLabel lblTelefono, lblContrasea;
+	private GridBagConstraints gbc_lblTelefono, gbc_textField, gbc_btnAcceder, gbc_lblContrasea, gbc_passwordField,
+			gbc_btnNoRecuerdo;
 	private JButton btnAtras;
 	private JLabel lblNewLabel;
 	private Ventana_inicio v;
+	private JLabel titulo;
 
 	public void mostrarLogin() {
-		setVisible(true);
+		frmAppchat.setVisible(true);
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public Ventana_login(Ventana_inicio v) {
-		initialize(v);
-		frmAppchat.setVisible(true);
+	public Ventana_login() {
+		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(Ventana_inicio v) {
-		this.v = v;
+	private void initialize() {
 		frmAppchat = new JFrame();
 		frmAppchat.getContentPane().setBackground(new Color(255, 244, 244));
 		frmAppchat.setBackground(new Color(255, 255, 255));
@@ -99,11 +103,12 @@ public class Ventana_login extends JFrame implements ActionListener {
 		gbl_panelCentro = new GridBagLayout();
 		gbl_panelCentro.columnWidths = new int[] { 20, 0, 259, 96, 20, 0 };
 		gbl_panelCentro.rowHeights = new int[] { 0, 20, 0, 0, 0, 0, 20, 0 };
-		gbl_panelCentro.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		gbl_panelCentro.columnWeights = new double[] { 1.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		gbl_panelCentro.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		panelCentro.setLayout(gbl_panelCentro);
 
 		btnAcceder = new JButton("Acceder");
+		btnAcceder.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAcceder.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		btnAcceder.setBackground(new Color(255, 255, 255));
 		btnAcceder.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -111,7 +116,7 @@ public class Ventana_login extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		
+
 		btnAtras = new JButton("");
 		btnAtras.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAtras.setPreferredSize(new Dimension(32, 32));
@@ -124,7 +129,17 @@ public class Ventana_login extends JFrame implements ActionListener {
 		gbc_btnAtras.gridx = 0;
 		gbc_btnAtras.gridy = 0;
 		panelCentro.add(btnAtras, gbc_btnAtras);
-		
+
+		titulo = new JLabel("AppChat");
+		titulo.setForeground(new Color(254, 127, 154));
+		titulo.setFont(new Font("Brush Script MT", Font.BOLD, 75));
+		GridBagConstraints gbc_titulo = new GridBagConstraints();
+		gbc_titulo.anchor = GridBagConstraints.NORTHEAST;
+		gbc_titulo.insets = new Insets(0, 0, 5, 0);
+		gbc_titulo.gridx = 4;
+		gbc_titulo.gridy = 0;
+		panelCentro.add(titulo, gbc_titulo);
+
 		lblNewLabel = new JLabel("");
 		lblNewLabel.setIconTextGap(0);
 		lblNewLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -134,7 +149,7 @@ public class Ventana_login extends JFrame implements ActionListener {
 		ImageInJLabel.resizeImage(lblNewLabel, Ventana_Perfil.class.getResource("/imagenes/gato_enter.png"));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.SOUTH;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 0, 0);
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.gridx = 3;
 		gbc_lblNewLabel.gridy = 1;
 		panelCentro.add(lblNewLabel, gbc_lblNewLabel);
@@ -203,24 +218,47 @@ public class Ventana_login extends JFrame implements ActionListener {
 		gbc_btnNoRecuerdo.gridy = 5;
 		panelCentro.add(btnNoRecuerdo, gbc_btnNoRecuerdo);
 
-		logo = new JLabel("");
-		logo.setHorizontalAlignment(SwingConstants.CENTER);
-		frmAppchat.getContentPane().add(logo, BorderLayout.NORTH);
-
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (int) ((dimension.getWidth() - frmAppchat.getWidth()) / 2);
+		int y = (int) ((dimension.getHeight() - frmAppchat.getHeight()) / 2);
+		frmAppchat.setLocation(x, y);
+		
 		btnAtras.addActionListener(this);
+		btnAcceder.addActionListener(this);
+		btnNoRecuerdo.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnAtras) {
-			frmAppchat.dispose();
 			Ventana_inicio inicio = new Ventana_inicio();
-			inicio.setLocationRelativeTo(this);
+			inicio.setLocationRelativeTo(frmAppchat);
+			frmAppchat.dispose();
 			inicio.mostrarInicio();
 			return;
 		}
+		if (e.getSource() == btnAcceder) {
+			//comprobar si los datos están bien, si no, se reinicia el campo de la contraseña únicamente
+			Ventana_main main = new Ventana_main();
+			main.setLocationRelativeTo(frmAppchat);
+			frmAppchat.dispose();
+			main.mostrarMain();
+		}
+		if (e.getSource() == btnNoRecuerdo) {
+			Ventana_noRecuerdo nR = new Ventana_noRecuerdo();
+			frmAppchat.setEnabled(false);
+			nR.mostrarNoRecuerdo();
+			// ARREGLAR
+			nR.addWindowListener(new WindowAdapter() {
+		        @Override
+		        public void windowClosing(WindowEvent e) { // Cambiar de windowClosed a windowClosing
+		            frmAppchat.setEnabled(true); // Vuelve a habilitar la ventana padre
+		            frmAppchat.toFront(); // La trae al frente por si queda detrás de otras
+		        }
+		    });
+		}
 	}
-	
+
 	private static void addPopup(Component component, final JPopupMenu popup) {
 	}
 }

@@ -28,46 +28,51 @@ import javax.swing.JPopupMenu;
 
 import java.awt.Font;
 import java.awt.Dimension;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.EtchedBorder;
 
 @SuppressWarnings("serial")
 public class Ventana_registro extends JFrame implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panelBotones;
-	private JTextField testNombre, testApellidos, testTelefono, textField, textField_1;
+	private JTextField testNombre, testApellidos, testTelefono, textField_1;
 	private JLabel fecha, saludo, lblEmail, imagen, nombre, foto, apellidos, telefono, contraseña, confirmar;
 	private JTextArea testSaludo;
-	private JButton aceptar, cancelar;
+	private JButton cancelar;
 	private JScrollPane scrollPane;
-	private Component horizontalGlue;
 	private JDateChooser dateChooser;
-	private JPasswordField testContraseña, testConfirmar;
+	private JPasswordField testContraseña;
 	private GridBagLayout gbl_contentPane;
 	private GridBagConstraints gbc_nombre, gbc_testNombre, gbc_apellidos, gbc_testApellidos, gbc_telefono,
-			gbc_testTelefono, gbc_contraseña, gbc_textField, gbc_confirmar, gbc_lblEmail, gbc_testConfirmar,
+			gbc_testTelefono, gbc_contraseña, gbc_confirmar, gbc_lblEmail,
 			gbc_testContraseña, gbc_fecha, gbc_dateChooser, gbc_saludo, gbc_scrollPane, gbc_imagen, gbc_foto,
 			gbc_panelBotones, gbc_textField_1;
 	private JButton btnAtras;
+	private JLabel titulo;
+	private JButton aceptar;
+	private Component horizontalGlue;
+	private JPasswordField passwordField;
+	private JPasswordField passwordField_1;
 
 	public void mostrarRegistro() {
-		setVisible(true);
+		frmAppchat.setVisible(true);
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public Ventana_registro(Ventana_inicio v) {
-		initialize(v);
-		frmAppchat.setVisible(true);
+	public Ventana_registro() {
+		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	public void initialize(Ventana_inicio v) {
+	public void initialize() {
 
 		frmAppchat = new JFrame();
-		frmAppchat.setBackground(new Color(255, 255, 255));
+		frmAppchat.setBackground(new Color(255, 244, 244));
 		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Ventana_login.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		frmAppchat.setTitle("AppChat");
@@ -75,7 +80,7 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(255, 255, 255));
+		contentPane.setBackground(new Color(255, 244, 244));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		frmAppchat.getContentPane().add(contentPane);
 		// setContentPane(contentPane);
@@ -100,6 +105,16 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		gbc_btnAtras.gridx = 0;
 		gbc_btnAtras.gridy = 0;
 		contentPane.add(btnAtras, gbc_btnAtras);
+
+		titulo = new JLabel("AppChat");
+		titulo.setForeground(new Color(254, 127, 154));
+		titulo.setFont(new Font("Brush Script MT", Font.BOLD, 75));
+		GridBagConstraints gbc_titulo = new GridBagConstraints();
+		gbc_titulo.anchor = GridBagConstraints.NORTHEAST;
+		gbc_titulo.insets = new Insets(0, 0, 5, 0);
+		gbc_titulo.gridx = 5;
+		gbc_titulo.gridy = 0;
+		contentPane.add(titulo, gbc_titulo);
 
 		nombre = new JLabel("Nombre:");
 		nombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -165,15 +180,14 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		gbc_contraseña.gridx = 1;
 		gbc_contraseña.gridy = 4;
 		contentPane.add(contraseña, gbc_contraseña);
-
-		textField = new JTextField();
-		textField.setColumns(10);
-		gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 4;
-		contentPane.add(textField, gbc_textField);
+		
+		passwordField = new JPasswordField();
+		GridBagConstraints gbc_passwordField = new GridBagConstraints();
+		gbc_passwordField.insets = new Insets(0, 0, 5, 5);
+		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_passwordField.gridx = 2;
+		gbc_passwordField.gridy = 4;
+		contentPane.add(passwordField, gbc_passwordField);
 
 		confirmar = new JLabel("Confirmar contraseña:");
 		confirmar.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -183,14 +197,14 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		gbc_confirmar.gridx = 3;
 		gbc_confirmar.gridy = 4;
 		contentPane.add(confirmar, gbc_confirmar);
-
-		testConfirmar = new JPasswordField();
-		gbc_testConfirmar = new GridBagConstraints();
-		gbc_testConfirmar.insets = new Insets(0, 0, 5, 5);
-		gbc_testConfirmar.fill = GridBagConstraints.HORIZONTAL;
-		gbc_testConfirmar.gridx = 4;
-		gbc_testConfirmar.gridy = 4;
-		contentPane.add(testConfirmar, gbc_testConfirmar);
+		
+		passwordField_1 = new JPasswordField();
+		GridBagConstraints gbc_passwordField_1 = new GridBagConstraints();
+		gbc_passwordField_1.insets = new Insets(0, 0, 5, 5);
+		gbc_passwordField_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_passwordField_1.gridx = 4;
+		gbc_passwordField_1.gridy = 4;
+		contentPane.add(passwordField_1, gbc_passwordField_1);
 
 		lblEmail = new JLabel("Email:");
 		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -219,6 +233,7 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		contentPane.add(fecha, gbc_fecha);
 
 		dateChooser = new JDateChooser();
+		dateChooser.getCalendarButton().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		dateChooser.getCalendarButton().setBackground(new Color(255, 255, 255));
 		gbc_dateChooser = new GridBagConstraints();
 		gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
@@ -260,7 +275,7 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		contentPane.add(imagen, gbc_imagen);
 
 		foto = new JLabel("");
-		foto.setSize(150, 150);
+		foto.setSize(250, 250);
 		foto.setIcon(new ImageIcon(Ventana_registro.class.getResource("/imagenes/gato_perfil.png")));
 		ImageInJLabel.resizeImage(foto, Ventana_Perfil.class.getResource("/imagenes/gato_perfil.png"));
 		gbc_foto = new GridBagConstraints();
@@ -272,7 +287,7 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		contentPane.add(foto, gbc_foto);
 
 		panelBotones = new JPanel();
-		panelBotones.setBackground(new Color(255, 255, 255));
+		panelBotones.setBackground(new Color(255, 244, 244));
 		gbc_panelBotones = new GridBagConstraints();
 		gbc_panelBotones.insets = new Insets(0, 0, 5, 5);
 		gbc_panelBotones.fill = GridBagConstraints.BOTH;
@@ -280,15 +295,27 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		gbc_panelBotones.gridy = 9;
 		contentPane.add(panelBotones, gbc_panelBotones);
 		panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.X_AXIS));
-
+		
 		aceptar = new JButton("Aceptar");
+		aceptar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		aceptar.setMinimumSize(new Dimension(77, 21));
+		aceptar.setMaximumSize(new Dimension(77, 21));
 		aceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		aceptar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		aceptar.setBackground(Color.WHITE);
 		panelBotones.add(aceptar);
-
+		
 		horizontalGlue = Box.createHorizontalGlue();
+		horizontalGlue.setForeground(new Color(255, 244, 244));
+		horizontalGlue.setBackground(new Color(255, 244, 244));
 		panelBotones.add(horizontalGlue);
 
 		cancelar = new JButton("Cancelar");
+		cancelar.setBackground(new Color(255, 255, 255));
+		cancelar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		cancelar.setMaximumSize(new Dimension(77, 21));
+		cancelar.setMinimumSize(new Dimension(77, 21));
+		cancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		cancelar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		panelBotones.add(cancelar);
 
@@ -301,7 +328,14 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		gbc_textField_1.gridy = 9;
 		contentPane.add(textField_1, gbc_textField_1);
 
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (int) ((dimension.getWidth() - frmAppchat.getWidth()) / 2);
+		int y = (int) ((dimension.getHeight() - frmAppchat.getHeight()) / 2);
+		frmAppchat.setLocation(x, y);
+		
 		btnAtras.addActionListener(this);
+		aceptar.addActionListener(this);
+		cancelar.addActionListener(this);
 	}
 
 	@Override
@@ -309,9 +343,31 @@ public class Ventana_registro extends JFrame implements ActionListener {
 		if (e.getSource() == btnAtras) {
 			frmAppchat.dispose();
 			Ventana_inicio inicio = new Ventana_inicio();
-			inicio.setLocationRelativeTo(this);
+			inicio.setLocationRelativeTo(frmAppchat);
 			inicio.mostrarInicio();
 			return;
+		}
+		if (e.getSource() == aceptar) {
+			// comprobar si los datos son correctos o aceptables
+			// if (controlador...) {...}
+			frmAppchat.dispose();
+			Ventana_login login = new Ventana_login();
+			login.setLocationRelativeTo(frmAppchat);
+			login.mostrarLogin();
+			// else {...}
+			return;
+		}
+		if (e.getSource() == cancelar) {
+			testNombre.setText("");
+		    testApellidos.setText("");
+		    testTelefono.setText("");
+		    testContraseña.setText("");
+		    passwordField.setText("");
+		    passwordField_1.setText("");
+		    textField_1.setText("");
+		    testSaludo.setText("");
+		    dateChooser.setCalendar(null);
+		    return;
 		}
 	}
 
