@@ -1,4 +1,4 @@
-package um.tds;
+package um.tds.Ventanas;
 
 import java.awt.EventQueue;
 
@@ -27,7 +27,7 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
-public class Ventana_Perfil extends JFrame implements ActionListener {
+public class VentanaPerfil extends JFrame implements ActionListener {
 
 	private JFrame frame;
 	private JTextField txtnombreDelPerfil, txtnmeroDeTelfono, txtemail, txtapellidos;
@@ -52,7 +52,7 @@ public class Ventana_Perfil extends JFrame implements ActionListener {
 	/**
 	 * Create the application.
 	 */
-	public Ventana_Perfil() {
+	public VentanaPerfil() {
 		initialize();
 		frame.setVisible(true);
 	}
@@ -145,8 +145,8 @@ public class Ventana_Perfil extends JFrame implements ActionListener {
 		icono = new JLabel("");
 		icono.setAlignmentX(Component.CENTER_ALIGNMENT);
 		icono.setSize(170, 170);
-		icono.setIcon(new ImageIcon(Ventana_Perfil.class.getResource("/imagenes/hombre_barba.png")));
-		ImageInJLabel.resizeImage(icono, Ventana_Perfil.class.getResource("/imagenes/hombre_barba.png"));
+		icono.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/hombre_barba.png")));
+		ImageInJLabel.resizeImage(icono, VentanaPerfil.class.getResource("/imagenes/hombre_barba.png"));
 		icono.setPreferredSize(new Dimension(170, 170));
 		icono.setMaximumSize(new Dimension(512, 512));
 		gbc_icono = new GridBagConstraints();

@@ -1,4 +1,4 @@
-package modelado;
+package um.tds.Modelado;
 
 import java.time.LocalDateTime;
 import tds.BubbleText;

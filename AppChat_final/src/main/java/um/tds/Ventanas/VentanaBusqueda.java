@@ -1,4 +1,4 @@
-package um.tds;
+package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -26,7 +26,7 @@ import javax.swing.JList;
 import javax.swing.JCheckBox;
 
 @SuppressWarnings("serial")
-public class Ventana_busqueda extends JFrame implements ActionListener {
+public class VentanaBusqueda extends JFrame implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panel, panel_1, panel_2;
@@ -48,9 +48,9 @@ public class Ventana_busqueda extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public Ventana_busqueda() {
+	public VentanaBusqueda() {
 		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(Ventana_busqueda.class.getResource("/imagenes/gatoVentana2_2048.png")));
+				.getImage(VentanaBusqueda.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAppchat.setBounds(100, 100, 633, 409);

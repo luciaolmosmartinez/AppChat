@@ -1,4 +1,4 @@
-package um.tds;
+package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -44,7 +44,7 @@ import java.awt.Dimension;
 import java.awt.Panel;
 
 @SuppressWarnings("serial")
-public class Ventana_main extends JFrame implements ActionListener {
+public class VentanaMain extends JFrame implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panelOeste, panelCentral, panelContacto, panelEscribir, panelMensajes;
@@ -72,7 +72,7 @@ public class Ventana_main extends JFrame implements ActionListener {
 	/**
 	 * Create the application.
 	 */
-	public Ventana_main() {
+	public VentanaMain() {
 		initialize();
 	}
 	
@@ -80,7 +80,7 @@ public class Ventana_main extends JFrame implements ActionListener {
 		frmAppchat = new JFrame();
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(Ventana_main.class.getResource("/imagenes/gatoVentana2_2048.png")));
+				.getImage(VentanaMain.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		frmAppchat.setBackground(new Color(255, 255, 255));
 		frmAppchat.setVisible(true);
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

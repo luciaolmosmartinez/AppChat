@@ -1,4 +1,4 @@
-package um.tds;
+package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -45,7 +45,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.DropMode;
 
-public class Ventana_main2 extends JFrame {
+public class VentanaMain2 extends JFrame {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panel, panel_1, panel_4;
@@ -65,10 +65,10 @@ public class Ventana_main2 extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Ventana_main2() {
+	public VentanaMain2() {
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(Ventana_main.class.getResource("/imagenes/gatoVentana2_2048.png")));
+				.getImage(VentanaMain.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		frmAppchat.setBackground(new Color(255, 255, 255));
 		frmAppchat.setVisible(true);
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

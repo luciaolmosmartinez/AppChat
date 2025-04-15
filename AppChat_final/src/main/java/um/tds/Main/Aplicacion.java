@@ -1,4 +1,4 @@
-package main;
+package um.tds.Main;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -10,7 +10,7 @@ import javax.swing.UIManager;
 
 import com.jtattoo.plaf.fast.FastLookAndFeel;
 
-import um.tds.*;
+import um.tds.Ventanas.*;
 
 public class Aplicacion {
 	public static void main(final String[] args) {
@@ -27,7 +27,7 @@ public class Aplicacion {
 					propiedades.put("selectionBackgroundColor", "255 255 255"); // Fondo de selección
 					FastLookAndFeel.setTheme(propiedades);
 					UIManager.setLookAndFeel(new FastLookAndFeel());
-					Ventana_inicio ventana = new Ventana_inicio();
+					VentanaInicio ventana = new VentanaInicio();
 					ventana.mostrarInicio();
 				} catch (Exception e) {
 					e.printStackTrace();

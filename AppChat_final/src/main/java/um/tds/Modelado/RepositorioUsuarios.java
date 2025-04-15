@@ -1,4 +1,4 @@
-package modelado;
+package um.tds.Modelado;
 
 public class RepositorioUsuarios {
 	

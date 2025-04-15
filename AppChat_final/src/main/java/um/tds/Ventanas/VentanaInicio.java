@@ -1,4 +1,4 @@
-package um.tds;
+package um.tds.Ventanas;
 
 import java.awt.EventQueue;
 
@@ -33,7 +33,7 @@ import java.awt.Dialog.ModalExclusionType;
 import java.awt.Point;
 
 @SuppressWarnings("serial")
-public class Ventana_inicio extends JFrame implements ActionListener {
+public class VentanaInicio extends JFrame implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel panelSuperior, panelCentral;
@@ -47,7 +47,7 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 	/**
 	 * Create the application.
 	 */
-	public Ventana_inicio() {
+	public VentanaInicio() {
 		initialize();
 	}
 
@@ -59,7 +59,7 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 		frmAppchat.setVisible(true);
 		frmAppchat.setForeground(new Color(254, 127, 154));
 		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(Ventana_inicio.class.getResource("/imagenes/gatoVentana2_2048.png")));
+				.getImage(VentanaInicio.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setBackground(new Color(255, 255, 255));
 		frmAppchat.getContentPane().setBackground(new Color(255, 255, 255));
@@ -92,8 +92,8 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 		lblNewLabel.setPreferredSize(new Dimension(300, 300));
 		lblNewLabel.setIconTextGap(0);
 		lblNewLabel.setSize(300, 300);
-		lblNewLabel.setIcon(new ImageIcon(Ventana_inicio.class.getResource("/imagenes/gatoVentana2_2048.png")));
-		ImageInJLabel.resizeImage(lblNewLabel, Ventana_Perfil.class.getResource("/imagenes/gatoVentana2_2048.png"));
+		lblNewLabel.setIcon(new ImageIcon(VentanaInicio.class.getResource("/imagenes/gatoVentana2_2048.png")));
+		ImageInJLabel.resizeImage(lblNewLabel, VentanaPerfil.class.getResource("/imagenes/gatoVentana2_2048.png"));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.fill = GridBagConstraints.VERTICAL;
@@ -149,7 +149,7 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnInicioSesion) {
-			Ventana_login login = new Ventana_login();
+			VentanaLogin login = new VentanaLogin();
 			login.setLocation(frmAppchat.getX(),frmAppchat.getY());
 			frmAppchat.dispose();
 			login.mostrarLogin();
@@ -157,7 +157,7 @@ public class Ventana_inicio extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == btnRegistro) {
-			Ventana_registro registro = new Ventana_registro();
+			VentanaRegistro registro = new VentanaRegistro();
 			registro.setLocation(frmAppchat.getX(),frmAppchat.getY());
 			frmAppchat.dispose();
 			registro.mostrarRegistro();
