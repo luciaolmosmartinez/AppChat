@@ -407,11 +407,11 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 				if(esCorreoValido(textEmail.getText())) {
 					if(esTelfValido(textTelefono.getText())) {
 						if (Arrays.equals(passContrasena.getPassword(),passContrasenaRepe.getPassword())) { 
-							/*if(controlador.Registrar(textNombre.getText(), textApellidos.getText(), textTelefono.getText(), textEmail.getText(), passContrasena.getPassword())) {
+							//if(controlador.Registrar(textNombre.getText(), textApellidos.getText(), textTelefono.getText(), textEmail.getText(), passContrasena.getPassword())) {
 								VentanaLogin login = new VentanaLogin();
 								frmAppchat.dispose();
 								login.mostrarLogin();
-							} else {
+							/*} else {
 								textTelefono.setText("");
 								textEmail.setText("");
 								lblErrorRepe.setVisible(true);
