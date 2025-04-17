@@ -15,6 +15,9 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+
+import um.tds.Modelado.AppChat;
+
 import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.event.WindowEvent;
@@ -42,6 +45,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 			gbc_btnNoRecuerdo, gbc_titulo, gbc_imagen, gbc_btnCancelar, gbc_lblErrorVacio, gbc_lblErrorMal,
 			gbc_lblErrorTelf;
 	private JButton btnCancelar;
+	private AppChat control;
 
 	public void mostrarLogin() {
 		frmAppchat.setVisible(true);
@@ -50,7 +54,8 @@ public class VentanaLogin extends JFrame implements ActionListener {
 	/**
 	 * Create the application.
 	 */
-	public VentanaLogin() {
+	public VentanaLogin(AppChat controlador) {
+		control = controlador;
 		initialize();
 	}
 
@@ -248,16 +253,16 @@ public class VentanaLogin extends JFrame implements ActionListener {
 				lblErrorVacio.setVisible(true);
 			} else {
 				if (esTelfValido(textTelf.getText())) {
-					//if (controlador.Logear(textTelf.getText(), password.getPassword())) {
+					if (control.iniciarSesion(textTelf.getText(), password.getPassword())) {
 						VentanaMain main = new VentanaMain();
 						main.setLocationRelativeTo(frmAppchat);
 						frmAppchat.dispose();
 						main.mostrarMain();
-					/*} else {
+					} else {
 						textTelf.setText("");
 						password.setText("");
 						lblErrorMal.setVisible(true);
-					}*/
+					}
 				} else {
 					textTelf.setText("");
 					lblErrorTelf.setVisible(true);
@@ -265,7 +270,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 			}
 
 		} else if (e.getSource() == btnCancelar) {
-			VentanaInicio inicio = new VentanaInicio();
+			VentanaInicio inicio = new VentanaInicio(control);
 			inicio.setLocationRelativeTo(frmAppchat);
 			frmAppchat.dispose();
 			inicio.mostrarInicio();
@@ -283,8 +288,5 @@ public class VentanaLogin extends JFrame implements ActionListener {
 				}
 			});
 		}
-	}
-
-	private static void addPopup(Component component, final JPopupMenu popup) {
 	}
 }

@@ -1,9 +1,7 @@
 package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import tds.BubbleText;
-import java.awt.color.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,33 +13,18 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
 import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Toolkit;
-import javax.swing.JPasswordField;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollBar;
 
-import java.awt.Font;
 import javax.swing.JMenuBar;
-import javax.swing.JComboBox;
-import javax.swing.JSpinner;
-import javax.swing.JList;
 import javax.swing.SwingConstants;
 import javax.swing.JMenuItem;
-import java.awt.ScrollPane;
-import java.awt.Choice;
 import java.awt.List;
-import java.awt.Scrollbar;
 import java.awt.Dimension;
-import java.awt.Panel;
 
 @SuppressWarnings("serial")
 public class VentanaMain extends JFrame implements ActionListener {
@@ -54,7 +37,7 @@ public class VentanaMain extends JFrame implements ActionListener {
 	private JTextField textField;
 	private JMenuItem mntmNewMenuItem, mntmNewMenuItem_1, mntmNewMenuItem_2, mntmNewMenuItem_3;
 	private List list;
-	private GridBagConstraints gbc_bubble_1, gbc_bubble, gbc_lblImagen, gbc_lblConrtacto, gbc_btnEmoticono,
+	private GridBagConstraints gbc_bubble_1, gbc_lblImagen, gbc_lblConrtacto, gbc_btnEmoticono,
 			gbc_textField, gbc_btnEnviar;
 	private GridBagConstraints gbc_bubble_1_2;
 	private GridBagConstraints gbc_bubble_1_1;
@@ -254,6 +237,8 @@ public class VentanaMain extends JFrame implements ActionListener {
 		gbc_bubble_1_2.gridx = 0;
 		gbc_bubble_1_2.gridy = 4;
 		panelMensajes.add(bubble_3, gbc_bubble_1_2);
+		
+		
 	}
 
 	@Override

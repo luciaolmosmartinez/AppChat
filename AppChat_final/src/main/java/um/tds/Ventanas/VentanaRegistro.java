@@ -19,11 +19,14 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import com.toedter.calendar.JDateChooser;
 
+import um.tds.Modelado.AppChat;
+
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 import javax.swing.JPasswordField;
@@ -53,6 +56,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 			gbc_lblErrorEmail, gbc_lblErrorTelf;
 	private Component horizontalGlue;
 	private JPasswordField passContrasena, passContrasenaRepe;
+	private AppChat control;
 
 	public void mostrarRegistro() {
 		frmAppchat.setVisible(true);
@@ -61,7 +65,8 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaRegistro() {
+	public VentanaRegistro(AppChat controlador) {
+		control = controlador;
 		initialize();
 	}
 
@@ -263,7 +268,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 		contentPane.add(textEmail, gbc_textEmail);
 		textEmail.setColumns(10);
 
-		fecha = new JLabel("<html><span style='color:red;'>*</span>Fecha:</html>");
+		fecha = new JLabel("<html><span style='color:red;'>*</span>Fecha de nacimiento:</html>");
 		fecha.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		gbc_fecha = new GridBagConstraints();
 		gbc_fecha.anchor = GridBagConstraints.EAST;
@@ -388,7 +393,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == aceptar) {
+		if (e.getSource() == aceptar) { // quitar todos los errores que puedan haber aparecido anteriormente?
 			if (lblErrorRepe.isVisible()) {
 				lblErrorRepe.setVisible(false);
 			} else if (lblErrorContrasenas.isVisible()) {
@@ -400,22 +405,33 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 			} else if (lblErrorVacio.isVisible()) {
 				lblErrorVacio.setVisible(false);
 			}
-			
-			if(textNombre.getText().equals("") || textApellidos.getText().equals("") || textTelefono.getText().equals("") || textEmail.getText().equals("") || passContrasena.getPassword().length == 0 ||  passContrasenaRepe.getPassword().length == 0){
+
+			if (textNombre.getText().equals("") || textApellidos.getText().equals("")
+					|| textTelefono.getText().equals("") || textEmail.getText().equals("")
+					|| passContrasena.getPassword().length == 0 || passContrasenaRepe.getPassword().length == 0) {
 				lblErrorVacio.setVisible(true);
 			} else {
-				if(esCorreoValido(textEmail.getText())) {
-					if(esTelfValido(textTelefono.getText())) {
-						if (Arrays.equals(passContrasena.getPassword(),passContrasenaRepe.getPassword())) { 
-							//if(controlador.Registrar(textNombre.getText(), textApellidos.getText(), textTelefono.getText(), textEmail.getText(), passContrasena.getPassword())) {
-								VentanaLogin login = new VentanaLogin();
-								frmAppchat.dispose();
-								login.mostrarLogin();
-							/*} else {
-								textTelefono.setText("");
-								textEmail.setText("");
-								lblErrorRepe.setVisible(true);
-							}*/
+				if (esCorreoValido(textEmail.getText())) {
+					if (esTelfValido(textTelefono.getText())) {
+						if (Arrays.equals(passContrasena.getPassword(), passContrasenaRepe.getPassword())) {
+							if (dateChooser.getDate().before(new Date())) {
+								if (control.crearUsuario(textNombre.getText(), textApellidos.getText(),
+										textTelefono.getText(), textEmail.getText(), passContrasena.getPassword(),
+										dateChooser.getDate(), testSaludo.getText(), textImagen.getText())) {
+									VentanaLogin login = new VentanaLogin(control);
+									frmAppchat.dispose();
+									login.mostrarLogin();
+
+								} else {
+									textTelefono.setText("");
+									textEmail.setText("");
+									lblErrorRepe.setVisible(true);
+								}
+							} else {
+								lblErrorTelf.setText("La fecha de nacimiento no puede ser posterior a la fecha actual.");
+								lblErrorTelf.setVisible(true);
+							}
+
 						} else {
 							passContrasena.setText("");
 							passContrasenaRepe.setText("");
@@ -430,11 +446,11 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 					lblErrorEmail.setVisible(true);
 				}
 			}
-		} else {	// btnCancelar
-		    frmAppchat.dispose();
-			VentanaInicio inicio = new VentanaInicio();
-			inicio.setLocationRelativeTo(frmAppchat);
+		} else { // btnCancelar
+			VentanaInicio inicio = new VentanaInicio(control);
 			inicio.mostrarInicio();
+			inicio.setLocationRelativeTo(frmAppchat);
+			frmAppchat.dispose();
 			return;
 		}
 	}

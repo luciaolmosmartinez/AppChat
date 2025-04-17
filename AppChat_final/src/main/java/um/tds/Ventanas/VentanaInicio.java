@@ -27,6 +27,8 @@ import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
+import um.tds.Modelado.AppChat;
+
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import java.awt.Dialog.ModalExclusionType;
@@ -39,6 +41,7 @@ public class VentanaInicio extends JFrame implements ActionListener {
 	private JPanel panelSuperior, panelCentral;
 	private JLabel titulo, lblNewLabel;
 	private JButton btnInicioSesion, btnRegistro;
+	private AppChat control;
 
 	public void mostrarInicio() {
 		frmAppchat.setVisible(true);
@@ -47,7 +50,8 @@ public class VentanaInicio extends JFrame implements ActionListener {
 	/**
 	 * Create the application.
 	 */
-	public VentanaInicio() {
+	public VentanaInicio(AppChat controlador) {
+		control = controlador;
 		initialize();
 	}
 
@@ -67,7 +71,7 @@ public class VentanaInicio extends JFrame implements ActionListener {
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		frmAppchat.setAutoRequestFocus(true);
-		
+
 		panelSuperior = new JPanel();
 		panelSuperior.setBackground(new Color(255, 244, 244));
 		frmAppchat.getContentPane().add(panelSuperior, BorderLayout.NORTH);
@@ -149,16 +153,16 @@ public class VentanaInicio extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnInicioSesion) {
-			VentanaLogin login = new VentanaLogin();
-			login.setLocation(frmAppchat.getX(),frmAppchat.getY());
+			VentanaLogin login = new VentanaLogin(control);
+			login.setLocation(frmAppchat.getX(), frmAppchat.getY());
 			frmAppchat.dispose();
 			login.mostrarLogin();
 			return;
 		}
 
 		if (e.getSource() == btnRegistro) {
-			VentanaRegistro registro = new VentanaRegistro();
-			registro.setLocation(frmAppchat.getX(),frmAppchat.getY());
+			VentanaRegistro registro = new VentanaRegistro(control);
+			registro.setLocation(frmAppchat.getX(), frmAppchat.getY());
 			frmAppchat.dispose();
 			registro.mostrarRegistro();
 			return;

@@ -10,10 +10,16 @@ import javax.swing.UIManager;
 
 import com.jtattoo.plaf.fast.FastLookAndFeel;
 
+import um.tds.Modelado.RepositorioUsuarios;
+import um.tds.Modelado.AppChat;
 import um.tds.Ventanas.*;
 
 public class Aplicacion {
+	private static RepositorioUsuarios repoU = new RepositorioUsuarios();
+	private static AppChat controlador;
+	
 	public static void main(final String[] args) {
+		controlador = new AppChat(repoU);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -27,7 +33,7 @@ public class Aplicacion {
 					propiedades.put("selectionBackgroundColor", "255 255 255"); // Fondo de selección
 					FastLookAndFeel.setTheme(propiedades);
 					UIManager.setLookAndFeel(new FastLookAndFeel());
-					VentanaInicio ventana = new VentanaInicio();
+					VentanaInicio ventana = new VentanaInicio(controlador);
 					ventana.mostrarInicio();
 				} catch (Exception e) {
 					e.printStackTrace();

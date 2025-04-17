@@ -1,12 +1,12 @@
 package um.tds.Modelado;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.LinkedList;
 
 public class Usuario {
 	private String nombre;
-	private String contrasena;
+	private char[] contrasena;
 	private int numTelefono;
 	private String email;
 	private LocalDate fechaNacimiento;
@@ -14,20 +14,15 @@ public class Usuario {
 	private String mensajeSaludo; // deberia ser de tipo mensaje?
 	private LocalDate fechaRegistro; // fecha en la que el usuario se registro, para poder calcular el descuento
 	private boolean premium;
-	private LinkedList<Contacto> contactos; //lista de contactos que tiene el usuario
+	private LinkedList<Contacto> contactos; // lista de contactos que tiene el usuario
 	private Descuento descuento;
 
-	public Usuario(String nombre, String contrasena, int numTelefono, String email, LocalDate fechaNacimiento,
-			String mensajeSaludo) {
-		this(nombre, contrasena, numTelefono, email, fechaNacimiento, "", mensajeSaludo);
-	}
-
-	public Usuario(String nombre, String contrasena, int numTelefono, String email, LocalDate fechaNacimiento,
-			String imagenPerfil, String mensajeSaludo) {
+	public Usuario(String nombre, String apellidos, String telefono, String correo, char[] contrasena, Date fecha,
+			String saludo, String imagen) {
 		this.nombre = nombre;
 		this.contrasena = contrasena;
-		this.numTelefono = numTelefono;
-		this.email = email;
+		this.numTelefono = Integer.parseInt(telefono);
+		this.email = correo;
 		this.fechaNacimiento = fechaNacimiento;
 		this.mensajeSaludo = mensajeSaludo;
 		this.fechaRegistro = LocalDate.now();
@@ -40,7 +35,7 @@ public class Usuario {
 		return nombre;
 	}
 
-	public String getContrasena() {
+	public char[] getContrasena() {
 		return contrasena;
 	}
 
@@ -71,14 +66,14 @@ public class Usuario {
 	public boolean isPremium() {
 		return premium;
 	}
-	
+
 	public LinkedList<Contacto> getContactos() {
 		return new LinkedList<Contacto>(contactos);
 	}
-	
+
 	public Mensaje enviarMensaje(Contacto receptor, String texto, int emoticono, Usuario emisor) {
 		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, emisor);
-		mensaje = mensaje.enviarMensaje(receptor,texto,emoticono,emisor);
+		mensaje = mensaje.enviarMensaje(receptor, texto, emoticono, emisor);
 		return mensaje;
 	}
 
