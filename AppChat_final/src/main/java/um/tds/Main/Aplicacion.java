@@ -2,6 +2,7 @@ package um.tds.Main;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.Properties;
 
@@ -17,7 +18,7 @@ import um.tds.Ventanas.*;
 public class Aplicacion {
 	private static RepositorioUsuarios repoU = new RepositorioUsuarios();
 	private static AppChat controlador;
-	
+
 	public static void main(final String[] args) {
 		controlador = new AppChat(repoU);
 		EventQueue.invokeLater(new Runnable() {
@@ -33,8 +34,18 @@ public class Aplicacion {
 					propiedades.put("selectionBackgroundColor", "255 255 255"); // Fondo de selección
 					FastLookAndFeel.setTheme(propiedades);
 					UIManager.setLookAndFeel(new FastLookAndFeel());
-					VentanaInicio ventana = new VentanaInicio(controlador);
-					ventana.mostrarInicio();
+					// llama a la ventana main
+					try {
+						VentanaInicio ventana = new VentanaInicio(controlador);
+						Dimension tamVentana = new Dimension(900, 550);
+						Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();
+						int x = (tamPantalla.width - tamVentana.width) / 2;
+						int y = (tamPantalla.height - tamVentana.height) / 2;
+						ventana.mostrarInicio(tamVentana, new Point(x, y));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

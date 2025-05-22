@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import java.awt.Label;
+import java.awt.Point;
 import java.awt.Button;
 import com.toedter.calendar.JDateChooser;
 
@@ -44,9 +45,10 @@ public class VentanaPerfil extends JFrame implements ActionListener {
 	private JDateChooser dateChooser;
 	private JTextArea txtrsaludo;
 
-	public void mostrarPerfil() {
-		setLocationRelativeTo(null);
-		setVisible(true);
+	public void mostrarPerfil(Dimension tam, Point ubi) {
+		frame.setVisible(true);
+		frame.setSize(tam);
+		frame.setLocation(ubi);
 	}
 
 	/**

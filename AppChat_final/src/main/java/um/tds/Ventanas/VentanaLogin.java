@@ -24,6 +24,8 @@ import java.awt.event.WindowEvent;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Point;
+
 import javax.swing.JPasswordField;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
@@ -47,8 +49,10 @@ public class VentanaLogin extends JFrame implements ActionListener {
 	private JButton btnCancelar;
 	private AppChat control;
 
-	public void mostrarLogin() {
+	public void mostrarLogin(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 	/**
@@ -257,7 +261,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 						VentanaMain main = new VentanaMain();
 						main.setLocationRelativeTo(frmAppchat);
 						frmAppchat.dispose();
-						main.mostrarMain();
+						main.mostrarMain(frmAppchat.getSize(),frmAppchat.getLocation());
 					} else {
 						textTelf.setText("");
 						password.setText("");
@@ -273,12 +277,12 @@ public class VentanaLogin extends JFrame implements ActionListener {
 			VentanaInicio inicio = new VentanaInicio(control);
 			inicio.setLocationRelativeTo(frmAppchat);
 			frmAppchat.dispose();
-			inicio.mostrarInicio();
+			inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;
 		} else if (e.getSource() == btnNoRecuerdo) {
 			VentanaNoRecuerdo nR = new VentanaNoRecuerdo();
 			frmAppchat.setEnabled(false);
-			nR.mostrarNoRecuerdo();
+			nR.mostrarNoRecuerdo(frmAppchat.getSize(),frmAppchat.getLocation());
 			// ARREGLAR
 			nR.addWindowListener(new WindowAdapter() {
 				@Override

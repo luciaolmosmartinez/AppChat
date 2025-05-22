@@ -17,6 +17,8 @@ import java.awt.Cursor;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Point;
+
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JLabel;
@@ -35,8 +37,10 @@ public class VentanaNoRecuerdo extends JFrame implements ActionListener {
 	private GridBagConstraints gbc_lbl1, gbc_lbl2, gbc_textEmail, gbc_btnAceptar, gbc_lblError;
 	private JButton btnAceptar;
 
-	public void mostrarNoRecuerdo() {
+	public void mostrarNoRecuerdo(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 	public VentanaNoRecuerdo() {

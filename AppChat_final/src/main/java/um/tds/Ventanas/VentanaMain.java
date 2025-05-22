@@ -24,6 +24,7 @@ import javax.swing.JMenuBar;
 import javax.swing.SwingConstants;
 import javax.swing.JMenuItem;
 import java.awt.List;
+import java.awt.Point;
 import java.awt.Dimension;
 
 @SuppressWarnings("serial")
@@ -48,8 +49,10 @@ public class VentanaMain extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public void mostrarMain() {
+	public void mostrarMain(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 	/**

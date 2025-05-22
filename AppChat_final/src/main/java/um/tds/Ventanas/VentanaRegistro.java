@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Point;
+
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
@@ -58,8 +60,10 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 	private JPasswordField passContrasena, passContrasenaRepe;
 	private AppChat control;
 
-	public void mostrarRegistro() {
+	public void mostrarRegistro(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 	/**
@@ -420,7 +424,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 										dateChooser.getDate(), testSaludo.getText(), textImagen.getText())) {
 									VentanaLogin login = new VentanaLogin(control);
 									frmAppchat.dispose();
-									login.mostrarLogin();
+									login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
 
 								} else {
 									textTelefono.setText("");
@@ -448,7 +452,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 			}
 		} else { // btnCancelar
 			VentanaInicio inicio = new VentanaInicio(control);
-			inicio.mostrarInicio();
+			inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
 			inicio.setLocationRelativeTo(frmAppchat);
 			frmAppchat.dispose();
 			return;

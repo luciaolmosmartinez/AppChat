@@ -43,8 +43,10 @@ public class VentanaInicio extends JFrame implements ActionListener {
 	private JButton btnInicioSesion, btnRegistro;
 	private AppChat control;
 
-	public void mostrarInicio() {
+	public void mostrarInicio(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 	/**
@@ -156,7 +158,7 @@ public class VentanaInicio extends JFrame implements ActionListener {
 			VentanaLogin login = new VentanaLogin(control);
 			login.setLocation(frmAppchat.getX(), frmAppchat.getY());
 			frmAppchat.dispose();
-			login.mostrarLogin();
+			login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;
 		}
 
@@ -164,7 +166,7 @@ public class VentanaInicio extends JFrame implements ActionListener {
 			VentanaRegistro registro = new VentanaRegistro(control);
 			registro.setLocation(frmAppchat.getX(), frmAppchat.getY());
 			frmAppchat.dispose();
-			registro.mostrarRegistro();
+			registro.mostrarRegistro(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;
 		}
 		return;
