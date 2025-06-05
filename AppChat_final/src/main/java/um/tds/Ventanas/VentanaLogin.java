@@ -16,7 +16,7 @@ import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import um.tds.Modelado.AppChat;
+import um.tds.Controlador.AppChat;
 
 import javax.swing.JPopupMenu;
 import java.awt.Component;
@@ -279,7 +279,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 			frmAppchat.dispose();
 			inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;
-		} else if (e.getSource() == btnNoRecuerdo) {
+		}/* else if (e.getSource() == btnNoRecuerdo) {
 			VentanaNoRecuerdo nR = new VentanaNoRecuerdo();
 			frmAppchat.setEnabled(false);
 			nR.mostrarNoRecuerdo(frmAppchat.getSize(),frmAppchat.getLocation());
@@ -291,6 +291,6 @@ public class VentanaLogin extends JFrame implements ActionListener {
 					frmAppchat.toFront(); // La trae al frente por si queda detrás de otras
 				}
 			});
-		}
+		}*/
 	}
 }

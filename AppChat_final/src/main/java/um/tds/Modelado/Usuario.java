@@ -7,7 +7,7 @@ import java.util.LinkedList;
 public class Usuario {
 	private String nombre;
 	private char[] contrasena;
-	private int numTelefono;
+	private String numTelefono;
 	private String email;
 	private LocalDate fechaNacimiento;
 	private String imagenPerfil; // sera el link de la imagen
@@ -21,7 +21,7 @@ public class Usuario {
 			String saludo, String imagen) {
 		this.nombre = nombre;
 		this.contrasena = contrasena;
-		this.numTelefono = Integer.parseInt(telefono);
+		this.numTelefono = telefono;
 		this.email = correo;
 		this.fechaNacimiento = fechaNacimiento;
 		this.mensajeSaludo = mensajeSaludo;
@@ -39,7 +39,7 @@ public class Usuario {
 		return contrasena;
 	}
 
-	public int getNumTelefono() {
+	public String getNumTelefono() {
 		return numTelefono;
 	}
 

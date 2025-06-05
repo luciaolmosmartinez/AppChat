@@ -27,7 +27,7 @@ import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
-import um.tds.Modelado.AppChat;
+import um.tds.Controlador.AppChat;
 
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;

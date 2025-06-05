@@ -21,7 +21,7 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import com.toedter.calendar.JDateChooser;
 
-import um.tds.Modelado.AppChat;
+import um.tds.Controlador.AppChat;
 
 import java.awt.Color;
 import java.awt.Toolkit;

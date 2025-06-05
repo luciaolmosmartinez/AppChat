@@ -11,8 +11,8 @@ import javax.swing.UIManager;
 
 import com.jtattoo.plaf.fast.FastLookAndFeel;
 
-import um.tds.Modelado.RepositorioUsuarios;
-import um.tds.Modelado.AppChat;
+import um.tds.Controlador.AppChat;
+import um.tds.Repositorio.RepositorioUsuarios;
 import um.tds.Ventanas.*;
 
 public class Aplicacion {

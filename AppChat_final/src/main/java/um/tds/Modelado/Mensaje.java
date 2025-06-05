@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import tds.BubbleText;
 
 public class Mensaje {
+	private int id;
 	private String texto; // null si hay emoticono y no texto?
 	private int emoticono; // se determinara a partir de un numero que identifica el emoticono, null si no
 							// hay emoticono?
@@ -29,8 +30,13 @@ public class Mensaje {
 		this.emisor = emisor;
 		this.receptor = receptor;
 		this.fechaHora = LocalDateTime.now();
+		this.id = 0;	//Se actualizará al registrarse en la base de datos
 	}
 
+	public int getId() {
+		return id;
+	}
+	
 	public String getTexto() {
 		return texto;
 	}
@@ -51,6 +57,10 @@ public class Mensaje {
 		return fechaHora;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public Mensaje enviarMensaje(Contacto receptor, String texto, int emoticono, Usuario emisor) {
 		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, emisor);
 		return mensaje;
