@@ -27,7 +27,7 @@ import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
-import um.tds.Controlador.AppChat;
+import um.tds.Controlador.Controlador;
 
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
@@ -41,7 +41,7 @@ public class VentanaInicio extends JFrame implements ActionListener {
 	private JPanel panelSuperior, panelCentral;
 	private JLabel titulo, lblNewLabel;
 	private JButton btnInicioSesion, btnRegistro;
-	private AppChat control;
+	private Controlador control;
 
 	public void mostrarInicio(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
@@ -52,7 +52,7 @@ public class VentanaInicio extends JFrame implements ActionListener {
 	/**
 	 * Create the application.
 	 */
-	public VentanaInicio(AppChat controlador) {
+	public VentanaInicio(Controlador controlador) {
 		control = controlador;
 		initialize();
 	}

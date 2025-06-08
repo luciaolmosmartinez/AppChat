@@ -11,16 +11,16 @@ import javax.swing.UIManager;
 
 import com.jtattoo.plaf.fast.FastLookAndFeel;
 
-import um.tds.Controlador.AppChat;
+import um.tds.Controlador.Controlador;
 import um.tds.Repositorio.RepositorioUsuarios;
 import um.tds.Ventanas.*;
 
 public class Aplicacion {
-	private static RepositorioUsuarios repoU = new RepositorioUsuarios();
-	private static AppChat controlador;
+	private static RepositorioUsuarios repoU = RepositorioUsuarios.getUnicaInstancia();
+	private static Controlador controlador;
 
 	public static void main(final String[] args) {
-		controlador = new AppChat(repoU);
+		controlador = new Controlador(repoU);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

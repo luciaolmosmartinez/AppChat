@@ -21,7 +21,7 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import com.toedter.calendar.JDateChooser;
 
-import um.tds.Controlador.AppChat;
+import um.tds.Controlador.Controlador;
 
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -58,7 +58,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 			gbc_lblErrorEmail, gbc_lblErrorTelf;
 	private Component horizontalGlue;
 	private JPasswordField passContrasena, passContrasenaRepe;
-	private AppChat control;
+	private Controlador control;
 
 	public void mostrarRegistro(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
@@ -69,7 +69,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaRegistro(AppChat controlador) {
+	public VentanaRegistro(Controlador controlador) {
 		control = controlador;
 		initialize();
 	}
@@ -419,7 +419,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 					if (esTelfValido(textTelefono.getText())) {
 						if (Arrays.equals(passContrasena.getPassword(), passContrasenaRepe.getPassword())) {
 							if (dateChooser.getDate().before(new Date())) {
-								if (control.crearUsuario(textNombre.getText(), textApellidos.getText(),
+								if (control.registrarUsuario(textNombre.getText(), textApellidos.getText(),
 										textTelefono.getText(), textEmail.getText(), passContrasena.getPassword(),
 										dateChooser.getDate(), testSaludo.getText(), textImagen.getText())) {
 									VentanaLogin login = new VentanaLogin(control);

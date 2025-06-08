@@ -246,6 +246,8 @@ public class VentanaMain extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// Si no hay texto meter "" si no hay emoticono meter -1, no pueden estar los dos
+		// añadir foto gato en botón emoticono
 	}
 
 	private static void addPopup(Component component, final JPopupMenu popup) {

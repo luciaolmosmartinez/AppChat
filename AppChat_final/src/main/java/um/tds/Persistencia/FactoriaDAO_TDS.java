@@ -1,6 +1,6 @@
 package um.tds.Persistencia;
 
-public class FactoriaDAO_TDS {
+public class FactoriaDAO_TDS extends FactoriaDAO{
 	public IAdaptadorUsuarioDAO getUsuarioDAO() {
 		return AdaptadorUsuario.getUnicaInstancia();
 	}

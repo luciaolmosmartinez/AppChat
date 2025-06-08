@@ -16,7 +16,7 @@ import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import um.tds.Controlador.AppChat;
+import um.tds.Controlador.Controlador;
 
 import javax.swing.JPopupMenu;
 import java.awt.Component;
@@ -47,7 +47,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 			gbc_btnNoRecuerdo, gbc_titulo, gbc_imagen, gbc_btnCancelar, gbc_lblErrorVacio, gbc_lblErrorMal,
 			gbc_lblErrorTelf;
 	private JButton btnCancelar;
-	private AppChat control;
+	private Controlador control;
 
 	public void mostrarLogin(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
@@ -58,7 +58,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 	/**
 	 * Create the application.
 	 */
-	public VentanaLogin(AppChat controlador) {
+	public VentanaLogin(Controlador controlador) {
 		control = controlador;
 		initialize();
 	}

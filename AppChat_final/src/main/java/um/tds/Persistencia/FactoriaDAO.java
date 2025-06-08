@@ -2,7 +2,7 @@ package um.tds.Persistencia;
 
 public abstract class FactoriaDAO {
 	private static FactoriaDAO INSTANCE;
-	public final static String DAO_TDS = "um.tds.persistencia.FactoriaDAO_TDS";
+	public final static String DAO_TDS = "um.tds.Persistencia.FactoriaDAO_TDS";
 	// Crea un tipo de factoria DAO. Solo existe el tipo TDS_FactoriaDAO
 	public static FactoriaDAO getFactoriaDAO(String nombre) throws DAOException {
 		if (INSTANCE == null)
@@ -21,7 +21,7 @@ public abstract class FactoriaDAO {
 	protected FactoriaDAO() {
 	}
 
-	public abstract IAdaptadorUsuarioDAO getUsurioDAO();
+	public abstract IAdaptadorUsuarioDAO getUsuarioDAO();
 
 	public abstract IAdaptadorMensajeDAO getMensajeDAO();
 
