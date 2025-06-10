@@ -3,22 +3,13 @@ package um.tds.Controlador;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-import um.tds.Modelado.Contacto;
-import um.tds.Modelado.ContactoIndividual;
-import um.tds.Modelado.CreadorPDF;
-import um.tds.Modelado.Grupo;
-import um.tds.Modelado.Mensaje;
-import um.tds.Modelado.Usuario;
-import um.tds.Persistencia.DAOException;
-import um.tds.Persistencia.FactoriaDAO;
-import um.tds.Persistencia.IAdaptadorContactoDAO;
-import um.tds.Persistencia.IAdaptadorGrupoDAO;
-import um.tds.Persistencia.IAdaptadorMensajeDAO;
-import um.tds.Persistencia.IAdaptadorUsuarioDAO;
+import um.tds.Modelado.*;
+import um.tds.Persistencia.*;
 import um.tds.Repositorio.RepositorioUsuarios;
 
 public class Controlador { // clase controlador
-
+	private static Controlador unicaInstancia;
+	
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 	private IAdaptadorMensajeDAO adaptadorMensaje;
 	private IAdaptadorContactoDAO adaptadorContacto;
@@ -31,16 +22,23 @@ public class Controlador { // clase controlador
 	 * private static ControladorAppChat unicaInstancia; private FactoriaDAO
 	 * factoriaDAO; private Contacto contactoSeleccionado;
 	 */
-
-	public Controlador(RepositorioUsuarios repoU) {
-		inicializarAdaptadores();
-		this.repoU = repoU;
+// DICE QUE LOS FILTROS EN EL CONTROLADOR USANDO LOS ADAPTADORES, NO EN EL REPOSITORIO
+	
+	private Controlador() {
+		this.inicializarAdaptadores();
+		this.inicializarRepositorioUsuarios();
+	}
+	
+	public static Controlador getUnicaInstancia() {
+		if (unicaInstancia == null)
+			unicaInstancia = new Controlador();
+		return unicaInstancia;
 	}
 
 	public void inicializarAdaptadores() {
 		FactoriaDAO factoria = null;
 		try {
-			factoria = FactoriaDAO.getFactoriaDAO(FactoriaDAO.DAO_TDS);
+			factoria = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
@@ -49,10 +47,18 @@ public class Controlador { // clase controlador
 		adaptadorContacto = factoria.getContactoDAO();
 		adaptadorGrupo = factoria.getGrupoDAO();
 	}
+	
+	private void inicializarRepositorioUsuarios() {
+		try {
+	        repoU = RepositorioUsuarios.getUnicaInstancia();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 
-	public boolean registrarUsuario(String nombre, String apellidos, String telefono, String correo, char[] contrasena,
+	public boolean registrarUsuario(String nombre, String telefono, String correo, char[] contrasena,
 			Date fecha, String saludo, String imagen) {
-		Usuario usuario = new Usuario(nombre, apellidos, telefono, correo, contrasena, fecha, saludo, imagen);
+		Usuario usuario = new Usuario(nombre, telefono, correo, contrasena, fecha, saludo, imagen);
 		adaptadorUsuario.registrarUsuario(usuario);
 		return repoU.addUsuario(usuario);
 	}
@@ -68,7 +74,7 @@ public class Controlador { // clase controlador
 		Usuario usuarioR = repoU.getUsuario(receptor.getNumTelefono());
 
 		usuarioE.addMensajeEnviado(mensaje);
-		usuarioR.addMensajeRecivido(mensaje);
+		usuarioR.addMensajeRecibido(mensaje);
 
 		// Actualizar usuario almacenado
 		adaptadorUsuario.modificarUsuario(usuarioE);
@@ -88,8 +94,8 @@ public class Controlador { // clase controlador
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
-	public void registrarGrupo(String nombre) {
-		Grupo grupo = new Grupo(nombre);
+	public void registrarGrupo(String nombre, String imagen) {
+		Grupo grupo = new Grupo(nombre, imagen);
 
 		// Persistir grupo
 		adaptadorGrupo.registrarGrupo(grupo);

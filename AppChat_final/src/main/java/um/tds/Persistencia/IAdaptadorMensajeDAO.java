@@ -5,7 +5,7 @@ import java.util.List;
 import um.tds.Modelado.Mensaje;
 
 public interface IAdaptadorMensajeDAO {
-	public Mensaje registrarMensaje(Mensaje mensaje);
+	public void registrarMensaje(Mensaje mensaje);
 
 	public Mensaje recuperarMensaje(int id);
 

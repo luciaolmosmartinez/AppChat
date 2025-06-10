@@ -1,14 +1,7 @@
 package um.tds.Repositorio;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import beans.Entidad;
@@ -18,38 +11,35 @@ import um.tds.Persistencia.FactoriaDAO;
 import um.tds.Persistencia.IAdaptadorUsuarioDAO;
 
 public class RepositorioUsuarios {
-	private Map<String, Usuario> usuarios;
-	private static RepositorioUsuarios unicaInstancia = new RepositorioUsuarios();
 
+	private static RepositorioUsuarios unicaInstancia = new RepositorioUsuarios();
+	private Map<String, Usuario> usuarios;
 	private FactoriaDAO daofactoria;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 
 	private RepositorioUsuarios() {
 		try {
 			// daofactoria = new FatoriaTDS();
-			daofactoria = FactoriaDAO.getFactoriaDAO(FactoriaDAO.DAO_TDS);
+			daofactoria = FactoriaDAO.getInstancia();
 			adaptadorUsuario = daofactoria.getUsuarioDAO();
+			usuarios = new HashMap<String, Usuario>();
 			this.cargarUsuarios();
 		} catch (DAOException eDAO) {
 			eDAO.printStackTrace();
 		}
 	}
-
-	public static RepositorioUsuarios getUnicaInstancia() {
-		if (unicaInstancia == null) {
-			unicaInstancia = new RepositorioUsuarios();
-		}
+	
+	public static RepositorioUsuarios getUnicaInstancia(){
 		return unicaInstancia;
 	}
+	
 
 	// Método de iniciación del repositorio
 	private void cargarUsuarios() throws DAOException {
-		usuarios = new HashMap<String, Usuario>();
-		List<Usuario> usuariosBD = adaptadorUsuario.recuperarTodosUsuarios();
-		for (Usuario usuario : usuariosBD)
-			usuarios.put(usuario.getNumTelefono(), usuario);
+		adaptadorUsuario.recuperarTodosUsuarios().stream()
+			.forEach(u -> usuarios.put(u.getNumTelefono(), u));
 	}
-
+	
 	// Método de añadir objetos al repositorio
 	public boolean addUsuario(Usuario usuario) {
 		if (!usuarios.values().stream() // si no hay alguno con el mismo número o correo

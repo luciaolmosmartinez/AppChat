@@ -5,7 +5,7 @@ import java.util.List;
 import um.tds.Modelado.Grupo;
 
 public interface IAdaptadorGrupoDAO {
-	public Grupo registrarGrupo(Grupo grupo);
+	public void registrarGrupo(Grupo grupo);
 
 	public Grupo recuperarGrupo(int id);
 

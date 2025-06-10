@@ -5,13 +5,11 @@ import java.util.List;
 import um.tds.Modelado.Usuario;
 
 public interface IAdaptadorUsuarioDAO {
-	public Usuario registrarUsuario(Usuario usuario);
-
-	public void borrarUsuario(Usuario usuario);
-
+	public void registrarUsuario(Usuario usuario);
+	
 	public Usuario modificarUsuario(Usuario usuario);
 
-	public Usuario recuperarUsuario(String numTelefono);
+	public Usuario recuperarUsuario(int id);
 
 	public List<Usuario> recuperarTodosUsuarios();
 }

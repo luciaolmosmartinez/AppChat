@@ -47,7 +47,6 @@ public class VentanaLogin extends JFrame implements ActionListener {
 			gbc_btnNoRecuerdo, gbc_titulo, gbc_imagen, gbc_btnCancelar, gbc_lblErrorVacio, gbc_lblErrorMal,
 			gbc_lblErrorTelf;
 	private JButton btnCancelar;
-	private Controlador control;
 
 	public void mostrarLogin(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
@@ -58,8 +57,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 	/**
 	 * Create the application.
 	 */
-	public VentanaLogin(Controlador controlador) {
-		control = controlador;
+	public VentanaLogin() {
 		initialize();
 	}
 
@@ -257,7 +255,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 				lblErrorVacio.setVisible(true);
 			} else {
 				if (esTelfValido(textTelf.getText())) {
-					if (control.iniciarSesion(textTelf.getText(), password.getPassword())) {
+					if (Controlador.getUnicaInstancia().iniciarSesion(textTelf.getText(), password.getPassword())) {
 						VentanaMain main = new VentanaMain();
 						main.setLocationRelativeTo(frmAppchat);
 						frmAppchat.dispose();
@@ -274,7 +272,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 			}
 
 		} else if (e.getSource() == btnCancelar) {
-			VentanaInicio inicio = new VentanaInicio(control);
+			VentanaInicio inicio = new VentanaInicio();
 			inicio.setLocationRelativeTo(frmAppchat);
 			frmAppchat.dispose();
 			inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());

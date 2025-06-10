@@ -58,7 +58,6 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 			gbc_lblErrorEmail, gbc_lblErrorTelf;
 	private Component horizontalGlue;
 	private JPasswordField passContrasena, passContrasenaRepe;
-	private Controlador control;
 
 	public void mostrarRegistro(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
@@ -69,8 +68,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaRegistro(Controlador controlador) {
-		control = controlador;
+	public VentanaRegistro() {
 		initialize();
 	}
 
@@ -419,10 +417,10 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 					if (esTelfValido(textTelefono.getText())) {
 						if (Arrays.equals(passContrasena.getPassword(), passContrasenaRepe.getPassword())) {
 							if (dateChooser.getDate().before(new Date())) {
-								if (control.registrarUsuario(textNombre.getText(), textApellidos.getText(),
+								if (Controlador.getUnicaInstancia().registrarUsuario(textNombre.getText() + " " + textApellidos.getText(),
 										textTelefono.getText(), textEmail.getText(), passContrasena.getPassword(),
 										dateChooser.getDate(), testSaludo.getText(), textImagen.getText())) {
-									VentanaLogin login = new VentanaLogin(control);
+									VentanaLogin login = new VentanaLogin();
 									frmAppchat.dispose();
 									login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
 
@@ -451,7 +449,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 				}
 			}
 		} else { // btnCancelar
-			VentanaInicio inicio = new VentanaInicio(control);
+			VentanaInicio inicio = new VentanaInicio();
 			inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
 			inicio.setLocationRelativeTo(frmAppchat);
 			frmAppchat.dispose();

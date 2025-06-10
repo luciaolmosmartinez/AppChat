@@ -13,6 +13,10 @@ public abstract class Contacto {
 		return id;
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}	

@@ -67,6 +67,26 @@ public class Mensaje {
 		this.id = id;
 	}
 	
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+
+	public void setEmoticono(int emoticono) {
+		this.emoticono = emoticono;
+	}
+
+	public void setFechaHora(LocalDateTime fechaHora) {
+		this.fechaHora = fechaHora;
+	}
+
+	public void setEmisor(Usuario emisor) {
+		this.emisor = emisor;
+	}
+
+	public void addReceptor(Usuario receptor) {
+		this.receptor.add(receptor);
+	}
+
 	public Mensaje enviarMensaje(String texto, int emoticono, Usuario emisor, Usuario...receptor) {
 		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor);
 		return mensaje;

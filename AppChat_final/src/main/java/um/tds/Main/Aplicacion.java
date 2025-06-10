@@ -16,11 +16,7 @@ import um.tds.Repositorio.RepositorioUsuarios;
 import um.tds.Ventanas.*;
 
 public class Aplicacion {
-	private static RepositorioUsuarios repoU = RepositorioUsuarios.getUnicaInstancia();
-	private static Controlador controlador;
-
 	public static void main(final String[] args) {
-		controlador = new Controlador(repoU);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -36,7 +32,7 @@ public class Aplicacion {
 					UIManager.setLookAndFeel(new FastLookAndFeel());
 					// llama a la ventana main
 					try {
-						VentanaInicio ventana = new VentanaInicio(controlador);
+						VentanaInicio ventana = new VentanaInicio();
 						Dimension tamVentana = new Dimension(900, 550);
 						Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();
 						int x = (tamPantalla.width - tamVentana.width) / 2;
