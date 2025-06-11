@@ -18,7 +18,6 @@ import javax.swing.JScrollPane;
 import java.awt.Component;
 import java.awt.Color;
 import java.awt.Toolkit;
-import javax.swing.JPopupMenu;
 
 import javax.swing.JMenuBar;
 import javax.swing.SwingConstants;
@@ -26,9 +25,9 @@ import javax.swing.JMenuItem;
 import java.awt.List;
 import java.awt.Point;
 import java.awt.Dimension;
+import java.awt.Cursor;
 
-@SuppressWarnings("serial")
-public class VentanaMain extends JFrame implements ActionListener {
+public class VentanaMain implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panelOeste, panelCentral, panelContacto, panelEscribir, panelMensajes;
@@ -77,16 +76,23 @@ public class VentanaMain extends JFrame implements ActionListener {
 		frmAppchat.setJMenuBar(menuBar);
 
 		mntmNewMenuItem = new JMenuItem("PREMIUM");
+		mntmNewMenuItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmNewMenuItem.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmNewMenuItem);
 
 		mntmNewMenuItem_1 = new JMenuItem("Contactos");
+		mntmNewMenuItem_1.setHorizontalTextPosition(SwingConstants.CENTER);
+		mntmNewMenuItem_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuBar.add(mntmNewMenuItem_1);
 
 		mntmNewMenuItem_2 = new JMenuItem("Mensajes");
+		mntmNewMenuItem_2.setHorizontalTextPosition(SwingConstants.CENTER);
+		mntmNewMenuItem_2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuBar.add(mntmNewMenuItem_2);
 
 		mntmNewMenuItem_3 = new JMenuItem("Perfil");
+		mntmNewMenuItem_3.setHorizontalTextPosition(SwingConstants.CENTER);
+		mntmNewMenuItem_3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuBar.add(mntmNewMenuItem_3);
 		contentPane = new JPanel();
 		contentPane.setMaximumSize(new Dimension(494, 400));
@@ -160,6 +166,7 @@ public class VentanaMain extends JFrame implements ActionListener {
 		panelEscribir.setLayout(gbl_panelEscribir);
 
 		btnEmoticono = new JButton("emoticonos");
+		btnEmoticono.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		gbc_btnEmoticono = new GridBagConstraints();
 		gbc_btnEmoticono.insets = new Insets(0, 0, 0, 5);
 		gbc_btnEmoticono.anchor = GridBagConstraints.NORTHWEST;
@@ -177,6 +184,7 @@ public class VentanaMain extends JFrame implements ActionListener {
 		textField.setColumns(10);
 
 		btnEnviar = new JButton("Enviar");
+		btnEnviar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		gbc_btnEnviar = new GridBagConstraints();
 		gbc_btnEnviar.gridx = 2;
 		gbc_btnEnviar.gridy = 0;
@@ -241,16 +249,14 @@ public class VentanaMain extends JFrame implements ActionListener {
 		gbc_bubble_1_2.gridy = 4;
 		panelMensajes.add(bubble_3, gbc_bubble_1_2);
 		
-		
+		btnEnviar.addActionListener(this);
+		btnEmoticono.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Si no hay texto meter "" si no hay emoticono meter -1, no pueden estar los dos
 		// añadir foto gato en botón emoticono
-	}
-
-	private static void addPopup(Component component, final JPopupMenu popup) {
 	}
 
 }

@@ -20,8 +20,4 @@ public abstract class Contacto {
 	public String getNombre() {
 		return nombre;
 	}	
-	
-	public void setId() {
-		this.id = id;
-	}
 }

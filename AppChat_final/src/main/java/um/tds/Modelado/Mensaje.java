@@ -11,8 +11,8 @@ public class Mensaje {
 	private String texto; // null si hay emoticono y no texto?
 	private int emoticono; // se determinara a partir de un numero que identifica el emoticono, null si no
 							// hay emoticono?
-	private Usuario emisor;
-	private List<Usuario> receptor;
+	private String emisor; //numero de telefono
+	private String receptor; //numero de telefono de quien lo reciba
 	private LocalDateTime fechaHora;
 
 	public int getLength() {
@@ -27,13 +27,13 @@ public class Mensaje {
 		this("", emoticono, emisor, receptor);
 	}*/
 
-	public Mensaje(String texto, int emoticono, Usuario emisor, Usuario...receptores) {
+	public Mensaje(String texto, int emoticono, String emisor, String...receptores) {
 		this.texto = texto;
 		this.emoticono = emoticono;
 		this.emisor = emisor;
-		this.receptor = new LinkedList<Usuario>();
-		for (Usuario u : receptores) {
-			receptor.add(u);
+		this.receptor = new LinkedList<String>();
+		for (String r : receptores) {
+			receptor.add(r);
 		}
 		this.fechaHora = LocalDateTime.now();
 		this.id = 0;	//Se actualizará al registrarse en la base de datos
@@ -51,12 +51,12 @@ public class Mensaje {
 		return emoticono;
 	}
 
-	public Usuario getEmisor() {
+	public String getEmisor() {
 		return emisor;
 	}
 
-	public List<Usuario> getReceptor() {
-		return new LinkedList<Usuario>(receptor);
+	public List<String> getReceptor() {
+		return new LinkedList<String>(receptor);
 	}
 
 	public LocalDateTime getFechaHora() {
@@ -79,15 +79,15 @@ public class Mensaje {
 		this.fechaHora = fechaHora;
 	}
 
-	public void setEmisor(Usuario emisor) {
+	public void setEmisor(String emisor) {
 		this.emisor = emisor;
 	}
 
-	public void addReceptor(Usuario receptor) {
+	public void addReceptor(String receptor) {
 		this.receptor.add(receptor);
 	}
 
-	public Mensaje enviarMensaje(String texto, int emoticono, Usuario emisor, Usuario...receptor) {
+	public Mensaje enviarMensaje(String texto, int emoticono, String emisor, String...receptor) {
 		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor);
 		return mensaje;
 	}

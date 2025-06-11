@@ -64,7 +64,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				adaptadorM.registrarMensaje(m);
 			}
 
-			// 3. Se crea la entidad (ya tiene un id)
+			// 3. Se crea la entidad (ya tiene un id) y se le pone nombre
 			eUsuario = new Entidad();
 			eUsuario.setNombre("usuario");
 
@@ -88,10 +88,50 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		}
 	}
 
-	public Usuario modificarUsuario(Usuario usuario) {
-		return null;
+	
+	
+	public void modificarUsuario(Usuario usuario) {
+		// 1. Se recupera entidad
+		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
+		
+		// 2. Se recorren sus propiedades y se actualiza su valor
+		for (Propiedad prop : eUsuario.getPropiedades()) {
+			if (prop.getNombre().equals("id")) {
+				prop.setValor(String.valueOf(usuario.getId()));
+			} else if (prop.getNombre().equals("nombre")) {
+				prop.setValor(usuario.getNombre());
+			} else if (prop.getNombre().equals("contrasena")) {
+				prop.setValor(String.valueOf(usuario.getContrasena()));
+			} else if (prop.getNombre().equals("numTelefono")) {
+				prop.setValor(String.valueOf(usuario.getNumTelefono()));
+			} else if (prop.getNombre().equals("email")) {
+				prop.setValor(String.valueOf(usuario.getEmail()));
+			} else if (prop.getNombre().equals("fechaNacimiento")) {
+				prop.setValor(dateFormat1.format(usuario.getFechaNacimiento()));
+			} else if (prop.getNombre().equals("imagenPerfil")) {
+				prop.setValor(usuario.getImagenPerfil());
+			} else if (prop.getNombre().equals("mensajeSaludo")) {
+				prop.setValor(usuario.getMensajeSaludo());
+			} else if (prop.getNombre().equals("fechaRegistro")) {
+				prop.setValor(usuario.getFechaRegistro().format(dateFormat));
+			} else if (prop.getNombre().equals("premium")) {
+				prop.setValor(String.valueOf(usuario.isPremium()));
+			} else if (prop.getNombre().equals("contactos")) {
+				prop.setValor(obtenerIdsContactos(usuario.getContactos()));
+			} else if (prop.getNombre().equals("descuento")) {
+				prop.setValor(String.valueOf(usuario.getDescuento()));
+			} else if (prop.getNombre().equals("mensajesEnviados")) {
+				prop.setValor(obtenerIdsMensajes(usuario.getMensajesEnviados()));
+			} else if (prop.getNombre().equals("mensajesRecibidos")) {
+				prop.setValor(obtenerIdsMensajes(usuario.getmensajesRecibidos()));
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
 	}
 
+	
+	
+	
 	public Usuario recuperarUsuario(int id) {
 		// 1. Si el objeto está en el pool se retorna
 		if (PoolDAO.getUnicaInstancia().contiene(id))
@@ -158,29 +198,34 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				usuario.addGrupo((Grupo) c);
 			}
 		}
-		
-		//descuento = servPersistencia.recuperarPropiedadEntidad(eUsuario, "descuento");
-		//usuario.setDescuento(descuento);
-		
+
+		// descuento = servPersistencia.recuperarPropiedadEntidad(eUsuario,
+		// "descuento");
+		// usuario.setDescuento(descuento);
+
 		mensajesEnviados = obtenerMensajesDesdeIds(
 				servPersistencia.recuperarPropiedadEntidad(eUsuario, "mensajesEnviados"));
 		for (Mensaje m : mensajesEnviados) {
 			usuario.addMensajeEnviado(m);
 		}
-		
+
 		mensajesRecibidos = obtenerMensajesDesdeIds(
 				servPersistencia.recuperarPropiedadEntidad(eUsuario, "mensajesRecibidos"));
 		for (Mensaje m : mensajesRecibidos) {
 			usuario.addMensajeRecibido(m);
 		}
-		
+
 		// 5. Se retorna el objeto
 		return usuario;
 	}
 
 	public List<Usuario> recuperarTodosUsuarios() {
-
-		return null;
+		List<Usuario> usuarios = new ArrayList<>();
+		List<Entidad> eUsuarios = servPersistencia.recuperarEntidades("usuario");
+		for(Entidad eUsuario : eUsuarios) {
+			usuarios.add(recuperarUsuario(eUsuario.getId()));
+		}
+		return usuarios;
 	}
 
 	private String obtenerIdsContactos(List<Contacto> contactos) {

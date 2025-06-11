@@ -10,7 +10,6 @@ import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import um.tds.Modelado.ContactoIndividual;
-import um.tds.Modelado.Mensaje;
 import um.tds.Modelado.Usuario;
 
 public class AdaptadorContacto implements IAdaptadorContactoDAO {
@@ -91,6 +90,11 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 	}
 
 	public List<ContactoIndividual> recuperarTodosContactos() {
-		return null;
+		List<ContactoIndividual> contactos = new ArrayList<>();
+		List<Entidad> eContactos = servPersistencia.recuperarEntidades("contacto");
+		for(Entidad eContacto : eContactos) {
+			contactos.add(recuperarContacto(eContacto.getId()));
+		}
+		return contactos;
 	}
 }

@@ -1,8 +1,5 @@
 package um.tds.Persistencia;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -11,10 +8,6 @@ import beans.Entidad;
 import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
-import um.tds.Modelado.Contacto;
-import um.tds.Modelado.ContactoIndividual;
-import um.tds.Modelado.Descuento;
-import um.tds.Modelado.Grupo;
 import um.tds.Modelado.Mensaje;
 import um.tds.Modelado.Usuario;
 
@@ -121,7 +114,12 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 	}
 
 	public List<Mensaje> recuperarTodosMensajes() {
-		return null;
+		List<Mensaje> mensajes = new ArrayList<>();
+		List<Entidad> eMensajes = servPersistencia.recuperarEntidades("mensaje");
+		for(Entidad eMensaje : eMensajes) {
+			mensajes.add(recuperarMensaje(eMensaje.getId()));
+		}
+		return mensajes;
 	}
 
 	private String obtenerIdsReceptores(List<Usuario> receptores) {

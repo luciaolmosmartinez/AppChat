@@ -17,7 +17,7 @@ public class Grupo extends Contacto {
 		return imagen;
 	}
 
-	public LinkedList<ContactoIndividual> getMiembros() {
+	public List<ContactoIndividual> getMiembros() {
 		return new LinkedList<ContactoIndividual>(miembros);
 	}
 	

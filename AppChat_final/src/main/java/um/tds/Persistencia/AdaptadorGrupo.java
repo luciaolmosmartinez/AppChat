@@ -84,8 +84,9 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 		// pool si es necesario
 		Grupo grupo = new Grupo(nombre, imagen);
 		grupo.setId(id);
-		/*grupo.setNombre(nombre);
-		grupo.setImagen(imagen);*/
+		/*
+		 * grupo.setNombre(nombre); grupo.setImagen(imagen);
+		 */
 
 		PoolDAO.getUnicaInstancia().addObjeto(id, grupo);
 
@@ -100,16 +101,34 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 	}
 
 	public List<Grupo> recuperarTodosGrupos() {
-		return null;
+		List<Grupo> grupos = new ArrayList<>();
+		List<Entidad> eGrupos = servPersistencia.recuperarEntidades("grupo");
+		for (Entidad eGrupo : eGrupos) {
+			grupos.add(recuperarGrupo(eGrupo.getId()));
+		}
+		return grupos;
 	}
 
-	public boolean agregarContacto(Grupo grupo) {
-		return false;
+	public void agregarEliminarMiembro(Grupo grupo) {
+		// 1. Se recupera entidad
+		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getId());
+
+		// 2. Se recorren sus propiedades y se actualiza su valor
+		for (Propiedad prop : eGrupo.getPropiedades()) {
+			if (prop.getNombre().equals("id")) {
+				prop.setValor(String.valueOf(grupo.getId()));
+			} else if (prop.getNombre().equals("nombre")) {
+				prop.setValor(grupo.getNombre());
+			} else if (prop.getNombre().equals("miembros")) {
+				prop.setValor(obtenerIdsMiembros(grupo.getMiembros()));
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
 	}
 
-	public boolean eliminarContacto(Grupo grupo) {
-		return false;
-	}
+	/*
+	 * public boolean eliminarGrupo(Grupo grupo) { return false; }
+	 */
 
 	private String obtenerIdsMiembros(List<ContactoIndividual> miembros) {
 		String lista = "";

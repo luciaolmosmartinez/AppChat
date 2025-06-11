@@ -11,7 +11,7 @@ public interface IAdaptadorGrupoDAO {
 
 	public List<Grupo> recuperarTodosGrupos();
 	
-	public boolean agregarContacto(Grupo grupo);
+	public void agregarEliminarMiembro(Grupo grupo);
 	
-	public boolean eliminarContacto(Grupo grupo);
+	//public boolean eliminarGrupo(Grupo grupo);
 }
