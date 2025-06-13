@@ -12,7 +12,6 @@ public class DescuentoFecha implements Descuento {
 		this.fin = fin;
 	}
 
-	@Override
 	public boolean calcularDescuento(LocalDate registroU) {
 		boolean descuento = true;
 		return descuento;

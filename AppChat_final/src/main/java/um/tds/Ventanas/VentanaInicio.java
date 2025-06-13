@@ -34,8 +34,7 @@ import javax.swing.ImageIcon;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.Point;
 
-@SuppressWarnings("serial")
-public class VentanaInicio extends JFrame implements ActionListener {
+public class VentanaInicio implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel panelSuperior, panelCentral;
@@ -150,7 +149,7 @@ public class VentanaInicio extends JFrame implements ActionListener {
 		btnRegistro.addActionListener(this);
 	}
 
-	@Override
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnInicioSesion) {
 			VentanaLogin login = new VentanaLogin();
@@ -162,7 +161,7 @@ public class VentanaInicio extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnRegistro) {
 			VentanaRegistro registro = new VentanaRegistro();
-			registro.setLocation(frmAppchat.getX(), frmAppchat.getY());
+			//registro.setLocation(frmAppchat.getX(), frmAppchat.getY());
 			frmAppchat.dispose();
 			registro.mostrarRegistro(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;

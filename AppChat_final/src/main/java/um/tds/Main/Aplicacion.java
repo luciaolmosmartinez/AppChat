@@ -6,19 +6,17 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.Properties;
 
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import com.jtattoo.plaf.fast.FastLookAndFeel;
 
-import um.tds.Controlador.Controlador;
-import um.tds.Repositorio.RepositorioUsuarios;
 import um.tds.Ventanas.*;
 
 public class Aplicacion {
 	public static void main(final String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				DataLoader.cargarDatosIniciales();
 				try {
 					Properties propiedades = new Properties();
 					propiedades.put("windowTitleBackgroundColor", "254 127 154");

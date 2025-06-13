@@ -45,8 +45,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.DropMode;
 
-@SuppressWarnings("serial")
-public class VentanaAñadirContacto extends JFrame implements ActionListener {
+public class VentanaAñadirContacto implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panel, panel_1;
@@ -174,7 +173,6 @@ public class VentanaAñadirContacto extends JFrame implements ActionListener {
 		panel_1.add(btnNewButton_1, gbc_btnNewButton_1);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 
 	}

@@ -13,6 +13,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
+import um.tds.Repositorio.RepositorioUsuarios;
+
 public class MensajeCellRenderer extends JPanel implements ListCellRenderer<Mensaje> {
 	private static final long serialVersionUID = 1L;
 	private JLabel nameLabel;
@@ -33,7 +35,7 @@ public class MensajeCellRenderer extends JPanel implements ListCellRenderer<Mens
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Mensaje> list, Mensaje mensaje, int index,
 			boolean isSelected, boolean cellHasFocus) {
-		nameLabel.setText(mensaje.getEmisor().getNombre());
+		nameLabel.setText(RepositorioUsuarios.getUnicaInstancia().getUsuario(mensaje.getEmisor()).getNombre());
 		messageLabel.setText(mensaje.getTexto());
 
 		try {

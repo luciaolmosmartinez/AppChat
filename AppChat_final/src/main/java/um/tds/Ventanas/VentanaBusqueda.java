@@ -25,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JCheckBox;
 
-@SuppressWarnings("serial")
 public class VentanaBusqueda extends JFrame implements ActionListener {
 
 	private JFrame frmAppchat;
@@ -150,7 +149,6 @@ public class VentanaBusqueda extends JFrame implements ActionListener {
 		panel_1.add(list, gbc_list);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 
 	}

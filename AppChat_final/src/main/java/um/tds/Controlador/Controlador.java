@@ -1,5 +1,6 @@
 package um.tds.Controlador;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -57,24 +58,24 @@ public class Controlador { // clase controlador
 	}
 
 	public boolean registrarUsuario(String nombre, String telefono, String correo, char[] contrasena,
-			Date fecha, String saludo, String imagen) {
+			LocalDate fecha, String saludo, String imagen) {
 		Usuario usuario = new Usuario(nombre, telefono, correo, contrasena, fecha, saludo, imagen);
 		adaptadorUsuario.registrarUsuario(usuario);
 		return repoU.addUsuario(usuario);
 	}
 
-	public void registrarMensaje(String texto, int emoticono, Usuario emisor, Usuario receptor) {
-		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor);
+	public void registrarMensaje(String texto, int emoticono, String emisor, String receptor, TipoReceptor tipoReceptor) {
+		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor, tipoReceptor);
 
 		// Persistir mensaje
 		adaptadorMensaje.registrarMensaje(mensaje);
 
 		// Se recuperan los usuarios relaccionados con el mensaje y se les añade mensaje
-		Usuario usuarioE = repoU.getUsuario(emisor.getNumTelefono());
-		Usuario usuarioR = repoU.getUsuario(receptor.getNumTelefono());
+		Usuario usuarioE = repoU.getUsuario(emisor);
+		Usuario usuarioR = repoU.getUsuario(receptor);
 
-		usuarioE.addMensajeEnviado(mensaje);
-		usuarioR.addMensajeRecibido(mensaje);
+		usuarioE.addMensaje(mensaje);
+		usuarioR.addMensaje(mensaje);
 
 		// Actualizar usuario almacenado
 		adaptadorUsuario.modificarUsuario(usuarioE);
@@ -125,8 +126,10 @@ public class Controlador { // clase controlador
 	}
 
 	// Funciones antiguas
-	public void enviarMensaje(String texto, int emoticono, Usuario... receptor) {
-		usuarioActual.enviarMensaje(texto, emoticono, receptor);
+	public void enviarMensaje(String texto, int emoticono, String receptor, TipoReceptor tipoReceptor) {
+		Mensaje mensaje = usuarioActual.enviarMensaje(texto, emoticono, receptor, tipoReceptor);
+		adaptadorMensaje.registrarMensaje(mensaje);
+		//repoU.addMensaje(mensaje);
 	}
 
 	public void crearPDF() {

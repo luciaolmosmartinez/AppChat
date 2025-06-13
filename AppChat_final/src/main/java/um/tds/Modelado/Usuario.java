@@ -9,17 +9,16 @@ public class Usuario {
 	private char[] contrasena;
 	private String numTelefono;
 	private String email;
-	private Date fechaNacimiento;
+	private LocalDate fechaNacimiento;
 	private String imagenPerfil; // sera el link de la imagen
 	private String mensajeSaludo; // deberia ser de tipo mensaje?
 	private LocalDate fechaRegistro; // fecha en la que el usuario se registro, para poder calcular el descuento
 	private boolean premium;
 	private List<Contacto> contactos; // lista de contactos que tiene el usuario
 	private Descuento descuento;
-	private Map<String, Mensaje> mensajesEnviados; // Mapa con el telefono a quién lo envió y el mensaje
-	private Map<String, Mensaje> mensajesRecibidos; // Mapa con el telefono de quién lo recivió y el mensaje
+	private List<Mensaje> mensajes; // Lista con los mensajes que ha recibido o enviado el usuario
 
-	public Usuario(String nombre, String numTelefono, String email, char[] contrasena, Date fechaNacimiento,
+	public Usuario(String nombre, String numTelefono, String email, char[] contrasena, LocalDate fechaNacimiento,
 			String mensajeSaludo, String imagenPerfil) {
 		this.id = 0; // Se actualizará al registrarse en la base de datos
 		this.nombre = nombre;
@@ -31,7 +30,7 @@ public class Usuario {
 		this.fechaRegistro = LocalDate.now();
 		this.imagenPerfil = imagenPerfil;
 		this.premium = false;
-		this.contactos = new LinkedList<>();
+		this.contactos = new LinkedList<Contacto>();
 	}
 
 	public int getId() {
@@ -58,7 +57,7 @@ public class Usuario {
 		return email;
 	}
 
-	public Date getFechaNacimiento() {
+	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
@@ -91,12 +90,8 @@ public class Usuario {
 		return new LinkedList<Contacto>(contactos);
 	}
 
-	public Map<String, Mensaje> getMensajesEnviados() {
-		return new HashMap<String, Mensaje>(mensajesEnviados);
-	}
-
-	public Map<String, Mensaje> getmensajesRecibidos() {
-		return new HashMap<String, Mensaje>(mensajesRecibidos);
+	public List<Mensaje> getMensajes() {
+		return new LinkedList<Mensaje>(mensajes);
 	}
 
 	public void setNombre(String nombre) {
@@ -115,7 +110,7 @@ public class Usuario {
 		this.email = email;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
@@ -139,13 +134,8 @@ public class Usuario {
 		this.descuento = descuento;
 	}
 
-	public void addMensajeEnviado(Mensaje mensaje) {
-		mensaje.getReceptor().stream()
-							 .forEach(u -> mensajesEnviados.put(u.getNumTelefono(), mensaje));
-	}
-
-	public void addMensajeRecibido(Mensaje mensaje) {
-		mensajesRecibidos.put(mensaje.getEmisor().getNumTelefono(), mensaje);
+	public void addMensaje(Mensaje mensaje) {
+		mensajes.add(mensaje);
 	}
 
 	// igual que la siguiente pero sin stream
@@ -178,10 +168,10 @@ public class Usuario {
 		return contactos.add(grupo);
 	}
 
-	public Mensaje enviarMensaje(String texto, int emoticono, Usuario... receptor) {
-		Mensaje mensaje = new Mensaje(texto, emoticono, this, receptor);
-		mensaje = mensaje.enviarMensaje(texto, emoticono, this, receptor);
-		return mensaje;
+	public Mensaje enviarMensaje(String texto, int emoticono, String receptor, TipoReceptor tipoReceptor) {
+		return new Mensaje(texto, emoticono, this.getNumTelefono(), receptor, tipoReceptor);
+		//mensaje = mensaje.enviarMensaje(texto, emoticono, this.getNumTelefono(), receptor, tipoReceptor);
+		//return mensaje;
 	}
 
 }

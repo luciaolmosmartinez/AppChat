@@ -14,7 +14,8 @@ public class Mensaje {
 	private String emisor; //numero de telefono
 	private String receptor; //numero de telefono de quien lo reciba
 	private LocalDateTime fechaHora;
-
+	private TipoReceptor tipoReceptor;
+	
 	public int getLength() {
 		return this.texto.length();
 	}
@@ -27,15 +28,13 @@ public class Mensaje {
 		this("", emoticono, emisor, receptor);
 	}*/
 
-	public Mensaje(String texto, int emoticono, String emisor, String...receptores) {
+	public Mensaje(String texto, int emoticono, String emisor, String receptor, TipoReceptor tipoReceptor) {
 		this.texto = texto;
 		this.emoticono = emoticono;
 		this.emisor = emisor;
-		this.receptor = new LinkedList<String>();
-		for (String r : receptores) {
-			receptor.add(r);
-		}
+		this.receptor = receptor;
 		this.fechaHora = LocalDateTime.now();
+		this.tipoReceptor = tipoReceptor;
 		this.id = 0;	//Se actualizará al registrarse en la base de datos
 	}
 
@@ -55,14 +54,19 @@ public class Mensaje {
 		return emisor;
 	}
 
-	public List<String> getReceptor() {
-		return new LinkedList<String>(receptor);
+	public String getReceptor() {
+		return receptor;
 	}
 
 	public LocalDateTime getFechaHora() {
 		return fechaHora;
 	}
 
+	public TipoReceptor getTipoReceptor() {
+		return tipoReceptor;
+	}
+
+	
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -83,13 +87,17 @@ public class Mensaje {
 		this.emisor = emisor;
 	}
 
-	public void addReceptor(String receptor) {
-		this.receptor.add(receptor);
+	public void setReceptor(String receptor) {
+		this.receptor = receptor;
 	}
 
-	public Mensaje enviarMensaje(String texto, int emoticono, String emisor, String...receptor) {
-		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor);
-		return mensaje;
+	public void setTipoReceptor(TipoReceptor tipoReceptor) {
+		this.tipoReceptor = tipoReceptor;
 	}
+
+	/*public Mensaje enviarMensaje(String texto, int emoticono, String emisor, String receptor, TipoReceptor tipoReceptor) {
+		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor, tipoReceptor);
+		return mensaje;
+	}*/
 
 }

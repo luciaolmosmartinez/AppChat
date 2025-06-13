@@ -9,6 +9,7 @@ import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import um.tds.Modelado.Mensaje;
+import um.tds.Modelado.TipoReceptor;
 import um.tds.Modelado.Usuario;
 
 public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
@@ -56,8 +57,9 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		eMensaje.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("texto", mensaje.getTexto()),
 				new Propiedad("emoticono", String.valueOf(mensaje.getEmoticono())),
 				new Propiedad("emisor", String.valueOf(mensaje.getEmisor())),
-				new Propiedad("receptor", obtenerIdsReceptores(mensaje.getReceptor())),
-				new Propiedad("fechaHora", mensaje.getFechaHora().format(dateFormat)))));
+				new Propiedad("receptor", (mensaje.getReceptor())),
+				new Propiedad("fechaHora", mensaje.getFechaHora().format(dateFormat)),
+				new Propiedad("tipoReceptor", String.valueOf(mensaje.getTipoReceptor())))));
 
 		// 5. Se registra la entidad y se asocia id al objeto almacenado.
 		eMensaje = servPersistencia.registrarEntidad(eMensaje);
@@ -73,9 +75,10 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		// primitivo
 		String texto = null;
 		int emoticono = -1;
-		Usuario emisor = null;
-		List<Usuario> receptor = null;
+		String emisor = null;
+		String receptor = null;
 		LocalDateTime fechaHora = null;
+		TipoReceptor tipoReceptor = null;
 
 		// Recupero la entidad
 		Entidad eMensaje = servPersistencia.recuperarEntidad(id);
@@ -83,13 +86,15 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		// Recupero las propiedades de tipo primitivo
 		texto = servPersistencia.recuperarPropiedadEntidad(eMensaje, "texto");
 		emoticono = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eMensaje, "emoticono"));
+		emisor = servPersistencia.recuperarPropiedadEntidad(eMensaje, "emisor");
+		receptor = servPersistencia.recuperarPropiedadEntidad(eMensaje, "receptor");
 		fechaHora = LocalDateTime.parse(servPersistencia.recuperarPropiedadEntidad(eMensaje, "fechaHora"));
 
 
 		// 3. Se crea el objeto, se inicializa con propiedades anteriores y se añade al
 		// pool si es necesario
 		//Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor);
-		Mensaje mensaje = new Mensaje(texto, emoticono, emisor);
+		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor, tipoReceptor);
 		mensaje.setId(id);
 		/*mensaje.setTexto(texto);
 		mensaje.setEmoticono(emoticono);*/
@@ -98,16 +103,9 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		PoolDAO.getUnicaInstancia().addObjeto(id, mensaje);
 
 		// 4. Se recuperan los objetos referenciados y se actualiza el objeto
-		AdaptadorUsuario adaptadorUsuario = AdaptadorUsuario.getUnicaInstancia();
-		int idUsuario = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eMensaje, "emisor"));
-		emisor = adaptadorUsuario.recuperarUsuario(idUsuario);
-		mensaje.setEmisor(emisor);
-
-		receptor = obtenerReceptoresDesdeIds(
-				servPersistencia.recuperarPropiedadEntidad(eMensaje, "receptor"));
-		for (Usuario u : receptor) {
-			mensaje.addReceptor(u);
-		}
+		//tipoReceptor = servPersistencia.recuperarPropiedadEntidad(eMensaje,"tipoReceptor");
+		//mensaje.setTipoReceptor(tipoReceptor);
+		
 
 		// 5. Se retorna el objeto
 		return mensaje;
@@ -120,23 +118,5 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 			mensajes.add(recuperarMensaje(eMensaje.getId()));
 		}
 		return mensajes;
-	}
-
-	private String obtenerIdsReceptores(List<Usuario> receptores) {
-		String lista = "";
-		for (Usuario u : receptores) {
-			lista += u.getId() + " ";
-		}
-		return lista.trim();
-	}
-
-	private List<Usuario> obtenerReceptoresDesdeIds(String lista) {
-		List<Usuario> receptores = new LinkedList<Usuario>();
-		StringTokenizer strTok = new StringTokenizer(lista, " ");
-		AdaptadorUsuario adaptadorU = AdaptadorUsuario.getUnicaInstancia();
-		while (strTok.hasMoreTokens()) {
-			receptores.add(adaptadorU.recuperarUsuario(Integer.valueOf((String) strTok.nextElement())));
-		}
-		return receptores;
 	}
 }

@@ -14,12 +14,10 @@ import um.tds.Modelado.*;
 public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	private static ServicioPersistencia servPersistencia;
 	private static AdaptadorUsuario unicaInstancia = null;
-	private SimpleDateFormat dateFormat1;
 	private DateTimeFormatter dateFormat;
 
 	private AdaptadorUsuario() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
-		dateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 		dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	}
@@ -57,10 +55,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				}
 			}
 			AdaptadorMensaje adaptadorM = AdaptadorMensaje.getUnicaInstancia();
-			for (Mensaje m : usuario.getMensajesEnviados().values()) {
-				adaptadorM.registrarMensaje(m);
-			}
-			for (Mensaje m : usuario.getmensajesRecibidos().values()) {
+			for (Mensaje m : usuario.getMensajes()) {
 				adaptadorM.registrarMensaje(m);
 			}
 
@@ -72,15 +67,14 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 			eUsuario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre", usuario.getNombre()),
 					new Propiedad("contrasena", String.valueOf(usuario.getContrasena())),
 					new Propiedad("numTelefono", usuario.getNumTelefono()), new Propiedad("email", usuario.getEmail()),
-					new Propiedad("fechaNacimiento", dateFormat1.format(usuario.getFechaNacimiento())),
+					new Propiedad("fechaNacimiento", usuario.getFechaNacimiento().format(dateFormat)),
 					new Propiedad("imagenPerfil", usuario.getImagenPerfil()),
 					new Propiedad("mensajeSaludo", usuario.getMensajeSaludo()),
 					new Propiedad("fechaRegistro", usuario.getFechaRegistro().format(dateFormat)),
 					new Propiedad("premium", String.valueOf(usuario.isPremium())),
 					new Propiedad("contactos", obtenerIdsContactos(usuario.getContactos())),
 					new Propiedad("descuento", String.valueOf(usuario.getDescuento())),
-					new Propiedad("mensajesEnviados", obtenerIdsMensajes(usuario.getMensajesEnviados())),
-					new Propiedad("mensajesRecibidos", obtenerIdsMensajes(usuario.getmensajesRecibidos())))));
+					new Propiedad("mensajesEnviados", obtenerIdsMensajes(usuario.getMensajes())))));
 
 			// 5. Se registra la entidad y se asocia id al objeto almacenado.
 			eUsuario = servPersistencia.registrarEntidad(eUsuario);
@@ -107,7 +101,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 			} else if (prop.getNombre().equals("email")) {
 				prop.setValor(String.valueOf(usuario.getEmail()));
 			} else if (prop.getNombre().equals("fechaNacimiento")) {
-				prop.setValor(dateFormat1.format(usuario.getFechaNacimiento()));
+				prop.setValor(usuario.getFechaNacimiento().format(dateFormat));
 			} else if (prop.getNombre().equals("imagenPerfil")) {
 				prop.setValor(usuario.getImagenPerfil());
 			} else if (prop.getNombre().equals("mensajeSaludo")) {
@@ -121,10 +115,8 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 			} else if (prop.getNombre().equals("descuento")) {
 				prop.setValor(String.valueOf(usuario.getDescuento()));
 			} else if (prop.getNombre().equals("mensajesEnviados")) {
-				prop.setValor(obtenerIdsMensajes(usuario.getMensajesEnviados()));
-			} else if (prop.getNombre().equals("mensajesRecibidos")) {
-				prop.setValor(obtenerIdsMensajes(usuario.getmensajesRecibidos()));
-			}
+				prop.setValor(obtenerIdsMensajes(usuario.getMensajes()));
+			} 
 			servPersistencia.modificarPropiedad(prop);
 		}
 	}
@@ -143,15 +135,14 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		char[] contrasena;
 		String numTelefono = null;
 		String email = null;
-		Date fechaNacimiento = null;
+		LocalDate fechaNacimiento = null;
 		String imagenPerfil = null;
 		String mensajeSaludo = null;
 		LocalDate fechaRegistro = null;
 		boolean premium;
 		List<Contacto> contactos;
 		Descuento descuento;
-		List<Mensaje> mensajesEnviados;
-		List<Mensaje> mensajesRecibidos;
+		List<Mensaje> mensajes;
 
 		// Recupero la entidad
 		Entidad eUsuario = servPersistencia.recuperarEntidad(id);
@@ -161,12 +152,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		contrasena = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contrasena").toCharArray();
 		numTelefono = servPersistencia.recuperarPropiedadEntidad(eUsuario, "numTelefono");
 		email = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
-		try {
-			fechaNacimiento = dateFormat1
-					.parse(servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechaNacimiento"));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		fechaNacimiento = LocalDate.parse(servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechaNacimiento"));
 		imagenPerfil = servPersistencia.recuperarPropiedadEntidad(eUsuario, "imagenPerfil");
 		mensajeSaludo = servPersistencia.recuperarPropiedadEntidad(eUsuario, "mensajeSaludo");
 		fechaRegistro = LocalDate.parse(servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechaRegistro"));
@@ -199,28 +185,22 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 			}
 		}
 
-		// descuento = servPersistencia.recuperarPropiedadEntidad(eUsuario,
-		// "descuento");
+		// descuento = servPersistencia.recuperarPropiedadEntidad(eUsuario,"descuento");
 		// usuario.setDescuento(descuento);
 
-		mensajesEnviados = obtenerMensajesDesdeIds(
+		mensajes = obtenerMensajesDesdeIds(
 				servPersistencia.recuperarPropiedadEntidad(eUsuario, "mensajesEnviados"));
-		for (Mensaje m : mensajesEnviados) {
-			usuario.addMensajeEnviado(m);
+		for (Mensaje m : mensajes) {
+			usuario.addMensaje(m);
 		}
 
-		mensajesRecibidos = obtenerMensajesDesdeIds(
-				servPersistencia.recuperarPropiedadEntidad(eUsuario, "mensajesRecibidos"));
-		for (Mensaje m : mensajesRecibidos) {
-			usuario.addMensajeRecibido(m);
-		}
 
 		// 5. Se retorna el objeto
 		return usuario;
 	}
 
 	public List<Usuario> recuperarTodosUsuarios() {
-		List<Usuario> usuarios = new ArrayList<>();
+		List<Usuario> usuarios = new ArrayList<Usuario>();
 		List<Entidad> eUsuarios = servPersistencia.recuperarEntidades("usuario");
 		for(Entidad eUsuario : eUsuarios) {
 			usuarios.add(recuperarUsuario(eUsuario.getId()));
@@ -246,9 +226,9 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		return contactos;
 	}
 
-	private String obtenerIdsMensajes(Map<String, Mensaje> mensajes) {
+	private String obtenerIdsMensajes(List<Mensaje> mensajes) {
 		String lista = "";
-		for (Mensaje m : mensajes.values()) {
+		for (Mensaje m : mensajes) {
 			lista += m.getId() + " ";
 		}
 		return lista.trim();
@@ -258,7 +238,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		List<Mensaje> mensajes = new LinkedList<Mensaje>();
 		StringTokenizer strTok = new StringTokenizer(lista, " ");
 		AdaptadorMensaje adaptadorM = AdaptadorMensaje.getUnicaInstancia();
-
 		while (strTok.hasMoreTokens()) {
 			mensajes.add(adaptadorM.recuperarMensaje(Integer.valueOf((String) strTok.nextElement())));
 		}

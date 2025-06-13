@@ -27,8 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 
-@SuppressWarnings("serial")
-public class VentanaPerfil extends JFrame implements ActionListener {
+public class VentanaPerfil implements ActionListener {
 
 	private JFrame frame;
 	private JTextField txtnombreDelPerfil, txtnmeroDeTelfono, txtemail, txtapellidos;
@@ -267,7 +266,6 @@ public class VentanaPerfil extends JFrame implements ActionListener {
 		panel.add(btnNewButton_2, gbc_btnNewButton_2);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 
 	}

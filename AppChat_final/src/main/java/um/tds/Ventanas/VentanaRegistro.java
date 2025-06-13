@@ -27,6 +27,8 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -38,14 +40,13 @@ import java.awt.Font;
 import java.awt.Dimension;
 import javax.swing.border.TitledBorder;
 
-@SuppressWarnings("serial")
-public class VentanaRegistro extends JFrame implements ActionListener {
+public class VentanaRegistro implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panelBotones;
 	private JTextField textNombre, textApellidos, textTelefono, textImagen, textEmail;
 	private JLabel fecha, saludo, lblEmail, imagen, nombre, foto, apellidos, telefono, contraseña, confirmar, titulo,
-			lblErrorVacio, lblErrorRepe, lblErrorContrasenas, lblErrorEmail, lblErrorTelf;
+			/*lblErrorVacio, lblErrorRepe, lblErrorContrasenas,*/ lblError/*, lblErrorTelf*/;
 	private JTextArea testSaludo;
 	private JButton cancelar, aceptar;
 	private JScrollPane scrollPane;
@@ -55,7 +56,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 			gbc_textTelefono, gbc_contraseña, gbc_confirmar, gbc_lblEmail, gbc_fecha, gbc_dateChooser, gbc_saludo,
 			gbc_scrollPane, gbc_imagen, gbc_foto, gbc_panelBotones, gbc_textImagen, gbc_titulo, gbc_passContrasena,
 			gbc_passContrasenaRepe, gbc_textEmail, gbc_lblErrorVacio, gbc_lblErrorRepe, gbc_lblErrorContrasenas,
-			gbc_lblErrorEmail, gbc_lblErrorTelf;
+			gbc_lblError, gbc_lblErrorTelf;
 	private Component horizontalGlue;
 	private JPasswordField passContrasena, passContrasenaRepe;
 
@@ -111,55 +112,15 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 		gbc_titulo.gridy = 0;
 		contentPane.add(titulo, gbc_titulo);
 
-		lblErrorVacio = new JLabel("Se deben rellenar todos los campos marcados con *");
-		lblErrorVacio.setForeground(new Color(255, 0, 0));
-		gbc_lblErrorVacio = new GridBagConstraints();
-		gbc_lblErrorVacio.gridwidth = 3;
-		gbc_lblErrorVacio.insets = new Insets(0, 0, 5, 5);
-		gbc_lblErrorVacio.gridx = 2;
-		gbc_lblErrorVacio.gridy = 1;
-		contentPane.add(lblErrorVacio, gbc_lblErrorVacio);
-		lblErrorVacio.setVisible(false);
-
-		lblErrorRepe = new JLabel("El telefono y/o el correo electrónico ya está registrado");
-		lblErrorRepe.setForeground(new Color(255, 0, 0));
-		gbc_lblErrorRepe = new GridBagConstraints();
-		gbc_lblErrorRepe.gridwidth = 3;
-		gbc_lblErrorRepe.insets = new Insets(0, 0, 5, 5);
-		gbc_lblErrorRepe.gridx = 2;
-		gbc_lblErrorRepe.gridy = 2;
-		contentPane.add(lblErrorRepe, gbc_lblErrorRepe);
-		lblErrorRepe.setVisible(false);
-
-		lblErrorContrasenas = new JLabel("Las contraseñas no coinciden");
-		lblErrorContrasenas.setForeground(new Color(255, 0, 0));
-		gbc_lblErrorContrasenas = new GridBagConstraints();
-		gbc_lblErrorContrasenas.gridwidth = 3;
-		gbc_lblErrorContrasenas.insets = new Insets(0, 0, 5, 5);
-		gbc_lblErrorContrasenas.gridx = 2;
-		gbc_lblErrorContrasenas.gridy = 3;
-		contentPane.add(lblErrorContrasenas, gbc_lblErrorContrasenas);
-		lblErrorContrasenas.setVisible(false);
-
-		lblErrorEmail = new JLabel("La dirección de correo electrónico no existe");
-		lblErrorEmail.setForeground(new Color(255, 0, 0));
-		gbc_lblErrorEmail = new GridBagConstraints();
-		gbc_lblErrorEmail.gridwidth = 3;
-		gbc_lblErrorEmail.insets = new Insets(0, 0, 5, 5);
-		gbc_lblErrorEmail.gridx = 2;
-		gbc_lblErrorEmail.gridy = 4;
-		contentPane.add(lblErrorEmail, gbc_lblErrorEmail);
-		lblErrorEmail.setVisible(false);
-
-		lblErrorTelf = new JLabel("El teléfono no existe");
-		lblErrorTelf.setForeground(new Color(255, 0, 0));
-		gbc_lblErrorTelf = new GridBagConstraints();
-		gbc_lblErrorTelf.gridwidth = 3;
-		gbc_lblErrorTelf.insets = new Insets(0, 0, 5, 5);
-		gbc_lblErrorTelf.gridx = 2;
-		gbc_lblErrorTelf.gridy = 5;
-		contentPane.add(lblErrorTelf, gbc_lblErrorTelf);
-		lblErrorTelf.setVisible(false);
+		lblError = new JLabel("La dirección de correo electrónico no existe");
+		lblError.setForeground(new Color(255, 0, 0));
+		gbc_lblError = new GridBagConstraints();
+		gbc_lblError.gridwidth = 3;
+		gbc_lblError.insets = new Insets(0, 0, 5, 5);
+		gbc_lblError.gridx = 2;
+		gbc_lblError.gridy = 4;
+		contentPane.add(lblError, gbc_lblError);
+		lblError.setVisible(false);
 
 		nombre = new JLabel("<html><span style='color:red;'>*</span>Nombre:</html>");
 		nombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -270,7 +231,7 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 		contentPane.add(textEmail, gbc_textEmail);
 		textEmail.setColumns(10);
 
-		fecha = new JLabel("<html><span style='color:red;'>*</span>Fecha de nacimiento:</html>");
+		fecha = new JLabel("Fecha de nacimiento:");
 		fecha.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		gbc_fecha = new GridBagConstraints();
 		gbc_fecha.anchor = GridBagConstraints.EAST;
@@ -393,33 +354,29 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 		return Pattern.matches("\\d{9}", telf);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == aceptar) { // quitar todos los errores que puedan haber aparecido anteriormente?
-			if (lblErrorRepe.isVisible()) {
-				lblErrorRepe.setVisible(false);
-			} else if (lblErrorContrasenas.isVisible()) {
-				lblErrorContrasenas.setVisible(false);
-			} else if (lblErrorEmail.isVisible()) {
-				lblErrorEmail.setVisible(false);
-			} else if (lblErrorTelf.isVisible()) {
-				lblErrorTelf.setVisible(false);
-			} else if (lblErrorVacio.isVisible()) {
-				lblErrorVacio.setVisible(false);
-			}
+			if (lblError.isVisible()) {
+				lblError.setVisible(false);
+			} 
 
 			if (textNombre.getText().equals("") || textApellidos.getText().equals("")
 					|| textTelefono.getText().equals("") || textEmail.getText().equals("")
 					|| passContrasena.getPassword().length == 0 || passContrasenaRepe.getPassword().length == 0) {
-				lblErrorVacio.setVisible(true);
+				lblError.setText("Se deben rellenar todos los campos marcados con *");
+				lblError.setVisible(true);
 			} else {
 				if (esCorreoValido(textEmail.getText())) {
 					if (esTelfValido(textTelefono.getText())) {
 						if (Arrays.equals(passContrasena.getPassword(), passContrasenaRepe.getPassword())) {
-							if (dateChooser.getDate().before(new Date())) {
+							LocalDate fechaNacimiento = null;
+							if (dateChooser.getDate()!=null) {
+								fechaNacimiento = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+							}
+							if (fechaNacimiento==null || fechaNacimiento.isBefore(LocalDate.now())) {
 								if (Controlador.getUnicaInstancia().registrarUsuario(textNombre.getText() + " " + textApellidos.getText(),
 										textTelefono.getText(), textEmail.getText(), passContrasena.getPassword(),
-										dateChooser.getDate(), testSaludo.getText(), textImagen.getText())) {
+										fechaNacimiento, testSaludo.getText(), textImagen.getText())) {
 									VentanaLogin login = new VentanaLogin();
 									frmAppchat.dispose();
 									login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
@@ -427,31 +384,35 @@ public class VentanaRegistro extends JFrame implements ActionListener {
 								} else {
 									textTelefono.setText("");
 									textEmail.setText("");
-									lblErrorRepe.setVisible(true);
+									lblError.setText("El telefono y/o el correo electrónico ya está registrado");
+									lblError.setVisible(true);
 								}
 							} else {
-								lblErrorTelf.setText("La fecha de nacimiento no puede ser posterior a la fecha actual.");
-								lblErrorTelf.setVisible(true);
+								lblError.setText("La fecha de nacimiento no puede ser posterior a la fecha actual.");
+								lblError.setVisible(true);
 							}
 
 						} else {
 							passContrasena.setText("");
 							passContrasenaRepe.setText("");
-							lblErrorContrasenas.setVisible(true);
+							lblError.setText("Las contraseñas no coinciden");
+							lblError.setVisible(true);
 						}
 					} else {
 						textTelefono.setText("");
-						lblErrorTelf.setVisible(true);
+						lblError.setText("El teléfono no existe");
+						lblError.setVisible(true);
 					}
 				} else {
 					textEmail.setText("");
-					lblErrorEmail.setVisible(true);
+					lblError.setText("La dirección de correo electrónico no existe");
+					lblError.setVisible(true);
 				}
 			}
 		} else { // btnCancelar
 			VentanaInicio inicio = new VentanaInicio();
 			inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
-			inicio.setLocationRelativeTo(frmAppchat);
+			//inicio.setLocationRelativeTo(frmAppchat);
 			frmAppchat.dispose();
 			return;
 		}

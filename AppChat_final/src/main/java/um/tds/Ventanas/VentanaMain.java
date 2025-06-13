@@ -253,7 +253,6 @@ public class VentanaMain implements ActionListener {
 		btnEmoticono.addActionListener(this);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Si no hay texto meter "" si no hay emoticono meter -1, no pueden estar los dos
 		// añadir foto gato en botón emoticono

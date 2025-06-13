@@ -33,7 +33,6 @@ import java.awt.event.ActionEvent;
 import java.awt.Cursor;
 import java.awt.event.WindowAdapter;
 
-@SuppressWarnings("serial")
 public class VentanaLogin extends JFrame implements ActionListener {
 
 	private JFrame frmAppchat;
@@ -240,7 +239,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 		return Pattern.matches("\\d{9}", telf);
 	}
 
-	@Override
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnAcceder) {
 			if (lblErrorMal.isVisible()) {
@@ -257,7 +256,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 				if (esTelfValido(textTelf.getText())) {
 					if (Controlador.getUnicaInstancia().iniciarSesion(textTelf.getText(), password.getPassword())) {
 						VentanaMain main = new VentanaMain();
-						main.setLocationRelativeTo(frmAppchat);
+						//main.setLocationRelativeTo(frmAppchat);
 						frmAppchat.dispose();
 						main.mostrarMain(frmAppchat.getSize(),frmAppchat.getLocation());
 					} else {
@@ -273,7 +272,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == btnCancelar) {
 			VentanaInicio inicio = new VentanaInicio();
-			inicio.setLocationRelativeTo(frmAppchat);
+			//inicio.setLocationRelativeTo(frmAppchat);
 			frmAppchat.dispose();
 			inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;
