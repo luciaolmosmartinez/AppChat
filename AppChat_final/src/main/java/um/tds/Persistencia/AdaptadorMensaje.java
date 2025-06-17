@@ -10,7 +10,6 @@ import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import um.tds.Modelado.Mensaje;
 import um.tds.Modelado.TipoReceptor;
-import um.tds.Modelado.Usuario;
 
 public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 	private static ServicioPersistencia servPersistencia;
@@ -41,13 +40,6 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		if (eMensaje != null) {
 			return;
 		}
-
-		// 2. Se registran sus objetos agregados.
-		// NO SE SI HACE FALTA
-		/*
-		 * AdaptadorUsuario adaptadorU = AdaptadorUsuario.getUnicaInstancia(); for
-		 * (Usuario u : Mensaje.getReceptor()) { adaptadorU.registrarUsuario(u); }
-		 */
 
 		// 3. Se crea la entidad (ya tiene un id)
 		eMensaje = new Entidad();

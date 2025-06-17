@@ -6,18 +6,19 @@ public abstract class Contacto {
 
 	public Contacto(String nombre) {
 		this.nombre = nombre;
-		this.id = 0;	//Se actualizará al registrarse en la base de datos
+		this.id = 0; // Se actualizará al registrarse en la base de datos
 	}
 
 	public int getId() {
 		return id;
 	}
-	
+
+	public String getNombre() {
+		return nombre;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
-	}	
 }

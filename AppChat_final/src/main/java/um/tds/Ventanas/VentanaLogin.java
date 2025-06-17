@@ -18,9 +18,6 @@ import javax.swing.border.TitledBorder;
 
 import um.tds.Controlador.Controlador;
 
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.event.WindowEvent;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -31,9 +28,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Cursor;
-import java.awt.event.WindowAdapter;
 
-public class VentanaLogin extends JFrame implements ActionListener {
+public class VentanaLogin implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPasswordField password;

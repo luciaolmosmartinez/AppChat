@@ -30,7 +30,6 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 import javax.swing.JPasswordField;
@@ -45,8 +44,7 @@ public class VentanaRegistro implements ActionListener {
 	private JFrame frmAppchat;
 	private JPanel contentPane, panelBotones;
 	private JTextField textNombre, textApellidos, textTelefono, textImagen, textEmail;
-	private JLabel fecha, saludo, lblEmail, imagen, nombre, foto, apellidos, telefono, contraseña, confirmar, titulo,
-			/*lblErrorVacio, lblErrorRepe, lblErrorContrasenas,*/ lblError/*, lblErrorTelf*/;
+	private JLabel fecha, saludo, lblEmail, imagen, nombre, foto, apellidos, telefono, contraseña, confirmar, titulo, lblError;
 	private JTextArea testSaludo;
 	private JButton cancelar, aceptar;
 	private JScrollPane scrollPane;
@@ -55,8 +53,7 @@ public class VentanaRegistro implements ActionListener {
 	private GridBagConstraints gbc_nombre, gbc_textNombre, gbc_apellidos, gbc_textApellidos, gbc_telefono,
 			gbc_textTelefono, gbc_contraseña, gbc_confirmar, gbc_lblEmail, gbc_fecha, gbc_dateChooser, gbc_saludo,
 			gbc_scrollPane, gbc_imagen, gbc_foto, gbc_panelBotones, gbc_textImagen, gbc_titulo, gbc_passContrasena,
-			gbc_passContrasenaRepe, gbc_textEmail, gbc_lblErrorVacio, gbc_lblErrorRepe, gbc_lblErrorContrasenas,
-			gbc_lblError, gbc_lblErrorTelf;
+			gbc_passContrasenaRepe, gbc_textEmail, gbc_lblError;
 	private Component horizontalGlue;
 	private JPasswordField passContrasena, passContrasenaRepe;
 
@@ -416,9 +413,6 @@ public class VentanaRegistro implements ActionListener {
 			frmAppchat.dispose();
 			return;
 		}
-	}
-
-	private static void addPopup(Component component, final JPopupMenu popup) {
 	}
 
 }

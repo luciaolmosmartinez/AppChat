@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import beans.Entidad;
 import um.tds.Modelado.Usuario;
 import um.tds.Persistencia.DAOException;
 import um.tds.Persistencia.FactoriaDAO;
@@ -66,7 +65,7 @@ public class RepositorioUsuarios {
 
 	public Usuario comprobarUsuario(String telefono, char[] contrasena) {
 		return usuarios.values().stream().filter(
-				u -> u.getNumTelefono() == telefono && Arrays.equals(u.getContrasena(), contrasena))
+				u -> u.getNumTelefono().equals(telefono) && Arrays.equals(u.getContrasena(), contrasena))
 				.findFirst().orElse(null);
 	}
 }

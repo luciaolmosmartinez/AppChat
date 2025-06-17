@@ -2,6 +2,7 @@ package um.tds.Modelado;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Usuario {
 	private int id;
@@ -16,7 +17,8 @@ public class Usuario {
 	private boolean premium;
 	private List<Contacto> contactos; // lista de contactos que tiene el usuario
 	private Descuento descuento;
-	private List<Mensaje> mensajes; // Lista con los mensajes que ha recibido o enviado el usuario
+	/* private List<Mensaje> mensajes; */ // Lista con los mensajes que ha recibido o enviado el usuario
+	private Map<String, List<Mensaje>> mensajes; // Mapa con los mensajes intercambiados con otros usuarios
 
 	public Usuario(String nombre, String numTelefono, String email, char[] contrasena, LocalDate fechaNacimiento,
 			String mensajeSaludo, String imagenPerfil) {
@@ -31,6 +33,8 @@ public class Usuario {
 		this.imagenPerfil = imagenPerfil;
 		this.premium = false;
 		this.contactos = new LinkedList<Contacto>();
+		/* this.mensajes = new LinkedList<>(); */
+		this.mensajes = new LinkedHashMap<>();
 	}
 
 	public int getId() {
@@ -76,7 +80,6 @@ public class Usuario {
 	public boolean isPremium() {
 		return premium;
 	}
-	
 
 	public Descuento getDescuento() {
 		return descuento;
@@ -90,8 +93,12 @@ public class Usuario {
 		return new LinkedList<Contacto>(contactos);
 	}
 
-	public List<Mensaje> getMensajes() {
-		return new LinkedList<Mensaje>(mensajes);
+	public /* List<Mensaje> */ Map<String, List<Mensaje>> getMensajes() {
+		return /* new LinkedList<Mensaje>(mensajes) */ new HashMap<String, List<Mensaje>>(mensajes);
+	}
+
+	public List<Mensaje> getUltimosMensajes() {
+		return mensajes.values().stream().map(lista -> lista.get(lista.size() - 1)).collect(Collectors.toList());
 	}
 
 	public void setNombre(String nombre) {
@@ -135,7 +142,13 @@ public class Usuario {
 	}
 
 	public void addMensaje(Mensaje mensaje) {
-		mensajes.add(mensaje);
+		/* mensajes.add(mensaje); */
+		if (mensaje.getEmisor().equals(String.valueOf(getId()))) { // lo guarda en la lista del receptor (el otro)
+			mensajes.get(mensaje.getReceptor()).add(mensaje);
+		} else { // lo guarda en la lista del emisor (el otro)
+			mensajes.get(mensaje.getEmisor()).add(mensaje);
+		}
+
 	}
 
 	// igual que la siguiente pero sin stream
@@ -148,9 +161,8 @@ public class Usuario {
 	 */
 
 	public boolean addContacto(ContactoIndividual contacto) {
-		if (contactos.stream()
-					 .filter(c -> c instanceof ContactoIndividual)
-					 .anyMatch(c -> c.getNombre().equals(contacto.getNombre()))) {
+		if (contactos.stream().filter(c -> c instanceof ContactoIndividual)
+				.anyMatch(c -> c.getNombre().equals(contacto.getNombre()))) {
 			return false;
 		}
 		contactos.removeIf(c -> c instanceof ContactoIndividual
@@ -160,9 +172,7 @@ public class Usuario {
 	}
 
 	public boolean addGrupo(Grupo grupo) {
-		if(contactos.stream()
-					.filter(g -> g instanceof Grupo)
-					.anyMatch(g -> g.getNombre().equals(grupo.getNombre()))) {
+		if (contactos.stream().filter(g -> g instanceof Grupo).anyMatch(g -> g.getNombre().equals(grupo.getNombre()))) {
 			return false;
 		}
 		return contactos.add(grupo);
@@ -170,8 +180,9 @@ public class Usuario {
 
 	public Mensaje enviarMensaje(String texto, int emoticono, String receptor, TipoReceptor tipoReceptor) {
 		return new Mensaje(texto, emoticono, this.getNumTelefono(), receptor, tipoReceptor);
-		//mensaje = mensaje.enviarMensaje(texto, emoticono, this.getNumTelefono(), receptor, tipoReceptor);
-		//return mensaje;
+		// mensaje = mensaje.enviarMensaje(texto, emoticono, this.getNumTelefono(),
+		// receptor, tipoReceptor);
+		// return mensaje;
 	}
 
 }

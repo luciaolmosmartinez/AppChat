@@ -2,17 +2,25 @@ package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
 import tds.BubbleText;
+import um.tds.Controlador.Controlador;
+import um.tds.Modelado.Mensaje;
+import um.tds.Renderers.MensajeCellRenderer;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JList;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.Component;
@@ -22,10 +30,10 @@ import java.awt.Toolkit;
 import javax.swing.JMenuBar;
 import javax.swing.SwingConstants;
 import javax.swing.JMenuItem;
-import java.awt.List;
 import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.Cursor;
+import javax.swing.ScrollPaneConstants;
 
 public class VentanaMain implements ActionListener {
 
@@ -35,15 +43,15 @@ public class VentanaMain implements ActionListener {
 	private JLabel lblImagen, lblConrtacto;
 	private JButton btnEmoticono, btnEnviar;
 	private JTextField textField;
-	private JMenuItem mntmNewMenuItem, mntmNewMenuItem_1, mntmNewMenuItem_2, mntmNewMenuItem_3;
-	private List list;
-	private GridBagConstraints gbc_bubble_1, gbc_lblImagen, gbc_lblConrtacto, gbc_btnEmoticono,
-			gbc_textField, gbc_btnEnviar;
-	private GridBagConstraints gbc_bubble_1_2;
-	private GridBagConstraints gbc_bubble_1_1;
+	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmPerfil;
+	private JList<Mensaje> list;
+	private GridBagConstraints gbc_bubble_1, gbc_lblImagen, gbc_lblConrtacto, gbc_btnEmoticono, gbc_textField,
+			gbc_btnEnviar, gbc_bubble_1_2, gbc_bubble_1_1;
 	private JScrollPane scrollPane;
 	private GridBagLayout gbl_panelContacto, gbl_panelEscribir, gbl_panelMensajes;
 	private BubbleText bubble, bubble_3, bubble_2, bubble_1;
+	private DefaultListModel<Mensaje> mensajes;
+	private JScrollPane scrollPane_1;
 
 	/**
 	 * Create the frame.
@@ -60,12 +68,12 @@ public class VentanaMain implements ActionListener {
 	public VentanaMain() {
 		initialize();
 	}
-	
+
 	public void initialize() {
 		frmAppchat = new JFrame();
 		frmAppchat.setTitle("AppChat");
-		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(VentanaMain.class.getResource("/imagenes/gatoVentana2_2048.png")));
+		frmAppchat.setIconImage(
+				Toolkit.getDefaultToolkit().getImage(VentanaMain.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		frmAppchat.setBackground(new Color(255, 255, 255));
 		frmAppchat.setVisible(true);
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,25 +83,25 @@ public class VentanaMain implements ActionListener {
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
 
-		mntmNewMenuItem = new JMenuItem("PREMIUM");
-		mntmNewMenuItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		mntmNewMenuItem.setHorizontalTextPosition(SwingConstants.CENTER);
-		menuBar.add(mntmNewMenuItem);
+		mntmPremium = new JMenuItem("PREMIUM");
+		mntmPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
+		menuBar.add(mntmPremium);
 
-		mntmNewMenuItem_1 = new JMenuItem("Contactos");
-		mntmNewMenuItem_1.setHorizontalTextPosition(SwingConstants.CENTER);
-		mntmNewMenuItem_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		menuBar.add(mntmNewMenuItem_1);
+		mntmContactos = new JMenuItem("Contactos");
+		mntmContactos.setHorizontalTextPosition(SwingConstants.CENTER);
+		mntmContactos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		menuBar.add(mntmContactos);
 
-		mntmNewMenuItem_2 = new JMenuItem("Mensajes");
-		mntmNewMenuItem_2.setHorizontalTextPosition(SwingConstants.CENTER);
-		mntmNewMenuItem_2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		menuBar.add(mntmNewMenuItem_2);
+		mntmMensajes = new JMenuItem("Mensajes");
+		mntmMensajes.setHorizontalTextPosition(SwingConstants.CENTER);
+		mntmMensajes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		menuBar.add(mntmMensajes);
 
-		mntmNewMenuItem_3 = new JMenuItem("Perfil");
-		mntmNewMenuItem_3.setHorizontalTextPosition(SwingConstants.CENTER);
-		mntmNewMenuItem_3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		menuBar.add(mntmNewMenuItem_3);
+		mntmPerfil = new JMenuItem("Perfil");
+		mntmPerfil.setHorizontalTextPosition(SwingConstants.CENTER);
+		mntmPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		menuBar.add(mntmPerfil);
 		contentPane = new JPanel();
 		contentPane.setMaximumSize(new Dimension(494, 400));
 		contentPane.setBackground(new Color(255, 255, 255));
@@ -102,11 +110,20 @@ public class VentanaMain implements ActionListener {
 		contentPane.setLayout(new BorderLayout(0, 0));
 
 		panelOeste = new JPanel();
+		panelOeste.setMinimumSize(new Dimension(100, 10));
 		panelOeste.setBackground(new Color(255, 255, 255));
 		contentPane.add(panelOeste, BorderLayout.WEST);
 
-		list = new List();
-		panelOeste.add(list);
+		mensajes = new DefaultListModel<>();
+		
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		panelOeste.add(scrollPane_1);
+
+		
+		list = new JList<>(mensajes);
+		scrollPane_1.setViewportView(list);
+		list.setCellRenderer(new MensajeCellRenderer());
 
 		panelCentral = new JPanel();
 		panelCentral.setBackground(new Color(255, 255, 255));
@@ -147,7 +164,7 @@ public class VentanaMain implements ActionListener {
 		gbc_lblImagen.gridy = 0;
 		panelContacto.add(lblImagen, gbc_lblImagen);
 
-		lblConrtacto = new JLabel("nombre contacto");
+		lblConrtacto = new JLabel("");
 		gbc_lblConrtacto = new GridBagConstraints();
 		gbc_lblConrtacto.insets = new Insets(0, 0, 0, 5);
 		gbc_lblConrtacto.anchor = GridBagConstraints.NORTHWEST;
@@ -248,13 +265,36 @@ public class VentanaMain implements ActionListener {
 		gbc_bubble_1_2.gridx = 0;
 		gbc_bubble_1_2.gridy = 4;
 		panelMensajes.add(bubble_3, gbc_bubble_1_2);
-		
+
 		btnEnviar.addActionListener(this);
 		btnEmoticono.addActionListener(this);
+		mntmContactos.addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		// Si no hay texto meter "" si no hay emoticono meter -1, no pueden estar los dos
+		// Si no hay texto meter "" si no hay emoticono meter -1, no pueden estar los
+		// dos
+		if (e.getSource() == btnEnviar) {
+			if(textField.getText().equals("")) {
+				
+			} else {
+				Controlador.getUnicaInstancia().registrarMensaje(textField.getText(), -1);
+				List<Mensaje> mensajesRecientes = Controlador.getUnicaInstancia().getUltimosMensajes();
+				mensajes.clear();
+				for (Mensaje m : mensajesRecientes) {
+					mensajes.addElement(m);
+				}
+			    list.setModel(mensajes);
+				list.setCellRenderer(new MensajeCellRenderer());
+				scrollPane.revalidate();
+				scrollPane.repaint();
+			}
+		} 
+		if (e.getSource() == mntmContactos) {
+			VentanaContactos contacto = new VentanaContactos();
+			frmAppchat.dispose();
+			contacto.mostrarContactos(frmAppchat.getSize(),frmAppchat.getLocation());
+		}
 		// añadir foto gato en botón emoticono
 	}
 

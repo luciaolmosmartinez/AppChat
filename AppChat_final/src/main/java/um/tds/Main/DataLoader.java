@@ -24,7 +24,7 @@ public class DataLoader {
 			 * TELEFONO: 123456789
 			 * CONTRASEÑA: l
 			 */
-			Usuario lucia = new Usuario("lucia om", "123456789", "l@um.es", "l".toCharArray(), LocalDate.of(2004, Month.JULY, 21), "", "");
+			Usuario lucia = new Usuario("lucia om", "543879254", "l@um.es", "l".toCharArray(), LocalDate.of(2004, Month.JULY, 21), "", "");
 			adaptadorU.registrarUsuario(lucia);
 
 			/*

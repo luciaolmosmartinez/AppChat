@@ -1,7 +1,6 @@
 package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,9 +12,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JScrollPane;
 import javax.swing.JRadioButton;
-import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -23,9 +20,8 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JCheckBox;
 
-public class VentanaBusqueda extends JFrame implements ActionListener {
+public class VentanaBusqueda implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panel, panel_1, panel_2;

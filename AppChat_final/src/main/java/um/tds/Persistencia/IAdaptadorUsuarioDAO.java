@@ -9,7 +9,9 @@ public interface IAdaptadorUsuarioDAO {
 	
 	public void modificarUsuario(Usuario usuario);
 
-	public Usuario recuperarUsuario(int id);
+	public Usuario recuperarUsuarioId(int id);
+	
+	public Usuario recuperarUsuarioTelefono(String numTelefono);
 
 	public List<Usuario> recuperarTodosUsuarios();
 }

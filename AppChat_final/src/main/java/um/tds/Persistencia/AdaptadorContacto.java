@@ -1,6 +1,5 @@
 package um.tds.Persistencia;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +33,7 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 		try {
 			eContacto = servPersistencia.recuperarEntidad(contacto.getId());
 		} catch (NullPointerException e) {
+			e.printStackTrace();
 		}
 
 		if (eContacto != null) {
@@ -64,6 +64,7 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 		// primitivo
 		String nombre = null;
 		Usuario usuario = null;
+		String email = null;
 
 		// Recupero la entidad
 		Entidad eContactoIndividual = servPersistencia.recuperarEntidad(id);
@@ -73,7 +74,7 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 
 		// 3. Se crea el objeto, se inicializa con propiedades anteriores y se añade al
 		// pool si es necesario
-		ContactoIndividual contactoIndividual = new ContactoIndividual(usuario, nombre);
+		ContactoIndividual contactoIndividual = new ContactoIndividual(usuario, nombre, email);
 		contactoIndividual.setId(id);
 		//contactoIndividual.setNombre(nombre);
 
@@ -82,7 +83,7 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 		// 4. Se recuperan los objetos referenciados y se actualiza el objeto
 		AdaptadorUsuario adaptadorUsuario = AdaptadorUsuario.getUnicaInstancia();
 		int idUsuario = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, "usuario"));
-		usuario = adaptadorUsuario.recuperarUsuario(idUsuario);
+		usuario = adaptadorUsuario.recuperarUsuarioId(idUsuario);
 		contactoIndividual.setUsuario(usuario);
 
 		// 5. Se retorna el objeto

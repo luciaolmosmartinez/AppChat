@@ -1,8 +1,7 @@
 package um.tds.Controlador;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 import um.tds.Modelado.*;
 import um.tds.Persistencia.*;
@@ -10,7 +9,7 @@ import um.tds.Repositorio.RepositorioUsuarios;
 
 public class Controlador { // clase controlador
 	private static Controlador unicaInstancia;
-	
+
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 	private IAdaptadorMensajeDAO adaptadorMensaje;
 	private IAdaptadorContactoDAO adaptadorContacto;
@@ -18,18 +17,20 @@ public class Controlador { // clase controlador
 
 	private Usuario usuarioActual;
 	private RepositorioUsuarios repoU;
+	private String contactoActual;
+	private TipoReceptor tReceptor;
 
 	/*
 	 * private static ControladorAppChat unicaInstancia; private FactoriaDAO
 	 * factoriaDAO; private Contacto contactoSeleccionado;
 	 */
 // DICE QUE LOS FILTROS EN EL CONTROLADOR USANDO LOS ADAPTADORES, NO EN EL REPOSITORIO
-	
+
 	private Controlador() {
 		this.inicializarAdaptadores();
 		this.inicializarRepositorioUsuarios();
 	}
-	
+
 	public static Controlador getUnicaInstancia() {
 		if (unicaInstancia == null)
 			unicaInstancia = new Controlador();
@@ -40,7 +41,9 @@ public class Controlador { // clase controlador
 		FactoriaDAO factoria = null;
 		try {
 			factoria = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
+			System.out.println("NO FALLA LA INICIALIZACIÓN?");
 		} catch (DAOException e) {
+			System.out.println("FALLA LA INICIALIZACIÓN");
 			e.printStackTrace();
 		}
 		adaptadorUsuario = factoria.getUsuarioDAO();
@@ -48,42 +51,51 @@ public class Controlador { // clase controlador
 		adaptadorContacto = factoria.getContactoDAO();
 		adaptadorGrupo = factoria.getGrupoDAO();
 	}
-	
+
 	private void inicializarRepositorioUsuarios() {
 		try {
-	        repoU = RepositorioUsuarios.getUnicaInstancia();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+			repoU = RepositorioUsuarios.getUnicaInstancia();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public boolean registrarUsuario(String nombre, String telefono, String correo, char[] contrasena,
-			LocalDate fecha, String saludo, String imagen) {
+	public boolean registrarUsuario(String nombre, String telefono, String correo, char[] contrasena, LocalDate fecha,
+			String saludo, String imagen) {
 		Usuario usuario = new Usuario(nombre, telefono, correo, contrasena, fecha, saludo, imagen);
 		adaptadorUsuario.registrarUsuario(usuario);
 		return repoU.addUsuario(usuario);
 	}
 
-	public void registrarMensaje(String texto, int emoticono, String emisor, String receptor, TipoReceptor tipoReceptor) {
-		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor, tipoReceptor);
+	public void registrarMensaje(String texto, int emoticono) {
+		Mensaje mensaje; // el emisor será el usuario actual, el receptor será el contacto actual,
+							// tambien se guardara si es un grupo o no
+		mensaje = new Mensaje(texto, emoticono, usuarioActual.getNumTelefono(), contactoActual, tReceptor);
 
 		// Persistir mensaje
 		adaptadorMensaje.registrarMensaje(mensaje);
 
 		// Se recuperan los usuarios relaccionados con el mensaje y se les añade mensaje
-		Usuario usuarioE = repoU.getUsuario(emisor);
-		Usuario usuarioR = repoU.getUsuario(receptor);
-
+		Usuario usuarioE = repoU.getUsuario(usuarioActual.getNumTelefono());
+		Usuario usuarioR;
 		usuarioE.addMensaje(mensaje);
-		usuarioR.addMensaje(mensaje);
+		adaptadorUsuario.modificarUsuario(usuarioE); // Actualizar usuario almacenado
+		if (tReceptor.equals(TipoReceptor.ID_GRUPO)) {
+			Grupo g = recuperarGrupo(Integer.parseInt(contactoActual));
+			for (ContactoIndividual c : g.getMiembros()) {
+				usuarioR = c.getUsuario();
+				usuarioR.addMensaje(mensaje);
+				adaptadorUsuario.modificarUsuario(usuarioR); // Actualizar usuario almacenado
+			}
 
-		// Actualizar usuario almacenado
-		adaptadorUsuario.modificarUsuario(usuarioE);
-		adaptadorUsuario.modificarUsuario(usuarioR);
+		}
+
 	}
 
-	public void registrarContacto(Usuario usuario, String nombre) {
-		ContactoIndividual contacto = new ContactoIndividual(usuario, nombre);
+	public void registrarContacto(String numTelefono, String nombre, String email) {
+		Usuario usuario = recuperarUsuarioTelefono(numTelefono);
+		
+		ContactoIndividual contacto = new ContactoIndividual(usuario, nombre, email);
 
 		// Persistir contacto
 		adaptadorContacto.anadirContacto(contacto);
@@ -108,6 +120,18 @@ public class Controlador { // clase controlador
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
+	public Grupo recuperarGrupo(int id) {
+		return AdaptadorGrupo.getUnicaInstancia().recuperarGrupo(id);
+	}
+
+	public Usuario recuperarUsuarioTelefono(String numTelefono) {
+		return AdaptadorUsuario.getUnicaInstancia().recuperarUsuarioTelefono(numTelefono);
+	}
+
+	public Contacto recuperarContacto(int id) {
+		return AdaptadorContacto.getUnicaInstancia().recuperarContacto(id);
+	}
+
 	public boolean iniciarSesion(String telefono, char[] contrasena) {
 		this.usuarioActual = repoU.comprobarUsuario(telefono, contrasena);
 		if (usuarioActual != null) {
@@ -129,10 +153,29 @@ public class Controlador { // clase controlador
 	public void enviarMensaje(String texto, int emoticono, String receptor, TipoReceptor tipoReceptor) {
 		Mensaje mensaje = usuarioActual.enviarMensaje(texto, emoticono, receptor, tipoReceptor);
 		adaptadorMensaje.registrarMensaje(mensaje);
-		//repoU.addMensaje(mensaje);
+		// repoU.addMensaje(mensaje);
 	}
 
 	public void crearPDF() {
 		CreadorPDF.crearPDF();
+	}
+
+	public Contacto recuperarContactoMensaje(Mensaje mensaje) {
+		if (mensaje.getEmisor().equals(usuarioActual.getNumTelefono())) { // quiero recuperar el contacto al que se lo
+																			// he enviado
+			if (mensaje.getTipoReceptor().equals(TipoReceptor.ID_GRUPO)) { // es un grupo
+				return recuperarGrupo(Integer.parseInt(mensaje.getReceptor()));
+			} else { // es un contacto individual
+				Usuario u = recuperarUsuarioTelefono(mensaje.getReceptor());
+				return recuperarContacto(u.getId());
+			}
+		} else { // quiero recuperar el contacto que me lo ha enviado
+			Usuario u = recuperarUsuarioTelefono(mensaje.getEmisor());
+			return recuperarContacto(u.getId());
+		}
+	}
+
+	public List<Mensaje> getUltimosMensajes() {
+		return usuarioActual.getUltimosMensajes();
 	}
 }

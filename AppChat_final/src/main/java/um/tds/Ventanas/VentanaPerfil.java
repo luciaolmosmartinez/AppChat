@@ -1,7 +1,5 @@
 package um.tds.Ventanas;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -14,9 +12,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
-import java.awt.Label;
 import java.awt.Point;
-import java.awt.Button;
 import com.toedter.calendar.JDateChooser;
 
 import java.awt.Color;

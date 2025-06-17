@@ -1,7 +1,5 @@
 package um.tds.Persistencia;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -37,13 +35,14 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		Entidad eUsuario = null;
 		try {
 			eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 		}
 
 		if (eUsuario != null) {
 			return;
 		}
-		if (!(existeUsuarioConTelefono(usuario.getNumTelefono()) || existeUsuarioConEmail(usuario.getEmail()))) {
+		
+		if (!(existeUsuarioConTelefono(usuario.getNumTelefono()) && !(existeUsuarioConEmail(usuario.getEmail())))) {
 			// 2. Se registran sus objetos agregados.
 			AdaptadorContacto adaptadorC = AdaptadorContacto.getUnicaInstancia();
 			AdaptadorGrupo adaptadorG = AdaptadorGrupo.getUnicaInstancia();
@@ -55,19 +54,21 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				}
 			}
 			AdaptadorMensaje adaptadorM = AdaptadorMensaje.getUnicaInstancia();
-			for (Mensaje m : usuario.getMensajes()) {
-				adaptadorM.registrarMensaje(m);
+			for (List<Mensaje> ms : usuario.getMensajes().values()) {
+				for(Mensaje m : ms) {
+					adaptadorM.registrarMensaje(m);
+				}
 			}
 
 			// 3. Se crea la entidad (ya tiene un id) y se le pone nombre
 			eUsuario = new Entidad();
 			eUsuario.setNombre("usuario");
-
+			String fechaN = (usuario.getFechaNacimiento()==null) ? "":usuario.getFechaNacimiento().format(dateFormat);
 			// 4. Se le añaden las propiedades a la entidad creada
 			eUsuario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre", usuario.getNombre()),
 					new Propiedad("contrasena", String.valueOf(usuario.getContrasena())),
 					new Propiedad("numTelefono", usuario.getNumTelefono()), new Propiedad("email", usuario.getEmail()),
-					new Propiedad("fechaNacimiento", usuario.getFechaNacimiento().format(dateFormat)),
+					new Propiedad("fechaNacimiento", fechaN),
 					new Propiedad("imagenPerfil", usuario.getImagenPerfil()),
 					new Propiedad("mensajeSaludo", usuario.getMensajeSaludo()),
 					new Propiedad("fechaRegistro", usuario.getFechaRegistro().format(dateFormat)),
@@ -121,10 +122,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		}
 	}
 
-	
-	
-	
-	public Usuario recuperarUsuario(int id) {
+	public Usuario recuperarUsuarioId(int id) {
 		// 1. Si el objeto está en el pool se retorna
 		if (PoolDAO.getUnicaInstancia().contiene(id))
 			return (Usuario) PoolDAO.getUnicaInstancia().getObjeto(id);
@@ -152,10 +150,10 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		contrasena = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contrasena").toCharArray();
 		numTelefono = servPersistencia.recuperarPropiedadEntidad(eUsuario, "numTelefono");
 		email = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
-		fechaNacimiento = LocalDate.parse(servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechaNacimiento"));
+		fechaNacimiento = (servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechaNacimiento") == "") ? null : LocalDate.parse(servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechaNacimiento"),dateFormat);
 		imagenPerfil = servPersistencia.recuperarPropiedadEntidad(eUsuario, "imagenPerfil");
 		mensajeSaludo = servPersistencia.recuperarPropiedadEntidad(eUsuario, "mensajeSaludo");
-		fechaRegistro = LocalDate.parse(servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechaRegistro"));
+		fechaRegistro = LocalDate.parse(servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechaRegistro"),dateFormat);
 		premium = Boolean.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "premium"));
 
 		// 3. Se crea el objeto, se inicializa con propiedades anteriores y se añade al
@@ -198,12 +196,18 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		// 5. Se retorna el objeto
 		return usuario;
 	}
+	
+	public Usuario recuperarUsuarioTelefono(String numTelefono) {
+		List<Usuario> users = recuperarTodosUsuarios();
+		return users.stream().filter(
+				u -> u.getNumTelefono().equals(numTelefono)).findFirst().orElse(null);
+	}
 
 	public List<Usuario> recuperarTodosUsuarios() {
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		List<Entidad> eUsuarios = servPersistencia.recuperarEntidades("usuario");
 		for(Entidad eUsuario : eUsuarios) {
-			usuarios.add(recuperarUsuario(eUsuario.getId()));
+			usuarios.add(recuperarUsuarioId(eUsuario.getId()));
 		}
 		return usuarios;
 	}
@@ -226,14 +230,16 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		return contactos;
 	}
 
-	private String obtenerIdsMensajes(List<Mensaje> mensajes) {
+	private String obtenerIdsMensajes(Map<String,List<Mensaje>> mensajes) {
 		String lista = "";
-		for (Mensaje m : mensajes) {
-			lista += m.getId() + " ";
+		for (List<Mensaje> ms : mensajes.values()) {
+			for(Mensaje m : ms) {
+				lista += m.getId() + " ";
+			}
 		}
 		return lista.trim();
 	}
-
+	
 	private List<Mensaje> obtenerMensajesDesdeIds(String lista) {
 		List<Mensaje> mensajes = new LinkedList<Mensaje>();
 		StringTokenizer strTok = new StringTokenizer(lista, " ");

@@ -1,37 +1,25 @@
 package um.tds.Ventanas;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import javax.swing.JTextField;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Component;
-import javax.swing.Box;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
 
 import java.awt.Cursor;
-import javax.swing.UIManager;
-import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
-
-import um.tds.Controlador.Controlador;
 
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.Point;
 
 public class VentanaInicio implements ActionListener {
@@ -153,7 +141,7 @@ public class VentanaInicio implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnInicioSesion) {
 			VentanaLogin login = new VentanaLogin();
-			login.setLocation(frmAppchat.getX(), frmAppchat.getY());
+			//login.setLocation(frmAppchat.getX(), frmAppchat.getY());
 			frmAppchat.dispose();
 			login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;

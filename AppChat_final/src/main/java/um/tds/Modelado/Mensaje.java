@@ -1,8 +1,6 @@
 package um.tds.Modelado;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
 
 import tds.BubbleText;
 
@@ -12,7 +10,7 @@ public class Mensaje {
 	private int emoticono; // se determinara a partir de un numero que identifica el emoticono, null si no
 							// hay emoticono?
 	private String emisor; //numero de telefono
-	private String receptor; //numero de telefono de quien lo reciba
+	private String receptor; //numero de telefono de quien lo reciba o id del grupo al que se manda
 	private LocalDateTime fechaHora;
 	private TipoReceptor tipoReceptor;
 	
