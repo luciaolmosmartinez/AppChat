@@ -38,7 +38,7 @@ import javax.swing.ScrollPaneConstants;
 public class VentanaMain implements ActionListener {
 
 	private JFrame frmAppchat;
-	private JPanel contentPane, panelOeste, panelCentral, panelContacto, panelEscribir, panelMensajes;
+	private JPanel contentPane, panelCentral, panelContacto, panelEscribir, panelMensajes;
 	private JMenuBar menuBar;
 	private JLabel lblImagen, lblConrtacto;
 	private JButton btnEmoticono, btnEnviar;
@@ -84,24 +84,22 @@ public class VentanaMain implements ActionListener {
 		frmAppchat.setJMenuBar(menuBar);
 
 		mntmPremium = new JMenuItem("PREMIUM");
-		mntmPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmPremium.setBackground(new Color(255, 255, 255));
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmPremium);
 
 		mntmContactos = new JMenuItem("Contactos");
-		mntmContactos.setHorizontalTextPosition(SwingConstants.CENTER);
-		mntmContactos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmContactos.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmContactos);
 
 		mntmMensajes = new JMenuItem("Mensajes");
-		mntmMensajes.setHorizontalTextPosition(SwingConstants.CENTER);
-		mntmMensajes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmMensajes.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmMensajes);
 
 		mntmPerfil = new JMenuItem("Perfil");
-		mntmPerfil.setHorizontalTextPosition(SwingConstants.CENTER);
-		mntmPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmPerfil.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmPerfil);
+		
 		contentPane = new JPanel();
 		contentPane.setMaximumSize(new Dimension(494, 400));
 		contentPane.setBackground(new Color(255, 255, 255));
@@ -109,21 +107,24 @@ public class VentanaMain implements ActionListener {
 		frmAppchat.setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
-		panelOeste = new JPanel();
+		/*panelOeste = new JPanel();
 		panelOeste.setMinimumSize(new Dimension(100, 10));
 		panelOeste.setBackground(new Color(255, 255, 255));
-		contentPane.add(panelOeste, BorderLayout.WEST);
+		contentPane.add(panelOeste, BorderLayout.WEST);*/
 
 		mensajes = new DefaultListModel<>();
 		
+		//panel = new JPanel();
+		//panelOeste.add(panel);
+		
 		scrollPane_1 = new JScrollPane();
+		frmAppchat.add(scrollPane_1,BorderLayout.WEST);
 		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		panelOeste.add(scrollPane_1);
 
 		
 		list = new JList<>(mensajes);
 		scrollPane_1.setViewportView(list);
-		list.setCellRenderer(new MensajeCellRenderer());
+		list.setCellRenderer(new MensajeCellRenderer(frmAppchat.getSize(),frmAppchat.getLocation(),frmAppchat));
 
 		panelCentral = new JPanel();
 		panelCentral.setBackground(new Color(255, 255, 255));
@@ -137,7 +138,7 @@ public class VentanaMain implements ActionListener {
 		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setMaximumSize(new Dimension(1400, 200));
 		scrollPane.setPreferredSize(new Dimension(465, 100));
-		panelCentral.add(scrollPane, BorderLayout.WEST);
+		panelCentral.add(scrollPane, BorderLayout.CENTER);
 
 		panelMensajes = new JPanel();
 		panelMensajes.setSize(new Dimension(465, 0));
@@ -269,6 +270,7 @@ public class VentanaMain implements ActionListener {
 		btnEnviar.addActionListener(this);
 		btnEmoticono.addActionListener(this);
 		mntmContactos.addActionListener(this);
+		list.addListSelectionListener(e -> conversacionSeleccionada());
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -285,7 +287,7 @@ public class VentanaMain implements ActionListener {
 					mensajes.addElement(m);
 				}
 			    list.setModel(mensajes);
-				list.setCellRenderer(new MensajeCellRenderer());
+				list.setCellRenderer(new MensajeCellRenderer(frmAppchat.getSize(),frmAppchat.getLocation(),frmAppchat));
 				scrollPane.revalidate();
 				scrollPane.repaint();
 			}
@@ -296,6 +298,10 @@ public class VentanaMain implements ActionListener {
 			contacto.mostrarContactos(frmAppchat.getSize(),frmAppchat.getLocation());
 		}
 		// añadir foto gato en botón emoticono
+	}
+	
+	private void conversacionSeleccionada(Mensaje seleccionado) {
+		Controlador.getUnicaInstancia().recuperarContactoMensaje(seleccionado);
 	}
 
 }

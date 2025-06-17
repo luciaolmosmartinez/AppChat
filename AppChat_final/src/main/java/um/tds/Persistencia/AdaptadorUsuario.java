@@ -90,6 +90,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
 		
 		// 2. Se recorren sus propiedades y se actualiza su valor
+		String fechaN = (usuario.getFechaNacimiento()==null) ? "":usuario.getFechaNacimiento().format(dateFormat);
 		for (Propiedad prop : eUsuario.getPropiedades()) {
 			if (prop.getNombre().equals("id")) {
 				prop.setValor(String.valueOf(usuario.getId()));
@@ -102,7 +103,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 			} else if (prop.getNombre().equals("email")) {
 				prop.setValor(String.valueOf(usuario.getEmail()));
 			} else if (prop.getNombre().equals("fechaNacimiento")) {
-				prop.setValor(usuario.getFechaNacimiento().format(dateFormat));
+				prop.setValor(fechaN);
 			} else if (prop.getNombre().equals("imagenPerfil")) {
 				prop.setValor(usuario.getImagenPerfil());
 			} else if (prop.getNombre().equals("mensajeSaludo")) {

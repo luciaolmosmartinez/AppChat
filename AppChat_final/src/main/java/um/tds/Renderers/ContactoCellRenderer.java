@@ -1,19 +1,17 @@
 package um.tds.Renderers;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.Image;
-import java.io.IOException;
-import java.net.URL;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
 import um.tds.Modelado.Contacto;
+import um.tds.Modelado.ContactoIndividual;
+import um.tds.Modelado.Grupo;
 
 public class ContactoCellRenderer extends JPanel implements ListCellRenderer<Contacto> {
 	private static final long serialVersionUID = 1L;
@@ -36,24 +34,20 @@ public class ContactoCellRenderer extends JPanel implements ListCellRenderer<Con
 		// Set the text
 		nameLabel.setText(contacto.getNombre());
 
-		// Load the image from a random URL (for example, using "https://robohash.org")
-		try {
-			URL imageUrl = new URL("https://robohash.org/" + contacto.getNombre() + "?size=50x50");
-			Image image = ImageIO.read(imageUrl);
-			ImageIcon imageIcon = new ImageIcon(image.getScaledInstance(50, 50, Image.SCALE_SMOOTH));
-			imageLabel.setIcon(imageIcon);
-		} catch (IOException e) {
-			e.printStackTrace();
-			imageLabel.setIcon(null); // Default to no image if there was an issue
+		if(contacto instanceof Grupo) {
+			Grupo g = (Grupo) contacto;
+			imageLabel.setIcon(new ImageIcon(ContactoCellRenderer.class.getResource(g.getImagen())));
+		} else if(contacto instanceof ContactoIndividual){
+			ContactoIndividual i = (ContactoIndividual) contacto;
+			imageLabel.setIcon(new ImageIcon(ContactoCellRenderer.class.getResource(i.getUsuario().getImagenPerfil())));
 		}
+		
 
 		// Set background and foreground based on selection
 		if (isSelected) {
-			setBackground(list.getSelectionBackground());
-			setForeground(list.getSelectionForeground());
+			setBackground(Color.PINK);
 		} else {
-			setBackground(list.getBackground());
-			setForeground(list.getForeground());
+			setBackground(Color.WHITE);
 		}
 
 		return this;

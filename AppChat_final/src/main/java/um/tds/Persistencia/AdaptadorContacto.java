@@ -48,7 +48,7 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 
 		// 4. Se le añaden las propiedades a la entidad creada
 		eContacto.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre", contacto.getNombre()),
-				new Propiedad("usuario", String.valueOf(contacto.getUsuario())))));
+				new Propiedad("usuario", String.valueOf(contacto.getUsuario().getId())))));
 
 		// 5. Se registra la entidad y se asocia id al objeto almacenado.
 		eContacto = servPersistencia.registrarEntidad(eContacto);
@@ -64,7 +64,6 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 		// primitivo
 		String nombre = null;
 		Usuario usuario = null;
-		String email = null;
 
 		// Recupero la entidad
 		Entidad eContactoIndividual = servPersistencia.recuperarEntidad(id);
@@ -74,7 +73,7 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 
 		// 3. Se crea el objeto, se inicializa con propiedades anteriores y se añade al
 		// pool si es necesario
-		ContactoIndividual contactoIndividual = new ContactoIndividual(usuario, nombre, email);
+		ContactoIndividual contactoIndividual = new ContactoIndividual(usuario, nombre);
 		contactoIndividual.setId(id);
 		//contactoIndividual.setNombre(nombre);
 

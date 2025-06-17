@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JButton;
@@ -25,10 +27,10 @@ import javax.swing.ImageIcon;
 
 public class VentanaPerfil implements ActionListener {
 
-	private JFrame frame;
+	private JFrame frmAppchat;
 	private JTextField txtnombreDelPerfil, txtnmeroDeTelfono, txtemail, txtapellidos;
 	private JMenuBar menuBar;
-	private JMenuItem mntmNewMenuItem, mntmNewMenuItem_1, mntmNewMenuItem_2, mntmNewMenuItem_3;
+	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmPerfil;
 	private JPanel panel;
 	private GridBagLayout gbl_panel;
 	private JLabel nombre, lblApellidos, icono, telefono, fecha, lblEmail, saludo, lblNewLabel;
@@ -41,9 +43,9 @@ public class VentanaPerfil implements ActionListener {
 	private JTextArea txtrsaludo;
 
 	public void mostrarPerfil(Dimension tam, Point ubi) {
-		frame.setVisible(true);
-		frame.setSize(tam);
-		frame.setLocation(ubi);
+		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 	/**
@@ -51,34 +53,40 @@ public class VentanaPerfil implements ActionListener {
 	 */
 	public VentanaPerfil() {
 		initialize();
-		frame.setVisible(true);
+		frmAppchat.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1060, 667);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAppchat = new JFrame();
+		frmAppchat.setBounds(100, 100, 1060, 667);
+		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
+		frmAppchat.setJMenuBar(menuBar);
 
-		mntmNewMenuItem = new JMenuItem("PREMIUM");
-		menuBar.add(mntmNewMenuItem);
+		mntmPremium = new JMenuItem("PREMIUM");
+		mntmPremium.setBackground(new Color(255, 255, 255));
+		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
+		menuBar.add(mntmPremium);
 
-		mntmNewMenuItem_1 = new JMenuItem("Contacto");
-		menuBar.add(mntmNewMenuItem_1);
+		mntmContactos = new JMenuItem("Contactos");
+		mntmContactos.setBackground(new Color(255, 255, 255));
+		menuBar.add(mntmContactos);
 
-		mntmNewMenuItem_2 = new JMenuItem("Mensajes");
-		menuBar.add(mntmNewMenuItem_2);
+		mntmMensajes = new JMenuItem("Mensajes");
+		mntmMensajes.setBackground(new Color(255, 255, 255));
+		menuBar.add(mntmMensajes);
 
-		mntmNewMenuItem_3 = new JMenuItem("Perfil");
-		menuBar.add(mntmNewMenuItem_3);
+		mntmPerfil = new JMenuItem("Perfil");
+		mntmPerfil.setBackground(new Color(255, 255, 255));
+		menuBar.add(mntmPerfil);
 
 		panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
+		frmAppchat.getContentPane().add(panel, BorderLayout.CENTER);
 		gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] { 0, 137, 64, 104, 128, 146, 0, 0 };
 		gbl_panel.rowHeights = new int[] { 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0 };

@@ -41,9 +41,7 @@ public class Controlador { // clase controlador
 		FactoriaDAO factoria = null;
 		try {
 			factoria = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
-			System.out.println("NO FALLA LA INICIALIZACIÓN?");
 		} catch (DAOException e) {
-			System.out.println("FALLA LA INICIALIZACIÓN");
 			e.printStackTrace();
 		}
 		adaptadorUsuario = factoria.getUsuarioDAO();
@@ -92,10 +90,10 @@ public class Controlador { // clase controlador
 
 	}
 
-	public void registrarContacto(String numTelefono, String nombre, String email) {
+	public void registrarContacto(String numTelefono, String nombre) {
 		Usuario usuario = recuperarUsuarioTelefono(numTelefono);
 		
-		ContactoIndividual contacto = new ContactoIndividual(usuario, nombre, email);
+		ContactoIndividual contacto = new ContactoIndividual(usuario, nombre);
 
 		// Persistir contacto
 		adaptadorContacto.anadirContacto(contacto);
@@ -177,5 +175,17 @@ public class Controlador { // clase controlador
 
 	public List<Mensaje> getUltimosMensajes() {
 		return usuarioActual.getUltimosMensajes();
+	}
+	
+	public String recuperarOtroUsuario(Mensaje mensaje) {
+		if (mensaje.getEmisor().equals(usuarioActual.getNumTelefono())) {
+			return mensaje.getReceptor();
+		} else {
+			return mensaje.getEmisor();
+		}
+	}
+	
+	public boolean isContacto(Mensaje mensaje) {
+		return usuarioActual.isContacto(recuperarOtroUsuario(mensaje));
 	}
 }

@@ -101,6 +101,18 @@ public class Usuario {
 		return mensajes.values().stream().map(lista -> lista.get(lista.size() - 1)).collect(Collectors.toList());
 	}
 
+	public boolean isContacto(String otroUsuario) {
+		return contactos.stream().anyMatch(c -> {
+	        if (c instanceof ContactoIndividual) {
+	            Usuario u = ((ContactoIndividual) c).getUsuario();
+	            if (u != null) {
+	                return u.getNumTelefono().equals(otroUsuario);
+	            }
+	        }
+	        return false;
+	    });
+	}
+	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}

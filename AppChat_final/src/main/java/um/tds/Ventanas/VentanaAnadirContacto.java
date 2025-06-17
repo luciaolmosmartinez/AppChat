@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import um.tds.Controlador.Controlador;
-import um.tds.Modelado.Usuario;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -27,20 +26,25 @@ import javax.swing.JMenuItem;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
+import javax.swing.ImageIcon;
+import javax.swing.border.TitledBorder;
 
 public class VentanaAnadirContacto implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panel, panel_1;
 	private JMenuBar menuBar;
-	private JMenuItem mntmNewMenuItem, mntmNewMenuItem_1, mntmNewMenuItem_2, mntmNewMenuItem_3;
-	private GridBagConstraints gbc_lblNewLabel, gbc_txtNombre, gbc_txtTelefono, gbc_lblNewLabel_1;
+	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmPerfil;
+	private GridBagConstraints gbc_lblImagen, gbc_txtNombre, gbc_txtTelefono;
 	private JScrollPane scrollPane_1;
-	private JLabel lblNewLabel, lblNewLabel_1;
-	private JTextField txtNombre, txtTelefono, txtEmail;
+	private JLabel lblImagen;
+	private JTextField txtNombre, txtTelefono;
 	private GridBagLayout gbl_panel_1;
-	private JLabel lblNombre, lblTelefono, lblEmail, lblError;
-	private JButton btnAceptar,btnCancelar;
+	private JLabel lblTelefono;
+	private JButton btnAceptar, btnCancelar;
+	private JLabel lblNombre;
+	private JLabel lblError;
 
 	/**
 	 * Create the frame.
@@ -62,24 +66,28 @@ public class VentanaAnadirContacto implements ActionListener {
 		frmAppchat.setBackground(new Color(255, 255, 255));
 		frmAppchat.setVisible(true);
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmAppchat.setBounds(100, 100, 633, 409);
+		frmAppchat.setBounds(100, 100, 946, 585);
 
 		menuBar = new JMenuBar();
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
 
-		mntmNewMenuItem = new JMenuItem("PREMIUM");
-		mntmNewMenuItem.setHorizontalTextPosition(SwingConstants.CENTER);
-		menuBar.add(mntmNewMenuItem);
+		mntmPremium = new JMenuItem("PREMIUM");
+		mntmPremium.setBackground(new Color(255, 255, 255));
+		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
+		menuBar.add(mntmPremium);
 
-		mntmNewMenuItem_1 = new JMenuItem("Contactos");
-		menuBar.add(mntmNewMenuItem_1);
+		mntmContactos = new JMenuItem("Contactos");
+		mntmContactos.setBackground(new Color(255, 255, 255));
+		menuBar.add(mntmContactos);
 
-		mntmNewMenuItem_2 = new JMenuItem("Mensajes");
-		menuBar.add(mntmNewMenuItem_2);
+		mntmMensajes = new JMenuItem("Mensajes");
+		mntmMensajes.setBackground(new Color(255, 255, 255));
+		menuBar.add(mntmMensajes);
 
-		mntmNewMenuItem_3 = new JMenuItem("Perfil");
-		menuBar.add(mntmNewMenuItem_3);
+		mntmPerfil = new JMenuItem("Perfil");
+		mntmPerfil.setBackground(new Color(255, 255, 255));
+		menuBar.add(mntmPerfil);
 		contentPane = new JPanel();
 		contentPane.setMaximumSize(new Dimension(494, 200));
 		contentPane.setBackground(new Color(255, 255, 255));
@@ -99,43 +107,47 @@ public class VentanaAnadirContacto implements ActionListener {
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_panel_1.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_panel_1.rowHeights = new int[] { 0, 0, 218, 0, 0, 0, 0, 0 };
 		gbl_panel_1.columnWeights = new double[] { 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE };
-		gbl_panel_1.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0,
-				Double.MIN_VALUE };
+		gbl_panel_1.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE };
 		panel_1.setLayout(gbl_panel_1);
 
-		lblNewLabel = new JLabel("gato");
-		gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 1;
-		panel_1.add(lblNewLabel, gbc_lblNewLabel);
-
-		lblNombre = new JLabel("Nombre *");
+		lblImagen= new JLabel("");
+		lblImagen.setSize(250, 250);
+		lblImagen.setIcon(new ImageIcon(VentanaAnadirContacto.class.getResource("/imagenes/gato_perfil.png")));
+		ImageInJLabel.resizeImage(lblImagen, VentanaAnadirContacto.class.getResource("/imagenes/gato_perfil.png"));
+		gbc_lblImagen = new GridBagConstraints();
+		gbc_lblImagen.gridheight = 3;
+		gbc_lblImagen.insets = new Insets(0, 0, 5, 5);
+		gbc_lblImagen.gridx = 1;
+		gbc_lblImagen.gridy = 1;
+		panel_1.add(lblImagen, gbc_lblImagen);
+		
+		lblNombre = new JLabel("<html><span style='color:red;'>*</span>Nombre:</html>");
+		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_lblNombre = new GridBagConstraints();
 		gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNombre.anchor = GridBagConstraints.EAST;
 		gbc_lblNombre.gridx = 2;
-		gbc_lblNombre.gridy = 1;
+		gbc_lblNombre.gridy = 2;
 		panel_1.add(lblNombre, gbc_lblNombre);
+		
+				txtNombre = new JTextField();
+				gbc_txtNombre = new GridBagConstraints();
+				gbc_txtNombre.gridwidth = 3;
+				gbc_txtNombre.insets = new Insets(0, 0, 5, 5);
+				gbc_txtNombre.fill = GridBagConstraints.HORIZONTAL;
+				gbc_txtNombre.gridx = 3;
+				gbc_txtNombre.gridy = 2;
+				panel_1.add(txtNombre, gbc_txtNombre);
+				txtNombre.setColumns(10);
 
-		txtNombre = new JTextField();
-		gbc_txtNombre = new GridBagConstraints();
-		gbc_txtNombre.gridwidth = 3;
-		gbc_txtNombre.insets = new Insets(0, 0, 5, 5);
-		gbc_txtNombre.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtNombre.gridx = 3;
-		gbc_txtNombre.gridy = 1;
-		panel_1.add(txtNombre, gbc_txtNombre);
-		txtNombre.setColumns(10);
-
-		lblTelefono = new JLabel("Teléfono *");
+		lblTelefono = new JLabel("<html><span style='color:red;'>*</span>Teléfono:</html>");
+		lblTelefono.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_lblTelefono = new GridBagConstraints();
 		gbc_lblTelefono.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTelefono.anchor = GridBagConstraints.EAST;
 		gbc_lblTelefono.gridx = 2;
-		gbc_lblTelefono.gridy = 2;
+		gbc_lblTelefono.gridy = 3;
 		panel_1.add(lblTelefono, gbc_lblTelefono);
 
 		txtTelefono = new JTextField();
@@ -144,67 +156,52 @@ public class VentanaAnadirContacto implements ActionListener {
 		gbc_txtTelefono.insets = new Insets(0, 0, 5, 5);
 		gbc_txtTelefono.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtTelefono.gridx = 3;
-		gbc_txtTelefono.gridy = 2;
+		gbc_txtTelefono.gridy = 3;
 		panel_1.add(txtTelefono, gbc_txtTelefono);
 		txtTelefono.setColumns(10);
-
-		lblNewLabel_1 = new JLabel("Información opcional");
-		gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 1;
-		gbc_lblNewLabel_1.gridy = 5;
-		panel_1.add(lblNewLabel_1, gbc_lblNewLabel_1);
-
-		lblEmail = new JLabel("Email");
-		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
-		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
-		gbc_lblEmail.anchor = GridBagConstraints.EAST;
-		gbc_lblEmail.gridx = 1;
-		gbc_lblEmail.gridy = 6;
-		panel_1.add(lblEmail, gbc_lblEmail);
-
-		txtEmail = new JTextField();
-		GridBagConstraints gbc_txtEmail = new GridBagConstraints();
-		gbc_txtEmail.gridwidth = 4;
-		gbc_txtEmail.insets = new Insets(0, 0, 5, 5);
-		gbc_txtEmail.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtEmail.gridx = 2;
-		gbc_txtEmail.gridy = 6;
-		panel_1.add(txtEmail, gbc_txtEmail);
-		txtEmail.setColumns(10);
-
-		btnAceptar = new JButton("Aceptar");
-		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
-		gbc_btnAceptar.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAceptar.gridx = 1;
-		gbc_btnAceptar.gridy = 9;
-		panel_1.add(btnAceptar, gbc_btnAceptar);
-
-		lblError = new JLabel("");
-		lblError.setBackground(new Color(255, 0, 0));
-		GridBagConstraints gbc_lblError = new GridBagConstraints();
-		gbc_lblError.gridwidth = 4;
-		gbc_lblError.insets = new Insets(0, 0, 5, 5);
-		gbc_lblError.gridx = 2;
-		gbc_lblError.gridy = 9;
-		panel_1.add(lblError, gbc_lblError);
+						
+						lblError = new JLabel("");
+						lblError.setForeground(Color.RED);
+						lblError.setBackground(Color.RED);
+						GridBagConstraints gbc_lblError = new GridBagConstraints();
+						gbc_lblError.insets = new Insets(0, 0, 5, 5);
+						gbc_lblError.gridx = 1;
+						gbc_lblError.gridy = 5;
+						panel_1.add(lblError, gbc_lblError);
+				
+						btnAceptar = new JButton("Aceptar");
+						btnAceptar.setBackground(new Color(255, 255, 255));
+						btnAceptar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+						btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+						GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
+						gbc_btnAceptar.fill = GridBagConstraints.BOTH;
+						gbc_btnAceptar.insets = new Insets(0, 0, 5, 5);
+						gbc_btnAceptar.gridx = 2;
+						gbc_btnAceptar.gridy = 5;
+						panel_1.add(btnAceptar, gbc_btnAceptar);
+						btnAceptar.addActionListener(this);
 		
-		btnCancelar = new JButton("Cancelar");
-		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
-		gbc_btnCancel.insets = new Insets(0, 0, 5, 0);
-		gbc_btnCancel.gridx = 6;
-		gbc_btnCancel.gridy = 9;
-		panel_1.add(btnCancelar, gbc_btnCancel);
-		btnAceptar.addActionListener(this);
+				btnCancelar = new JButton("Cancelar");
+				btnCancelar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				btnCancelar.setBackground(new Color(255, 255, 255));
+				btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+				GridBagConstraints gbc_btnCancel = new GridBagConstraints();
+				gbc_btnCancel.fill = GridBagConstraints.BOTH;
+				gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
+				gbc_btnCancel.gridx = 5;
+				gbc_btnCancel.gridy = 5;
+				panel_1.add(btnCancelar, gbc_btnCancel);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btnAceptar) {
-			if(txtNombre.getText().equals("") || txtTelefono.getText().equals("")) {
+		if (e.getSource() == btnAceptar) {
+			if (txtNombre.getText().equals("") || txtTelefono.getText().equals("")) {
 				lblError.setText("Debe rellenar los campos indicados con un asterisco");
 			} else {
-				Controlador.getUnicaInstancia().registrarContacto(txtNombre.getText(),txtTelefono.getText(),txtEmail.getText());
-				
+				Controlador.getUnicaInstancia().registrarContacto(txtTelefono.getText(),txtNombre.getText());
+				VentanaContactos vContactos = new VentanaContactos();
+				vContactos.mostrarContactos(frmAppchat.getSize(),frmAppchat.getLocation());
+				frmAppchat.dispose();
 			}
 		}
 	}
