@@ -7,20 +7,25 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingConstants;
 
+import um.tds.Controlador.Controlador;
 import um.tds.Modelado.Contacto;
-import um.tds.Modelado.Mensaje;
+import um.tds.Modelado.Grupo;
 import um.tds.Renderers.ContactoCellRenderer;
-import um.tds.Renderers.MensajeCellRenderer;
 
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+
 import java.awt.BorderLayout;
 import javax.swing.JList;
+import javax.swing.JMenu;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -36,7 +41,8 @@ public class VentanaContactos implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JMenuBar menuBar;
-	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmPerfil;
+	private JMenu mnPerfil;
+	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
 	private JPanel panel;
 	private JList<Contacto> list;
 	private DefaultListModel<Contacto> contactos;
@@ -47,23 +53,23 @@ public class VentanaContactos implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public void mostrarContactos(Dimension tam, Point ubi) {
+	/*public void mostrarContactos(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
-	}
+	}*/
 
 	/**
 	 * Create the application.
 	 */
-	public VentanaContactos() {
-		initialize();
+	public VentanaContactos(Dimension tam, Point ubi) {
+		initialize(tam, ubi);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(Dimension tam, Point ubi) {
 		frmAppchat = new JFrame();
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setIconImage(
@@ -90,9 +96,22 @@ public class VentanaContactos implements ActionListener {
 		mntmMensajes.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmMensajes);
 
-		mntmPerfil = new JMenuItem("Perfil");
-		mntmPerfil.setBackground(new Color(255, 255, 255));
-		menuBar.add(mntmPerfil);
+		mnPerfil = new JMenu("Perfil");
+		mnPerfil.setBackground(Color.WHITE);
+		mnPerfil.setSize(30, 30);
+		mnPerfil.setIcon(new ImageIcon(
+				VentanaMain.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
+		ImageInJLabel.resizeImage(mnPerfil,
+				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
+		menuBar.add(mnPerfil);
+
+		mntmEditarPerfil = new JMenuItem("Editar perfil");
+		mntmEditarPerfil.setBackground(new Color(255, 255, 255));
+		mnPerfil.add(mntmEditarPerfil);
+
+		mntmCerrarSesion = new JMenuItem("Cerrar sesión");
+		mntmCerrarSesion.setBackground(new Color(255, 255, 255));
+		mnPerfil.add(mntmCerrarSesion);
 
 		panel = new JPanel();
 		panel.setBackground(new Color(255, 244, 244));
@@ -105,23 +124,24 @@ public class VentanaContactos implements ActionListener {
 		panel.setLayout(gbl_panel);
 
 		contactos = new DefaultListModel<>();
-		
+
 		btnAtras = new JButton("");
-        btnAtras.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnAtras.setPreferredSize(new Dimension(32, 32));
-        btnAtras.setBackground(new Color(255, 255, 255));
-        btnAtras.setIcon(new ImageIcon(VentanaContactos.class.getResource("/imagenes/mod_boton-de-retroceso.png")));
-        btnAtras.setSize(new Dimension(32, 32));
-        GridBagConstraints gbc_btnAtras = new GridBagConstraints();
-        gbc_btnAtras.anchor = GridBagConstraints.NORTHWEST;
-        gbc_btnAtras.insets = new Insets(0, 0, 5, 5);
-        gbc_btnAtras.gridx = 0;
-        gbc_btnAtras.gridy = 0;
-        panel.add(btnAtras, gbc_btnAtras);
-		
-        contactos = new DefaultListModel<>();
-        
+		btnAtras.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnAtras.setPreferredSize(new Dimension(32, 32));
+		btnAtras.setBackground(new Color(255, 255, 255));
+		btnAtras.setIcon(new ImageIcon(VentanaContactos.class.getResource("/imagenes/mod_boton-de-retroceso.png")));
+		btnAtras.setSize(new Dimension(32, 32));
+		GridBagConstraints gbc_btnAtras = new GridBagConstraints();
+		gbc_btnAtras.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnAtras.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAtras.gridx = 0;
+		gbc_btnAtras.gridy = 0;
+		panel.add(btnAtras, gbc_btnAtras);
+
+		contactos = new DefaultListModel<>();
+
 		list = new JList<>(contactos);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		GridBagConstraints gbc_list = new GridBagConstraints();
 		gbc_list.insets = new Insets(0, 0, 5, 5);
 		gbc_list.gridwidth = 2;
@@ -131,7 +151,7 @@ public class VentanaContactos implements ActionListener {
 		gbc_list.gridy = 1;
 		list.setCellRenderer(new ContactoCellRenderer());
 		panel.add(list, gbc_list);
-		
+
 		btnNuevoContacto = new JButton("Añadir Contacto");
 		btnNuevoContacto.setBackground(new Color(255, 255, 255));
 		btnNuevoContacto.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -143,7 +163,7 @@ public class VentanaContactos implements ActionListener {
 		gbc_btnNuevoContacto.gridx = 4;
 		gbc_btnNuevoContacto.gridy = 2;
 		panel.add(btnNuevoContacto, gbc_btnNuevoContacto);
-		
+
 		btnNuevoGrupo = new JButton("Crear Nuevo Grupo");
 		btnNuevoGrupo.setSize(new Dimension(130, 31));
 		btnNuevoGrupo.setPreferredSize(new Dimension(130, 31));
@@ -160,24 +180,40 @@ public class VentanaContactos implements ActionListener {
 		btnNuevoContacto.addActionListener(this);
 		btnAtras.addActionListener(this);
 		list.addListSelectionListener(e -> contactoSeleccionado());
+		actualizarContactos();
+		
+		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btnNuevoContacto) {
-			VentanaAnadirContacto aContacto = new VentanaAnadirContacto();
+		if (e.getSource() == btnNuevoContacto) {
+			new VentanaAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaContactos");
 			frmAppchat.dispose();
-			aContacto.mostrarAnadirContacto(frmAppchat.getSize(),frmAppchat.getLocation());
-		} 
-		if(e.getSource() == btnAtras) {
-			VentanaMain vMain = new VentanaMain();
-			frmAppchat.dispose();
-			vMain.mostrarMain(frmAppchat.getSize(),frmAppchat.getLocation());
+			//aContacto.mostrarAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(),this);
 		}
-		
-	}
-	
-	private void contactoSeleccionado() {
+		if (e.getSource() == btnAtras) {
+			new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation());
+			frmAppchat.dispose();
+			//vMain.mostrarMain(frmAppchat.getSize(), frmAppchat.getLocation());
+		}
 	}
 
+	private void contactoSeleccionado() {
+		if (list.getSelectedValue() instanceof Grupo) {
+			// abrir ventana editar grupo
+		} else {
+			// abrir ventana editar contacto individual
+		}
+	}
+
+	private void actualizarContactos() {
+		List<Contacto> cs = Controlador.getUnicaInstancia().recuperarContactos();
+		for(Contacto c : cs) {
+			contactos.addElement(c);
+		}
+	}
+	
 }

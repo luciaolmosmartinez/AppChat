@@ -26,16 +26,20 @@ public class Aplicacion {
 					propiedades.put("frameColor", "254 127 154"); // Color del marco de la ventana
 					propiedades.put("rolloverColor", "254 127 154"); // Color al pasar el mouse
 					propiedades.put("selectionBackgroundColor", "255 255 255"); // Fondo de selección
+					propiedades.put("Menu.background", "255 255 255");
+					propiedades.put("Menu.selectionBackground", "255 255 255");  
+					propiedades.put("MenuItem.background", "255 255 255");
+					propiedades.put("MenuItem.selectionBackground", "255 255 255");
 					FastLookAndFeel.setTheme(propiedades);
 					UIManager.setLookAndFeel(new FastLookAndFeel());
 					// llama a la ventana main
 					try {
-						VentanaInicio ventana = new VentanaInicio();
 						Dimension tamVentana = new Dimension(900, 550);
 						Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();
 						int x = (tamPantalla.width - tamVentana.width) / 2;
 						int y = (tamPantalla.height - tamVentana.height) / 2;
-						ventana.mostrarInicio(tamVentana, new Point(x, y));
+						new VentanaInicio(tamVentana, new Point(x, y));
+						//ventana.mostrarInicio(tamVentana, new Point(x, y));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

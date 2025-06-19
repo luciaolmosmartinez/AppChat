@@ -30,7 +30,12 @@ public class Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 		this.mensajeSaludo = mensajeSaludo;
 		this.fechaRegistro = LocalDate.now();
-		this.imagenPerfil = imagenPerfil;
+		if(imagenPerfil.equals("")) {
+			this.imagenPerfil = "/imagenes/gato_perfil.png";
+		}else {
+			this.imagenPerfil = imagenPerfil;
+		}
+		
 		this.premium = false;
 		this.contactos = new LinkedList<Contacto>();
 		/* this.mensajes = new LinkedList<>(); */

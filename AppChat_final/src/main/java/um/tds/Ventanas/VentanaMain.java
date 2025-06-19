@@ -3,6 +3,7 @@ package um.tds.Ventanas;
 import java.awt.BorderLayout;
 import tds.BubbleText;
 import um.tds.Controlador.Controlador;
+import um.tds.Modelado.Contacto;
 import um.tds.Modelado.Mensaje;
 import um.tds.Renderers.MensajeCellRenderer;
 
@@ -21,6 +22,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.Component;
@@ -34,16 +36,18 @@ import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.Cursor;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JMenu;
 
 public class VentanaMain implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panelCentral, panelContacto, panelEscribir, panelMensajes;
 	private JMenuBar menuBar;
-	private JLabel lblImagen, lblConrtacto;
+	private JLabel lblImagen, lblContacto;
 	private JButton btnEmoticono, btnEnviar;
 	private JTextField textField;
-	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmPerfil;
+	private JMenu mnPerfil;
+	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
 	private JList<Mensaje> list;
 	private GridBagConstraints gbc_bubble_1, gbc_lblImagen, gbc_lblConrtacto, gbc_btnEmoticono, gbc_textField,
 			gbc_btnEnviar, gbc_bubble_1_2, gbc_bubble_1_1;
@@ -52,24 +56,25 @@ public class VentanaMain implements ActionListener {
 	private BubbleText bubble, bubble_3, bubble_2, bubble_1;
 	private DefaultListModel<Mensaje> mensajes;
 	private JScrollPane scrollPane_1;
+	private Contacto contacto;
 
 	/**
 	 * Create the frame.
 	 */
-	public void mostrarMain(Dimension tam, Point ubi) {
-		frmAppchat.setVisible(true);
-		frmAppchat.setSize(tam);
-		frmAppchat.setLocation(ubi);
-	}
+	/*
+	 * public void mostrarMain(Dimension tam, Point ubi) {
+	 * frmAppchat.setVisible(true); frmAppchat.setSize(tam);
+	 * frmAppchat.setLocation(ubi); }
+	 */
 
 	/**
 	 * Create the application.
 	 */
-	public VentanaMain() {
-		initialize();
+	public VentanaMain(Dimension tam, Point ubi) {
+		initialize(tam, ubi);
 	}
 
-	public void initialize() {
+	public void initialize(Dimension tam, Point ubi) {
 		frmAppchat = new JFrame();
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setIconImage(
@@ -80,6 +85,7 @@ public class VentanaMain implements ActionListener {
 		frmAppchat.setBounds(100, 100, 633, 409);
 
 		menuBar = new JMenuBar();
+		menuBar.setBackground(Color.WHITE);
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
 
@@ -96,10 +102,23 @@ public class VentanaMain implements ActionListener {
 		mntmMensajes.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmMensajes);
 
-		mntmPerfil = new JMenuItem("Perfil");
-		mntmPerfil.setBackground(new Color(255, 255, 255));
-		menuBar.add(mntmPerfil);
-		
+		mnPerfil = new JMenu("Perfil");
+		mnPerfil.setBackground(Color.WHITE);
+		mnPerfil.setSize(30, 30);
+		mnPerfil.setIcon(new ImageIcon(
+				VentanaMain.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
+		ImageInJLabel.resizeImage(mnPerfil,
+				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
+		menuBar.add(mnPerfil);
+
+		mntmEditarPerfil = new JMenuItem("Editar perfil");
+		mntmEditarPerfil.setBackground(new Color(255, 255, 255));
+		mnPerfil.add(mntmEditarPerfil);
+
+		mntmCerrarSesion = new JMenuItem("Cerrar sesión");
+		mntmCerrarSesion.setBackground(new Color(255, 255, 255));
+		mnPerfil.add(mntmCerrarSesion);
+
 		contentPane = new JPanel();
 		contentPane.setMaximumSize(new Dimension(494, 400));
 		contentPane.setBackground(new Color(255, 255, 255));
@@ -107,24 +126,24 @@ public class VentanaMain implements ActionListener {
 		frmAppchat.setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
-		/*panelOeste = new JPanel();
-		panelOeste.setMinimumSize(new Dimension(100, 10));
-		panelOeste.setBackground(new Color(255, 255, 255));
-		contentPane.add(panelOeste, BorderLayout.WEST);*/
+		/*
+		 * panelOeste = new JPanel(); panelOeste.setMinimumSize(new Dimension(100, 10));
+		 * panelOeste.setBackground(new Color(255, 255, 255));
+		 * contentPane.add(panelOeste, BorderLayout.WEST);
+		 */
 
 		mensajes = new DefaultListModel<>();
-		
-		//panel = new JPanel();
-		//panelOeste.add(panel);
-		
+
+		// panel = new JPanel();
+		// panelOeste.add(panel);
+
 		scrollPane_1 = new JScrollPane();
-		frmAppchat.add(scrollPane_1,BorderLayout.WEST);
+		frmAppchat.getContentPane().add(scrollPane_1, BorderLayout.WEST);
 		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-		
 		list = new JList<>(mensajes);
 		scrollPane_1.setViewportView(list);
-		list.setCellRenderer(new MensajeCellRenderer(frmAppchat.getSize(),frmAppchat.getLocation(),frmAppchat));
+		list.setCellRenderer(new MensajeCellRenderer(frmAppchat.getSize(), frmAppchat.getLocation(), frmAppchat));
 
 		panelCentral = new JPanel();
 		panelCentral.setBackground(new Color(255, 255, 255));
@@ -157,7 +176,7 @@ public class VentanaMain implements ActionListener {
 		gbl_panelContacto.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		panelContacto.setLayout(gbl_panelContacto);
 
-		lblImagen = new JLabel("foto contacto");
+		lblImagen = new JLabel("");
 		gbc_lblImagen = new GridBagConstraints();
 		gbc_lblImagen.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblImagen.insets = new Insets(0, 0, 0, 5);
@@ -165,25 +184,30 @@ public class VentanaMain implements ActionListener {
 		gbc_lblImagen.gridy = 0;
 		panelContacto.add(lblImagen, gbc_lblImagen);
 
-		lblConrtacto = new JLabel("");
+		lblContacto = new JLabel("");
 		gbc_lblConrtacto = new GridBagConstraints();
 		gbc_lblConrtacto.insets = new Insets(0, 0, 0, 5);
 		gbc_lblConrtacto.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblConrtacto.gridx = 2;
 		gbc_lblConrtacto.gridy = 0;
-		panelContacto.add(lblConrtacto, gbc_lblConrtacto);
+		panelContacto.add(lblContacto, gbc_lblConrtacto);
 
 		panelEscribir = new JPanel();
 		panelEscribir.setBackground(new Color(255, 255, 255));
 		panelCentral.add(panelEscribir, BorderLayout.SOUTH);
 		gbl_panelEscribir = new GridBagLayout();
-		gbl_panelEscribir.columnWidths = new int[] { 89, 0, 0, 0 };
+		gbl_panelEscribir.columnWidths = new int[] { 38, 0, 0, 0 };
 		gbl_panelEscribir.rowHeights = new int[] { 23, 0 };
 		gbl_panelEscribir.columnWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		gbl_panelEscribir.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		panelEscribir.setLayout(gbl_panelEscribir);
 
-		btnEmoticono = new JButton("emoticonos");
+		btnEmoticono = new JButton();
+		btnEmoticono.setMinimumSize(new Dimension(10, 10));
+		btnEmoticono.setBackground(new Color(255, 255, 255));
+		btnEmoticono.setSize(30, 30);
+		btnEmoticono.setIcon(new ImageIcon(VentanaMain.class.getResource("/imagenes/gato_cabeza.png")));
+		ImageInJLabel.resizeImage(btnEmoticono, VentanaPerfil.class.getResource("/imagenes/gato_cabeza.png"));
 		btnEmoticono.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		gbc_btnEmoticono = new GridBagConstraints();
 		gbc_btnEmoticono.insets = new Insets(0, 0, 0, 5);
@@ -202,8 +226,10 @@ public class VentanaMain implements ActionListener {
 		textField.setColumns(10);
 
 		btnEnviar = new JButton("Enviar");
+		btnEnviar.setBackground(new Color(255, 255, 255));
 		btnEnviar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		gbc_btnEnviar = new GridBagConstraints();
+		gbc_btnEnviar.fill = GridBagConstraints.BOTH;
 		gbc_btnEnviar.gridx = 2;
 		gbc_btnEnviar.gridy = 0;
 		panelEscribir.add(btnEnviar, gbc_btnEnviar);
@@ -267,18 +293,27 @@ public class VentanaMain implements ActionListener {
 		gbc_bubble_1_2.gridy = 4;
 		panelMensajes.add(bubble_3, gbc_bubble_1_2);
 
+		panelCentral.setVisible(false);
+
 		btnEnviar.addActionListener(this);
 		btnEmoticono.addActionListener(this);
 		mntmContactos.addActionListener(this);
-		list.addListSelectionListener(e -> conversacionSeleccionada());
+		mntmCerrarSesion.addActionListener(this);
+		mntmEditarPerfil.addActionListener(this);
+		list.addListSelectionListener(e -> conversacionSeleccionada(list.getSelectedValue()));
+
+		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
+
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		// Si no hay texto meter "" si no hay emoticono meter -1, no pueden estar los
 		// dos
 		if (e.getSource() == btnEnviar) {
-			if(textField.getText().equals("")) {
-				
+			if (textField.getText().equals("")) {
+
 			} else {
 				Controlador.getUnicaInstancia().registrarMensaje(textField.getText(), -1);
 				List<Mensaje> mensajesRecientes = Controlador.getUnicaInstancia().getUltimosMensajes();
@@ -286,22 +321,39 @@ public class VentanaMain implements ActionListener {
 				for (Mensaje m : mensajesRecientes) {
 					mensajes.addElement(m);
 				}
-			    list.setModel(mensajes);
-				list.setCellRenderer(new MensajeCellRenderer(frmAppchat.getSize(),frmAppchat.getLocation(),frmAppchat));
+				list.setModel(mensajes);
+				list.setCellRenderer(
+						new MensajeCellRenderer(frmAppchat.getSize(), frmAppchat.getLocation(), frmAppchat));
 				scrollPane.revalidate();
 				scrollPane.repaint();
 			}
-		} 
+		}
 		if (e.getSource() == mntmContactos) {
-			VentanaContactos contacto = new VentanaContactos();
+			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
-			contacto.mostrarContactos(frmAppchat.getSize(),frmAppchat.getLocation());
+			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
+		}
+		if(e.getSource() == mntmCerrarSesion){
+			Controlador.getUnicaInstancia().cerrarSesion();
+			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
+			frmAppchat.dispose();
+		}
+		if(e.getSource() == mntmEditarPerfil) {
+			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaMain");
+			frmAppchat.dispose();
 		}
 		// añadir foto gato en botón emoticono
 	}
-	
+
 	private void conversacionSeleccionada(Mensaje seleccionado) {
-		Controlador.getUnicaInstancia().recuperarContactoMensaje(seleccionado);
+		contacto = Controlador.getUnicaInstancia().recuperarContactoMensaje(seleccionado);
+		mostrarVentanaConvo();
 	}
 
+	private void mostrarVentanaConvo() {
+		lblContacto.setText(contacto.getNombre());
+		lblImagen.setIcon(new ImageIcon(VentanaMain.class.getResource(contacto.getImagen())));
+		ImageInJLabel.resizeImage(lblImagen, VentanaPerfil.class.getResource(contacto.getImagen()));
+		panelCentral.setVisible(true);
+	}
 }

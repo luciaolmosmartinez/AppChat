@@ -92,7 +92,7 @@ public class Controlador { // clase controlador
 
 	public void registrarContacto(String numTelefono, String nombre) {
 		Usuario usuario = recuperarUsuarioTelefono(numTelefono);
-		
+
 		ContactoIndividual contacto = new ContactoIndividual(usuario, nombre);
 
 		// Persistir contacto
@@ -126,7 +126,7 @@ public class Controlador { // clase controlador
 		return AdaptadorUsuario.getUnicaInstancia().recuperarUsuarioTelefono(numTelefono);
 	}
 
-	public Contacto recuperarContacto(int id) {
+	public Contacto recuperarContactoIndividual(int id) {
 		return AdaptadorContacto.getUnicaInstancia().recuperarContacto(id);
 	}
 
@@ -137,6 +137,12 @@ public class Controlador { // clase controlador
 		} else {
 			return false;
 		}
+	}
+
+	public void cerrarSesion() {
+		this.usuarioActual = null;
+		contactoActual = null;
+		tReceptor = null;
 	}
 
 	public Usuario getUsuarioActual() {
@@ -165,18 +171,18 @@ public class Controlador { // clase controlador
 				return recuperarGrupo(Integer.parseInt(mensaje.getReceptor()));
 			} else { // es un contacto individual
 				Usuario u = recuperarUsuarioTelefono(mensaje.getReceptor());
-				return recuperarContacto(u.getId());
+				return recuperarContactoIndividual(u.getId());
 			}
 		} else { // quiero recuperar el contacto que me lo ha enviado
 			Usuario u = recuperarUsuarioTelefono(mensaje.getEmisor());
-			return recuperarContacto(u.getId());
+			return recuperarContactoIndividual(u.getId());
 		}
 	}
 
 	public List<Mensaje> getUltimosMensajes() {
 		return usuarioActual.getUltimosMensajes();
 	}
-	
+
 	public String recuperarOtroUsuario(Mensaje mensaje) {
 		if (mensaje.getEmisor().equals(usuarioActual.getNumTelefono())) {
 			return mensaje.getReceptor();
@@ -184,8 +190,18 @@ public class Controlador { // clase controlador
 			return mensaje.getEmisor();
 		}
 	}
-	
+
 	public boolean isContacto(Mensaje mensaje) {
 		return usuarioActual.isContacto(recuperarOtroUsuario(mensaje));
+	}
+
+	public List<Contacto> recuperarContactos() {
+		return usuarioActual.getContactos();
+	}
+	
+	public void modificarUsuario(String nombre, String telefono, String correo, char[] contrasena, LocalDate fecha,
+			String saludo, String imagen) {
+		Usuario u = new Usuario(nombre,telefono,correo,contrasena,fecha,saludo,imagen);
+		adaptadorUsuario.modificarUsuario(u);
 	}
 }

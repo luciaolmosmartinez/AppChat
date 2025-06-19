@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -12,6 +13,8 @@ import javax.swing.ListCellRenderer;
 import um.tds.Modelado.Contacto;
 import um.tds.Modelado.ContactoIndividual;
 import um.tds.Modelado.Grupo;
+import um.tds.Ventanas.ImageInJLabel;
+import um.tds.Ventanas.VentanaPerfil;
 
 public class ContactoCellRenderer extends JPanel implements ListCellRenderer<Contacto> {
 	private static final long serialVersionUID = 1L;
@@ -34,15 +37,10 @@ public class ContactoCellRenderer extends JPanel implements ListCellRenderer<Con
 		// Set the text
 		nameLabel.setText(contacto.getNombre());
 
-		if(contacto instanceof Grupo) {
-			Grupo g = (Grupo) contacto;
-			imageLabel.setIcon(new ImageIcon(ContactoCellRenderer.class.getResource(g.getImagen())));
-		} else if(contacto instanceof ContactoIndividual){
-			ContactoIndividual i = (ContactoIndividual) contacto;
-			imageLabel.setIcon(new ImageIcon(ContactoCellRenderer.class.getResource(i.getUsuario().getImagenPerfil())));
-		}
+		imageLabel.setIcon(new ImageIcon(ContactoCellRenderer.class.getResource(contacto.getImagen())));
+		imageLabel.setSize(50,50);
+		ImageInJLabel.resizeImage(imageLabel, VentanaPerfil.class.getResource(contacto.getImagen()));
 		
-
 		// Set background and foreground based on selection
 		if (isSelected) {
 			setBackground(Color.PINK);

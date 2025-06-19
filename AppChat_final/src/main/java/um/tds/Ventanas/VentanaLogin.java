@@ -43,23 +43,23 @@ public class VentanaLogin implements ActionListener {
 			gbc_lblErrorTelf;
 	private JButton btnCancelar;
 
-	public void mostrarLogin(Dimension tam, Point ubi) {
+	/*public void mostrarLogin(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
-	}
+	}*/
 
 	/**
 	 * Create the application.
 	 */
-	public VentanaLogin() {
-		initialize();
+	public VentanaLogin(Dimension tam, Point ubi) {
+		initialize(tam, ubi);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(Dimension tam, Point ubi) {
 		frmAppchat = new JFrame();
 		frmAppchat.getContentPane().setBackground(new Color(255, 244, 244));
 		frmAppchat.setBackground(new Color(255, 255, 255));
@@ -229,6 +229,10 @@ public class VentanaLogin implements ActionListener {
 		btnAcceder.addActionListener(this);
 		btnCancelar.addActionListener(this);
 		btnNoRecuerdo.addActionListener(this);
+		
+		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 	public static boolean esTelfValido(String telf) {
@@ -251,10 +255,10 @@ public class VentanaLogin implements ActionListener {
 			} else {
 				if (esTelfValido(textTelf.getText())) {
 					if (Controlador.getUnicaInstancia().iniciarSesion(textTelf.getText(), password.getPassword())) {
-						VentanaMain main = new VentanaMain();
+						new VentanaMain(frmAppchat.getSize(),frmAppchat.getLocation());
 						//main.setLocationRelativeTo(frmAppchat);
 						frmAppchat.dispose();
-						main.mostrarMain(frmAppchat.getSize(),frmAppchat.getLocation());
+						//main.mostrarMain(frmAppchat.getSize(),frmAppchat.getLocation());
 					} else {
 						textTelf.setText("");
 						password.setText("");
@@ -267,10 +271,10 @@ public class VentanaLogin implements ActionListener {
 			}
 
 		} else if (e.getSource() == btnCancelar) {
-			VentanaInicio inicio = new VentanaInicio();
+			new VentanaInicio(frmAppchat.getSize(),frmAppchat.getLocation());
 			//inicio.setLocationRelativeTo(frmAppchat);
 			frmAppchat.dispose();
-			inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
+			//inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;
 		}/* else if (e.getSource() == btnNoRecuerdo) {
 			VentanaNoRecuerdo nR = new VentanaNoRecuerdo();

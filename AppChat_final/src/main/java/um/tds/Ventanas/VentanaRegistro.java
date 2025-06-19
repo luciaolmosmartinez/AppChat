@@ -33,7 +33,6 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import javax.swing.JPasswordField;
-import javax.swing.JPopupMenu;
 
 import java.awt.Font;
 import java.awt.Dimension;
@@ -57,23 +56,23 @@ public class VentanaRegistro implements ActionListener {
 	private Component horizontalGlue;
 	private JPasswordField passContrasena, passContrasenaRepe;
 
-	public void mostrarRegistro(Dimension tam, Point ubi) {
+	/*public void mostrarRegistro(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaRegistro() {
-		initialize();
+	public VentanaRegistro(Dimension tam, Point ubi) {
+		initialize(tam, ubi);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	public void initialize() {
+	public void initialize(Dimension tam, Point ubi) {
 
 		frmAppchat = new JFrame();
 		frmAppchat.setBackground(new Color(255, 244, 244));
@@ -341,6 +340,10 @@ public class VentanaRegistro implements ActionListener {
 		frmAppchat.setLocation(x, y);
 		aceptar.addActionListener(this);
 		cancelar.addActionListener(this);
+		
+		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 	public static boolean esCorreoValido(String correo) {
@@ -374,9 +377,9 @@ public class VentanaRegistro implements ActionListener {
 								if (Controlador.getUnicaInstancia().registrarUsuario(textNombre.getText() + " " + textApellidos.getText(),
 										textTelefono.getText(), textEmail.getText(), passContrasena.getPassword(),
 										fechaNacimiento, testSaludo.getText(), textImagen.getText())) {
-									VentanaLogin login = new VentanaLogin();
+									new VentanaLogin(frmAppchat.getSize(),frmAppchat.getLocation());
 									frmAppchat.dispose();
-									login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
+									//login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
 
 								} else {
 									textTelefono.setText("");
@@ -407,8 +410,8 @@ public class VentanaRegistro implements ActionListener {
 				}
 			}
 		} else { // btnCancelar
-			VentanaInicio inicio = new VentanaInicio();
-			inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
+			new VentanaInicio(frmAppchat.getSize(),frmAppchat.getLocation());
+			//inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
 			//inicio.setLocationRelativeTo(frmAppchat);
 			frmAppchat.dispose();
 			return;

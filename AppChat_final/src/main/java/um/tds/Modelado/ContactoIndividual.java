@@ -16,4 +16,9 @@ public class ContactoIndividual extends Contacto {
 		this.usuario = usuario;
 	}
 
+	@Override
+	public String getImagen() {
+		return usuario.getImagenPerfil();
+	}
+
 }

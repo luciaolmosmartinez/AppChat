@@ -53,7 +53,7 @@ public class MensajeCellRenderer extends JPanel implements ListCellRenderer<Mens
 		add(imageLabel, BorderLayout.WEST);
 		add(nameLabel, BorderLayout.NORTH);
 		add(messageLabel, BorderLayout.CENTER);
-		panel.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		add(panel, BorderLayout.EAST);
 
 		panel.add(timeLabel);
@@ -108,9 +108,9 @@ public class MensajeCellRenderer extends JPanel implements ListCellRenderer<Mens
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnAnadir) {
-			VentanaAnadirContacto vAC = new VentanaAnadirContacto();
+			new VentanaAnadirContacto(tam, ubi,"");
 			frame.dispose();
-			vAC.mostrarAnadirContacto(tam,ubi);
+			//vAC.mostrarAnadirContacto(tam,ubi);
 		}
 	}
 }

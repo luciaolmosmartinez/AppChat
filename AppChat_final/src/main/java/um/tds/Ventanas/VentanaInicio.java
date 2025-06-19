@@ -29,23 +29,23 @@ public class VentanaInicio implements ActionListener {
 	private JLabel titulo, lblNewLabel;
 	private JButton btnInicioSesion, btnRegistro;
 
-	public void mostrarInicio(Dimension tam, Point ubi) {
+	/*public void mostrarInicio(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
-	}
+	}*/
 
 	/**
 	 * Create the application.
 	 */
-	public VentanaInicio() {
-		initialize();
+	public VentanaInicio(Dimension tam, Point ubi) {
+		initialize(tam, ubi);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(Dimension tam, Point ubi) {
 		frmAppchat = new JFrame();
 		frmAppchat.setVisible(true);
 		frmAppchat.setForeground(new Color(254, 127, 154));
@@ -135,23 +135,27 @@ public class VentanaInicio implements ActionListener {
 		// Manejadores
 		btnInicioSesion.addActionListener(this);
 		btnRegistro.addActionListener(this);
+		
+		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnInicioSesion) {
-			VentanaLogin login = new VentanaLogin();
+			VentanaLogin login = new VentanaLogin(frmAppchat.getSize(),frmAppchat.getLocation());
 			//login.setLocation(frmAppchat.getX(), frmAppchat.getY());
 			frmAppchat.dispose();
-			login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
+			//login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;
 		}
 
 		if (e.getSource() == btnRegistro) {
-			VentanaRegistro registro = new VentanaRegistro();
+			new VentanaRegistro(frmAppchat.getSize(),frmAppchat.getLocation());
 			//registro.setLocation(frmAppchat.getX(), frmAppchat.getY());
 			frmAppchat.dispose();
-			registro.mostrarRegistro(frmAppchat.getSize(),frmAppchat.getLocation());
+			//registro.mostrarRegistro(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;
 		}
 		return;

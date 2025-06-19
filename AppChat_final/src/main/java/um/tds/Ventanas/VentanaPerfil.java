@@ -14,13 +14,19 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+
 import java.awt.Point;
 import com.toedter.calendar.JDateChooser;
+
+import um.tds.Controlador.Controlador;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
@@ -30,7 +36,8 @@ public class VentanaPerfil implements ActionListener {
 	private JFrame frmAppchat;
 	private JTextField txtnombreDelPerfil, txtnmeroDeTelfono, txtemail, txtapellidos;
 	private JMenuBar menuBar;
-	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmPerfil;
+	private JMenu mnPerfil;
+	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
 	private JPanel panel;
 	private GridBagLayout gbl_panel;
 	private JLabel nombre, lblApellidos, icono, telefono, fecha, lblEmail, saludo, lblNewLabel;
@@ -38,28 +45,28 @@ public class VentanaPerfil implements ActionListener {
 			gbc_lblApellidos, gbc_icono, gbc_telefono, gbc_txtnmeroDeTelfono, gbc_fecha, gbc_dateChooser, gbc_lblEmail,
 			gbc_txtemail, gbc_btnNewButton, gbc_saludo, gbc_txtrsaludo, gbc_lblNewLabel, gbc_btnNewButton_1,
 			gbc_btnNewButton_2;
-	private JButton btnimagenPremium, btnNewButton, btnNewButton_1, btnNewButton_2;
+	private JButton btnimagenPremium, btnNewButton, btnCancelar, btnAceptar;
 	private JDateChooser dateChooser;
-	private JTextArea txtrsaludo;
+	private JTextArea txtsaludo;
+	private JTextField textImagen;
 
-	public void mostrarPerfil(Dimension tam, Point ubi) {
-		frmAppchat.setVisible(true);
-		frmAppchat.setSize(tam);
-		frmAppchat.setLocation(ubi);
-	}
+	/*
+	 * public void mostrarPerfil(Dimension tam, Point ubi) {
+	 * frmAppchat.setVisible(true); frmAppchat.setSize(tam);
+	 * frmAppchat.setLocation(ubi); }
+	 */
 
 	/**
 	 * Create the application.
 	 */
-	public VentanaPerfil() {
-		initialize();
-		frmAppchat.setVisible(true);
+	public VentanaPerfil(Dimension tam, Point ubi, String ventanaAnterior) {
+		initialize(tam, ubi, ventanaAnterior);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(Dimension tam, Point ubi, String ventanaAnterior) {
 		frmAppchat = new JFrame();
 		frmAppchat.setBounds(100, 100, 1060, 667);
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,9 +88,22 @@ public class VentanaPerfil implements ActionListener {
 		mntmMensajes.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmMensajes);
 
-		mntmPerfil = new JMenuItem("Perfil");
-		mntmPerfil.setBackground(new Color(255, 255, 255));
-		menuBar.add(mntmPerfil);
+		mnPerfil = new JMenu("Perfil");
+		mnPerfil.setBackground(Color.WHITE);
+		mnPerfil.setSize(30, 30);
+		mnPerfil.setIcon(new ImageIcon(
+				VentanaMain.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
+		ImageInJLabel.resizeImage(mnPerfil,
+				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
+		menuBar.add(mnPerfil);
+
+		mntmEditarPerfil = new JMenuItem("Editar perfil");
+		mntmEditarPerfil.setBackground(new Color(255, 255, 255));
+		mnPerfil.add(mntmEditarPerfil);
+
+		mntmCerrarSesion = new JMenuItem("Cerrar sesión");
+		mntmCerrarSesion.setBackground(new Color(255, 255, 255));
+		mnPerfil.add(mntmCerrarSesion);
 
 		panel = new JPanel();
 		frmAppchat.getContentPane().add(panel, BorderLayout.CENTER);
@@ -105,7 +125,7 @@ public class VentanaPerfil implements ActionListener {
 		panel.add(nombre, gbc_nombre);
 
 		txtnombreDelPerfil = new JTextField();
-		txtnombreDelPerfil.setText("(Nombre)");
+		txtnombreDelPerfil.setText(Controlador.getUnicaInstancia().getUsuarioActual().getNombre());
 		gbc_txtnombreDelPerfil = new GridBagConstraints();
 		gbc_txtnombreDelPerfil.gridwidth = 2;
 		gbc_txtnombreDelPerfil.insets = new Insets(0, 0, 5, 5);
@@ -137,7 +157,7 @@ public class VentanaPerfil implements ActionListener {
 		panel.add(lblApellidos, gbc_lblApellidos);
 
 		txtapellidos = new JTextField();
-		txtapellidos.setText("(Apellidos)");
+		txtapellidos.setText("");
 		txtapellidos.setColumns(10);
 		gbc_txtapellidos = new GridBagConstraints();
 		gbc_txtapellidos.gridwidth = 2;
@@ -150,8 +170,10 @@ public class VentanaPerfil implements ActionListener {
 		icono = new JLabel("");
 		icono.setAlignmentX(Component.CENTER_ALIGNMENT);
 		icono.setSize(170, 170);
-		icono.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/hombre_barba.png")));
-		ImageInJLabel.resizeImage(icono, VentanaPerfil.class.getResource("/imagenes/hombre_barba.png"));
+		icono.setIcon(new ImageIcon(
+				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
+		ImageInJLabel.resizeImage(icono,
+				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
 		icono.setPreferredSize(new Dimension(170, 170));
 		icono.setMaximumSize(new Dimension(512, 512));
 		gbc_icono = new GridBagConstraints();
@@ -171,7 +193,7 @@ public class VentanaPerfil implements ActionListener {
 		panel.add(telefono, gbc_telefono);
 
 		txtnmeroDeTelfono = new JTextField();
-		txtnmeroDeTelfono.setText("(Número de teléfono)");
+		txtnmeroDeTelfono.setText(Controlador.getUnicaInstancia().getUsuarioActual().getNumTelefono());
 		gbc_txtnmeroDeTelfono = new GridBagConstraints();
 		gbc_txtnmeroDeTelfono.gridwidth = 2;
 		gbc_txtnmeroDeTelfono.insets = new Insets(0, 0, 5, 5);
@@ -200,6 +222,16 @@ public class VentanaPerfil implements ActionListener {
 		gbc_dateChooser.gridx = 3;
 		gbc_dateChooser.gridy = 4;
 		panel.add(dateChooser, gbc_dateChooser);
+		
+		textImagen = new JTextField();
+		textImagen.setText((String) null);
+		textImagen.setColumns(10);
+		GridBagConstraints gbc_textImagen = new GridBagConstraints();
+		gbc_textImagen.insets = new Insets(0, 0, 5, 5);
+		gbc_textImagen.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textImagen.gridx = 1;
+		gbc_textImagen.gridy = 6;
+		panel.add(textImagen, gbc_textImagen);
 
 		lblEmail = new JLabel("Email:");
 		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -211,7 +243,7 @@ public class VentanaPerfil implements ActionListener {
 		panel.add(lblEmail, gbc_lblEmail);
 
 		txtemail = new JTextField();
-		txtemail.setText("(Email)");
+		txtemail.setText(Controlador.getUnicaInstancia().getUsuarioActual().getEmail());
 		gbc_txtemail = new GridBagConstraints();
 		gbc_txtemail.gridwidth = 2;
 		gbc_txtemail.insets = new Insets(0, 0, 5, 5);
@@ -237,8 +269,8 @@ public class VentanaPerfil implements ActionListener {
 		gbc_saludo.gridy = 8;
 		panel.add(saludo, gbc_saludo);
 
-		txtrsaludo = new JTextArea();
-		txtrsaludo.setText("(saludo)");
+		txtsaludo = new JTextArea();
+		txtsaludo.setText(Controlador.getUnicaInstancia().getUsuarioActual().getMensajeSaludo());
 		gbc_txtrsaludo = new GridBagConstraints();
 		gbc_txtrsaludo.gridheight = 2;
 		gbc_txtrsaludo.gridwidth = 2;
@@ -246,32 +278,54 @@ public class VentanaPerfil implements ActionListener {
 		gbc_txtrsaludo.fill = GridBagConstraints.BOTH;
 		gbc_txtrsaludo.gridx = 3;
 		gbc_txtrsaludo.gridy = 8;
-		panel.add(txtrsaludo, gbc_txtrsaludo);
+		panel.add(txtsaludo, gbc_txtrsaludo);
 
-		lblNewLabel = new JLabel("Usuario desde: ");
+		lblNewLabel = new JLabel(
+				"Usuario desde: " + Controlador.getUnicaInstancia().getUsuarioActual().getFechaRegistro().toString());
 		gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.gridx = 1;
 		gbc_lblNewLabel.gridy = 11;
 		panel.add(lblNewLabel, gbc_lblNewLabel);
 
-		btnNewButton_1 = new JButton("Cancelar");
+		btnCancelar = new JButton("Cancelar");
 		gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_1.gridx = 4;
 		gbc_btnNewButton_1.gridy = 11;
-		panel.add(btnNewButton_1, gbc_btnNewButton_1);
+		panel.add(btnCancelar, gbc_btnNewButton_1);
 
-		btnNewButton_2 = new JButton("Aceptar");
+		btnAceptar = new JButton("Aceptar");
 		gbc_btnNewButton_2 = new GridBagConstraints();
 		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_2.gridx = 5;
 		gbc_btnNewButton_2.gridy = 11;
-		panel.add(btnNewButton_2, gbc_btnNewButton_2);
+		panel.add(btnAceptar, gbc_btnNewButton_2);
+
+		btnCancelar.addActionListener(this);
+		btnAceptar.addActionListener(this);
+
+		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-
+		if (e.getSource() == btnCancelar) {
+			//DEPENDERÁ DE LA VENTANA DE LA QUE VENGA
+		}
+		if (e.getSource() == btnAceptar) {
+			LocalDate fechaNacimiento = null;
+			if (dateChooser.getDate() != null) {
+				fechaNacimiento = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			}
+			if (fechaNacimiento == null || fechaNacimiento.isBefore(LocalDate.now())) {
+				Controlador.getUnicaInstancia().modificarUsuario(txtnombreDelPerfil.getText(),
+						txtnmeroDeTelfono.getText(), txtemail.getText(),
+						Controlador.getUnicaInstancia().getUsuarioActual().getContrasena(), fechaNacimiento, txtsaludo.getText(), textImagen.getText());
+				//DEPENDERÁ DE LA VENTANA DE LA QUE VENGA
+			}
+		}
 	}
 
 }
