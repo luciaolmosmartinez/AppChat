@@ -2,6 +2,7 @@ package um.tds.Controlador;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import um.tds.Modelado.*;
 import um.tds.Persistencia.*;
@@ -195,13 +196,60 @@ public class Controlador { // clase controlador
 		return usuarioActual.isContacto(recuperarOtroUsuario(mensaje));
 	}
 
+	// Recupera una lista con los contactos del usuario actual
 	public List<Contacto> recuperarContactos() {
 		return usuarioActual.getContactos();
 	}
-	
-	public void modificarUsuario(String nombre, String telefono, String correo, char[] contrasena, LocalDate fecha,
-			String saludo, String imagen) {
-		Usuario u = new Usuario(nombre,telefono,correo,contrasena,fecha,saludo,imagen);
-		adaptadorUsuario.modificarUsuario(u);
+
+	// Recupera una lista con los contatos del usuario actual que no son miembros del grupo dado
+	public List<ContactoIndividual> recuperarNoMiembros(Grupo grupo) {
+		List<ContactoIndividual> contactos = usuarioActual.getContactos().stream()
+				.filter(c -> c instanceof ContactoIndividual).map(c -> (ContactoIndividual) c)
+				.collect(Collectors.toList());
+		;
+		contactos.removeAll(grupo.getMiembros());
+		return contactos;
+	}
+
+	// Modifica los atributos del usuario actual que la ventanaPerfil podria haber
+	// modificado
+	// y actualiza el cambio en el repositorio y en la base de datos
+	public void modificarUsuario(String nombre, String email, char[] contrasena, LocalDate fecha, String saludo,
+			String imagen) {
+		usuarioActual.setNombre(nombre);
+		usuarioActual.setEmail(email);
+		usuarioActual.setContrasena(contrasena);
+		usuarioActual.setFechaNacimiento(fecha);
+		usuarioActual.setMensajeSaludo(saludo);
+		usuarioActual.setImagenPerfil(imagen);
+
+		// repoU.actualizarUsuario(usuarioActual);
+
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+	}
+
+	// Modifica el contacto que la ventanaModificarContacto podria haber modificado,
+	// se actualiza automaticamente el cambio en el repositorio para el usuario
+	// actual
+	// y se actualiza en la base de datos tanto para el contacto como para el
+	// usuario
+	public boolean modificarContacto(ContactoIndividual contacto, String nombre) {
+		Usuario usuario = repoU.modificarContacto(contacto, nombre, usuarioActual);
+		if (usuario != null) {
+			adaptadorContacto.modificarContacto(contacto);
+			adaptadorUsuario.modificarUsuario(usuario);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean modificarGrupo(Grupo grupo, String nombre, String imagen) {
+		Usuario usuario = repoU.modificarGrupo(grupo, nombre, imagen, usuarioActual);
+		if (usuario != null) {
+			adaptadorGrupo.modificarGrupo(grupo);
+			adaptadorUsuario.modificarUsuario(usuario);
+			return true;
+		}
+		return false;
 	}
 }

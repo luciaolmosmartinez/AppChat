@@ -17,6 +17,10 @@ public class Grupo extends Contacto {
 		return imagen;
 	}
 
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+
 	public List<ContactoIndividual> getMiembros() {
 		return new LinkedList<ContactoIndividual>(miembros);
 	}

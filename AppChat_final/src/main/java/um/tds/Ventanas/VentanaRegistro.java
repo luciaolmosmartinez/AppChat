@@ -1,29 +1,14 @@
 package um.tds.Ventanas;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Point;
-
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import com.toedter.calendar.JDateChooser;
-
-import um.tds.Controlador.Controlador;
-
-import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,35 +17,47 @@ import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-
-import java.awt.Font;
-import java.awt.Dimension;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+
+import com.toedter.calendar.JDateChooser;
+
+import um.tds.Controlador.Controlador;
 
 public class VentanaRegistro implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panelBotones;
-	private JTextField textNombre, textApellidos, textTelefono, textImagen, textEmail;
-	private JLabel fecha, saludo, lblEmail, imagen, nombre, foto, apellidos, telefono, contraseña, confirmar, titulo, lblError;
+	private JTextField textNombre, textTelefono, textImagen, textEmail;
+	private JLabel fecha, saludo, lblEmail, imagen, nombre, foto, telefono, contrasena, confirmar, titulo, lblError;
 	private JTextArea testSaludo;
 	private JButton cancelar, aceptar;
 	private JScrollPane scrollPane;
 	private JDateChooser dateChooser;
 	private GridBagLayout gbl_contentPane;
-	private GridBagConstraints gbc_nombre, gbc_textNombre, gbc_apellidos, gbc_textApellidos, gbc_telefono,
-			gbc_textTelefono, gbc_contraseña, gbc_confirmar, gbc_lblEmail, gbc_fecha, gbc_dateChooser, gbc_saludo,
-			gbc_scrollPane, gbc_imagen, gbc_foto, gbc_panelBotones, gbc_textImagen, gbc_titulo, gbc_passContrasena,
-			gbc_passContrasenaRepe, gbc_textEmail, gbc_lblError;
+	private GridBagConstraints gbc_nombre, gbc_textNombre, gbc_telefono, gbc_textTelefono, gbc_contrasena,
+			gbc_confirmar, gbc_lblEmail, gbc_fecha, gbc_dateChooser, gbc_saludo, gbc_scrollPane, gbc_imagen, gbc_foto,
+			gbc_panelBotones, gbc_textImagen, gbc_titulo, gbc_passContrasena, gbc_passContrasenaRepe, gbc_textEmail,
+			gbc_lblError;
 	private Component horizontalGlue;
 	private JPasswordField passContrasena, passContrasenaRepe;
 
-	/*public void mostrarRegistro(Dimension tam, Point ubi) {
-		frmAppchat.setVisible(true);
-		frmAppchat.setSize(tam);
-		frmAppchat.setLocation(ubi);
-	}*/
+	/*
+	 * public void mostrarRegistro(Dimension tam, Point ubi) {
+	 * frmAppchat.setVisible(true); frmAppchat.setSize(tam);
+	 * frmAppchat.setLocation(ubi); }
+	 */
 
 	/**
 	 * Create the frame.
@@ -90,10 +87,10 @@ public class VentanaRegistro implements ActionListener {
 
 		gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[] { 20, 0, 0, 0, 0, 116, 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_contentPane.columnWeights = new double[] { 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-				1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE };
+		gbl_contentPane.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+				0.0, 1.0, 1.0, Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
 
 		titulo = new JLabel("AppChat");
@@ -118,7 +115,7 @@ public class VentanaRegistro implements ActionListener {
 		contentPane.add(lblError, gbc_lblError);
 		lblError.setVisible(false);
 
-		nombre = new JLabel("<html><span style='color:red;'>*</span>Nombre:</html>");
+		nombre = new JLabel("<html><span style='color:red;'>*</span>Nombre completo:</html>");
 		nombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		gbc_nombre = new GridBagConstraints();
 		gbc_nombre.anchor = GridBagConstraints.EAST;
@@ -137,32 +134,13 @@ public class VentanaRegistro implements ActionListener {
 		contentPane.add(textNombre, gbc_textNombre);
 		textNombre.setColumns(10);
 
-		apellidos = new JLabel("<html><span style='color:red;'>*</span>Apellidos:</html>");
-		apellidos.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		gbc_apellidos = new GridBagConstraints();
-		gbc_apellidos.anchor = GridBagConstraints.EAST;
-		gbc_apellidos.insets = new Insets(0, 0, 5, 5);
-		gbc_apellidos.gridx = 1;
-		gbc_apellidos.gridy = 7;
-		contentPane.add(apellidos, gbc_apellidos);
-
-		textApellidos = new JTextField();
-		gbc_textApellidos = new GridBagConstraints();
-		gbc_textApellidos.gridwidth = 4;
-		gbc_textApellidos.insets = new Insets(0, 0, 5, 5);
-		gbc_textApellidos.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textApellidos.gridx = 2;
-		gbc_textApellidos.gridy = 7;
-		contentPane.add(textApellidos, gbc_textApellidos);
-		textApellidos.setColumns(10);
-
 		telefono = new JLabel("<html><span style='color:red;'>*</span>Teléfono:</html>");
 		telefono.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		gbc_telefono = new GridBagConstraints();
 		gbc_telefono.anchor = GridBagConstraints.EAST;
 		gbc_telefono.insets = new Insets(0, 0, 5, 5);
 		gbc_telefono.gridx = 1;
-		gbc_telefono.gridy = 8;
+		gbc_telefono.gridy = 7;
 		contentPane.add(telefono, gbc_telefono);
 
 		textTelefono = new JTextField();
@@ -170,25 +148,25 @@ public class VentanaRegistro implements ActionListener {
 		gbc_textTelefono.insets = new Insets(0, 0, 5, 5);
 		gbc_textTelefono.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textTelefono.gridx = 2;
-		gbc_textTelefono.gridy = 8;
+		gbc_textTelefono.gridy = 7;
 		contentPane.add(textTelefono, gbc_textTelefono);
 		textTelefono.setColumns(10);
 
-		contraseña = new JLabel("<html><span style='color:red;'>*</span>Contraseña:</html>");
-		contraseña.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		gbc_contraseña = new GridBagConstraints();
-		gbc_contraseña.anchor = GridBagConstraints.EAST;
-		gbc_contraseña.insets = new Insets(0, 0, 5, 5);
-		gbc_contraseña.gridx = 1;
-		gbc_contraseña.gridy = 9;
-		contentPane.add(contraseña, gbc_contraseña);
+		contrasena = new JLabel("<html><span style='color:red;'>*</span>Contraseña:</html>");
+		contrasena.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		gbc_contrasena = new GridBagConstraints();
+		gbc_contrasena.anchor = GridBagConstraints.EAST;
+		gbc_contrasena.insets = new Insets(0, 0, 5, 5);
+		gbc_contrasena.gridx = 1;
+		gbc_contrasena.gridy = 8;
+		contentPane.add(contrasena, gbc_contrasena);
 
 		passContrasena = new JPasswordField();
 		gbc_passContrasena = new GridBagConstraints();
 		gbc_passContrasena.insets = new Insets(0, 0, 5, 5);
 		gbc_passContrasena.fill = GridBagConstraints.HORIZONTAL;
 		gbc_passContrasena.gridx = 2;
-		gbc_passContrasena.gridy = 9;
+		gbc_passContrasena.gridy = 8;
 		contentPane.add(passContrasena, gbc_passContrasena);
 
 		confirmar = new JLabel("<html><span style='color:red;'>*</span>Confirmar contraseña:</html>");
@@ -197,7 +175,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_confirmar.anchor = GridBagConstraints.EAST;
 		gbc_confirmar.insets = new Insets(0, 0, 5, 5);
 		gbc_confirmar.gridx = 3;
-		gbc_confirmar.gridy = 9;
+		gbc_confirmar.gridy = 8;
 		contentPane.add(confirmar, gbc_confirmar);
 
 		passContrasenaRepe = new JPasswordField();
@@ -206,7 +184,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_passContrasenaRepe.insets = new Insets(0, 0, 5, 5);
 		gbc_passContrasenaRepe.fill = GridBagConstraints.HORIZONTAL;
 		gbc_passContrasenaRepe.gridx = 4;
-		gbc_passContrasenaRepe.gridy = 9;
+		gbc_passContrasenaRepe.gridy = 8;
 		contentPane.add(passContrasenaRepe, gbc_passContrasenaRepe);
 
 		lblEmail = new JLabel("<html><span style='color:red;'>*</span>Email:</html>");
@@ -215,7 +193,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_lblEmail.anchor = GridBagConstraints.EAST;
 		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmail.gridx = 1;
-		gbc_lblEmail.gridy = 10;
+		gbc_lblEmail.gridy = 9;
 		contentPane.add(lblEmail, gbc_lblEmail);
 
 		textEmail = new JTextField();
@@ -223,7 +201,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_textEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_textEmail.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textEmail.gridx = 2;
-		gbc_textEmail.gridy = 10;
+		gbc_textEmail.gridy = 9;
 		contentPane.add(textEmail, gbc_textEmail);
 		textEmail.setColumns(10);
 
@@ -233,7 +211,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_fecha.anchor = GridBagConstraints.EAST;
 		gbc_fecha.insets = new Insets(0, 0, 5, 5);
 		gbc_fecha.gridx = 1;
-		gbc_fecha.gridy = 11;
+		gbc_fecha.gridy = 10;
 		contentPane.add(fecha, gbc_fecha);
 
 		dateChooser = new JDateChooser();
@@ -243,7 +221,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
 		gbc_dateChooser.fill = GridBagConstraints.HORIZONTAL;
 		gbc_dateChooser.gridx = 2;
-		gbc_dateChooser.gridy = 11;
+		gbc_dateChooser.gridy = 10;
 		contentPane.add(dateChooser, gbc_dateChooser);
 
 		saludo = new JLabel("Saludo:");
@@ -253,7 +231,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_saludo.anchor = GridBagConstraints.NORTHEAST;
 		gbc_saludo.insets = new Insets(0, 0, 5, 5);
 		gbc_saludo.gridx = 1;
-		gbc_saludo.gridy = 12;
+		gbc_saludo.gridy = 11;
 		contentPane.add(saludo, gbc_saludo);
 
 		scrollPane = new JScrollPane();
@@ -262,7 +240,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane.gridx = 2;
-		gbc_scrollPane.gridy = 12;
+		gbc_scrollPane.gridy = 11;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
 		testSaludo = new JTextArea();
@@ -275,7 +253,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_imagen.gridheight = 2;
 		gbc_imagen.insets = new Insets(0, 0, 5, 5);
 		gbc_imagen.gridx = 3;
-		gbc_imagen.gridy = 12;
+		gbc_imagen.gridy = 11;
 		contentPane.add(imagen, gbc_imagen);
 
 		foto = new JLabel("");
@@ -288,7 +266,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_foto.gridheight = 4;
 		gbc_foto.insets = new Insets(0, 0, 5, 5);
 		gbc_foto.gridx = 4;
-		gbc_foto.gridy = 10;
+		gbc_foto.gridy = 9;
 		contentPane.add(foto, gbc_foto);
 
 		panelBotones = new JPanel();
@@ -297,7 +275,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_panelBotones.insets = new Insets(0, 0, 5, 5);
 		gbc_panelBotones.fill = GridBagConstraints.BOTH;
 		gbc_panelBotones.gridx = 2;
-		gbc_panelBotones.gridy = 14;
+		gbc_panelBotones.gridy = 13;
 		contentPane.add(panelBotones, gbc_panelBotones);
 		panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.X_AXIS));
 
@@ -331,7 +309,7 @@ public class VentanaRegistro implements ActionListener {
 		gbc_textImagen.insets = new Insets(0, 0, 5, 5);
 		gbc_textImagen.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textImagen.gridx = 4;
-		gbc_textImagen.gridy = 14;
+		gbc_textImagen.gridy = 13;
 		contentPane.add(textImagen, gbc_textImagen);
 
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -340,7 +318,7 @@ public class VentanaRegistro implements ActionListener {
 		frmAppchat.setLocation(x, y);
 		aceptar.addActionListener(this);
 		cancelar.addActionListener(this);
-		
+
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
@@ -355,13 +333,8 @@ public class VentanaRegistro implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == aceptar) { // quitar todos los errores que puedan haber aparecido anteriormente?
-			if (lblError.isVisible()) {
-				lblError.setVisible(false);
-			} 
-
-			if (textNombre.getText().equals("") || textApellidos.getText().equals("")
-					|| textTelefono.getText().equals("") || textEmail.getText().equals("")
+		if (e.getSource() == aceptar) { 
+			if (textNombre.getText().equals("") || textTelefono.getText().equals("") || textEmail.getText().equals("")
 					|| passContrasena.getPassword().length == 0 || passContrasenaRepe.getPassword().length == 0) {
 				lblError.setText("Se deben rellenar todos los campos marcados con *");
 				lblError.setVisible(true);
@@ -370,21 +343,22 @@ public class VentanaRegistro implements ActionListener {
 					if (esTelfValido(textTelefono.getText())) {
 						if (Arrays.equals(passContrasena.getPassword(), passContrasenaRepe.getPassword())) {
 							LocalDate fechaNacimiento = null;
-							if (dateChooser.getDate()!=null) {
-								fechaNacimiento = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+							if (dateChooser.getDate() != null) {
+								fechaNacimiento = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault())
+										.toLocalDate();
 							}
-							if (fechaNacimiento==null || fechaNacimiento.isBefore(LocalDate.now())) {
-								if (Controlador.getUnicaInstancia().registrarUsuario(textNombre.getText() + " " + textApellidos.getText(),
+							if (fechaNacimiento == null || fechaNacimiento.isBefore(LocalDate.now())) {
+								if (Controlador.getUnicaInstancia().registrarUsuario(textNombre.getText(),
 										textTelefono.getText(), textEmail.getText(), passContrasena.getPassword(),
 										fechaNacimiento, testSaludo.getText(), textImagen.getText())) {
-									new VentanaLogin(frmAppchat.getSize(),frmAppchat.getLocation());
+									new VentanaLogin(frmAppchat.getSize(), frmAppchat.getLocation());
 									frmAppchat.dispose();
-									//login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
+									// login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
 
 								} else {
 									textTelefono.setText("");
 									textEmail.setText("");
-									lblError.setText("El telefono y/o el correo electrónico ya está registrado");
+									lblError.setText("El telefono ya está registrado");
 									lblError.setVisible(true);
 								}
 							} else {
@@ -410,9 +384,9 @@ public class VentanaRegistro implements ActionListener {
 				}
 			}
 		} else { // btnCancelar
-			new VentanaInicio(frmAppchat.getSize(),frmAppchat.getLocation());
-			//inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
-			//inicio.setLocationRelativeTo(frmAppchat);
+			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
+			// inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
+			// inicio.setLocationRelativeTo(frmAppchat);
 			frmAppchat.dispose();
 			return;
 		}

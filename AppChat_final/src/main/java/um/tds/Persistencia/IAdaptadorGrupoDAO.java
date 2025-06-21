@@ -13,5 +13,6 @@ public interface IAdaptadorGrupoDAO {
 	
 	public void agregarEliminarMiembro(Grupo grupo);
 	
+	public void modificarGrupo(Grupo grupo);
 	//public boolean eliminarGrupo(Grupo grupo);
 }

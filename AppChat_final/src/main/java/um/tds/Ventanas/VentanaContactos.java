@@ -1,41 +1,38 @@
 package um.tds.Ventanas;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 
 import um.tds.Controlador.Controlador;
 import um.tds.Modelado.Contacto;
+import um.tds.Modelado.ContactoIndividual;
 import um.tds.Modelado.Grupo;
 import um.tds.Renderers.ContactoCellRenderer;
-
-import javax.swing.JPanel;
-import javax.swing.ListSelectionModel;
-
-import java.awt.BorderLayout;
-import javax.swing.JList;
-import javax.swing.JMenu;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Point;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import javax.swing.border.TitledBorder;
-import java.awt.Font;
 
 public class VentanaContactos implements ActionListener {
 
@@ -46,9 +43,8 @@ public class VentanaContactos implements ActionListener {
 	private JPanel panel;
 	private JList<Contacto> list;
 	private DefaultListModel<Contacto> contactos;
-	private JButton btnNuevoContacto;
-	private JButton btnNuevoGrupo;
-	private JButton btnAtras;
+	private JButton btnNuevoContacto, btnNuevoGrupo, btnAtras;
+	private JLabel lblInfo;
 
 	/**
 	 * Create the frame.
@@ -137,8 +133,15 @@ public class VentanaContactos implements ActionListener {
 		gbc_btnAtras.gridx = 0;
 		gbc_btnAtras.gridy = 0;
 		panel.add(btnAtras, gbc_btnAtras);
-
-		contactos = new DefaultListModel<>();
+		
+		lblInfo = new JLabel("Pulsa sobre el contacto o el grupo para modificarlo:");
+		lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		GridBagConstraints gbc_lblInfo = new GridBagConstraints();
+		gbc_lblInfo.gridwidth = 2;
+		gbc_lblInfo.insets = new Insets(0, 0, 5, 5);
+		gbc_lblInfo.gridx = 1;
+		gbc_lblInfo.gridy = 0;
+		panel.add(lblInfo, gbc_lblInfo);
 
 		list = new JList<>(contactos);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -177,8 +180,12 @@ public class VentanaContactos implements ActionListener {
 		gbc_btnNuevoGrupo.gridx = 4;
 		gbc_btnNuevoGrupo.gridy = 4;
 		panel.add(btnNuevoGrupo, gbc_btnNuevoGrupo);
+		
 		btnNuevoContacto.addActionListener(this);
 		btnAtras.addActionListener(this);
+		mntmContactos.addActionListener(this);
+		mntmCerrarSesion.addActionListener(this);
+		mntmEditarPerfil.addActionListener(this);
 		list.addListSelectionListener(e -> contactoSeleccionado());
 		actualizarContactos();
 		
@@ -199,21 +206,34 @@ public class VentanaContactos implements ActionListener {
 			frmAppchat.dispose();
 			//vMain.mostrarMain(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
+		if (e.getSource() == mntmContactos) {
+			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
+			frmAppchat.dispose();
+			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
+		}
+		if(e.getSource() == mntmCerrarSesion){
+			Controlador.getUnicaInstancia().cerrarSesion();
+			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
+			frmAppchat.dispose();
+		}
+		if(e.getSource() == mntmEditarPerfil) {
+			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaContactos");
+			frmAppchat.dispose();
+		}
 	}
 
 	private void contactoSeleccionado() {
 		if (list.getSelectedValue() instanceof Grupo) {
-			// abrir ventana editar grupo
+			new VentanaModificarGrupo((Grupo) list.getSelectedValue(), frmAppchat.getSize(), frmAppchat.getLocation());
+			frmAppchat.dispose();
 		} else {
-			// abrir ventana editar contacto individual
+			new VentanaModificarContacto((ContactoIndividual) list.getSelectedValue(), frmAppchat.getSize(), frmAppchat.getLocation());
+			frmAppchat.dispose();
 		}
 	}
 
 	private void actualizarContactos() {
-		List<Contacto> cs = Controlador.getUnicaInstancia().recuperarContactos();
-		for(Contacto c : cs) {
-			contactos.addElement(c);
-		}
+		Controlador.getUnicaInstancia().recuperarContactos().stream().forEach(c -> contactos.addElement(c));
 	}
 	
 }

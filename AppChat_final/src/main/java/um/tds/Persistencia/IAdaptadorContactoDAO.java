@@ -10,4 +10,6 @@ public interface IAdaptadorContactoDAO {
 	public ContactoIndividual recuperarContacto(int id);
 
 	public List<ContactoIndividual> recuperarTodosContactos();
+	
+	public void modificarContacto(ContactoIndividual contacto);
 }

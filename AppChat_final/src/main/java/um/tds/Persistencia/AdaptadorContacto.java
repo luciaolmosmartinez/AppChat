@@ -97,4 +97,21 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 		}
 		return contactos;
 	}
+	
+	public void modificarContacto(ContactoIndividual contacto) {
+		// 1. Se recupera entidad
+		Entidad eContacto = servPersistencia.recuperarEntidad(contacto.getId());
+		
+		// 2. Se recorren sus propiedades y se actualiza su valor
+		for (Propiedad prop : eContacto.getPropiedades()) {
+			if (prop.getNombre().equals("id")) {
+				prop.setValor(String.valueOf(contacto.getId()));
+			} else if (prop.getNombre().equals("nombre")) {
+				prop.setValor(contacto.getNombre());
+			} else if (prop.getNombre().equals("usuario")) {
+				prop.setValor(String.valueOf(contacto.getUsuario().getId()));
+			} 
+			servPersistencia.modificarPropiedad(prop);
+		}
+	}
 }

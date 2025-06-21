@@ -10,7 +10,7 @@ import javax.swing.UIManager;
 
 import com.jtattoo.plaf.fast.FastLookAndFeel;
 
-import um.tds.Ventanas.*;
+import um.tds.Ventanas.VentanaInicio;
 
 public class Aplicacion {
 	public static void main(final String[] args) {

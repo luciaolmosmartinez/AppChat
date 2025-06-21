@@ -3,30 +3,27 @@ package um.tds.Ventanas;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import um.tds.Controlador.Controlador;
-
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.SwingConstants;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JRadioButton;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import um.tds.Controlador.Controlador;
 
 public class VentanaBusqueda implements ActionListener {
 

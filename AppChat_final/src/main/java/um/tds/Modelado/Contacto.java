@@ -21,6 +21,10 @@ public abstract class Contacto {
 		this.id = id;
 	}
 	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
 	public abstract String getImagen();
 
 }

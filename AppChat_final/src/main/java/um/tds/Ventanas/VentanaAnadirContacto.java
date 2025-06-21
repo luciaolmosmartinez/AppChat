@@ -1,36 +1,33 @@
 package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import um.tds.Controlador.Controlador;
-
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
-
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import java.awt.Component;
-import java.awt.Color;
 import java.awt.Toolkit;
-import javax.swing.JMenuBar;
-import javax.swing.SwingConstants;
-import javax.swing.JMenuItem;
-import java.awt.Dimension;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Font;
+import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+
+import um.tds.Controlador.Controlador;
 
 public class VentanaAnadirContacto implements ActionListener {
 
@@ -41,13 +38,10 @@ public class VentanaAnadirContacto implements ActionListener {
 	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
 	private GridBagConstraints gbc_lblImagen, gbc_txtNombre, gbc_txtTelefono;
 	private JScrollPane scrollPane_1;
-	private JLabel lblImagen;
+	private JLabel lblImagen, lblNombre, lblTelefono, lblError;
 	private JTextField txtNombre, txtTelefono;
 	private GridBagLayout gbl_panel_1;
-	private JLabel lblTelefono;
 	private JButton btnAceptar, btnCancelar;
-	private JLabel lblNombre;
-	private JLabel lblError;
 	private String ventanaAnterior;
 	/**
 	 * Create the frame.

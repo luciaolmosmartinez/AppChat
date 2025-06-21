@@ -22,7 +22,7 @@ public class Usuario {
 
 	public Usuario(String nombre, String numTelefono, String email, char[] contrasena, LocalDate fechaNacimiento,
 			String mensajeSaludo, String imagenPerfil) {
-		this.id = 0; // Se actualizará al registrarse en la base de datos
+		this.id = 0; // Se actualizara al registrarse en la base de datos
 		this.nombre = nombre;
 		this.contrasena = contrasena;
 		this.numTelefono = numTelefono;
@@ -30,12 +30,12 @@ public class Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 		this.mensajeSaludo = mensajeSaludo;
 		this.fechaRegistro = LocalDate.now();
-		if(imagenPerfil.equals("")) {
+		if (imagenPerfil.equals("")) {
 			this.imagenPerfil = "/imagenes/gato_perfil.png";
-		}else {
+		} else {
 			this.imagenPerfil = imagenPerfil;
 		}
-		
+
 		this.premium = false;
 		this.contactos = new LinkedList<Contacto>();
 		/* this.mensajes = new LinkedList<>(); */
@@ -98,8 +98,8 @@ public class Usuario {
 		return new LinkedList<Contacto>(contactos);
 	}
 
-	public /* List<Mensaje> */ Map<String, List<Mensaje>> getMensajes() {
-		return /* new LinkedList<Mensaje>(mensajes) */ new HashMap<String, List<Mensaje>>(mensajes);
+	public Map<String, List<Mensaje>> getMensajes() {
+		return new HashMap<String, List<Mensaje>>(mensajes);
 	}
 
 	public List<Mensaje> getUltimosMensajes() {
@@ -108,16 +108,16 @@ public class Usuario {
 
 	public boolean isContacto(String otroUsuario) {
 		return contactos.stream().anyMatch(c -> {
-	        if (c instanceof ContactoIndividual) {
-	            Usuario u = ((ContactoIndividual) c).getUsuario();
-	            if (u != null) {
-	                return u.getNumTelefono().equals(otroUsuario);
-	            }
-	        }
-	        return false;
-	    });
+			if (c instanceof ContactoIndividual) {
+				Usuario u = ((ContactoIndividual) c).getUsuario();
+				if (u != null) {
+					return u.getNumTelefono().equals(otroUsuario);
+				}
+			}
+			return false;
+		});
 	}
-	
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -168,23 +168,18 @@ public class Usuario {
 
 	}
 
-	// igual que la siguiente pero sin stream
-	/*
-	 * public boolean addContacto(ContactoIndividual contacto) { for (Contacto c :
-	 * contactos) { if (c instanceof ContactoIndividual) { if
-	 * (c.getNombre().equals(contacto.getNombre())) { return false; } else if
-	 * (((ContactoIndividual) c).getUsuario().equals(contacto.getUsuario())) {
-	 * contactos.remove(contacto); } } } return contactos.add(contacto); }
-	 */
-
+	// Para añadir contactos, primero comprueba que no tenga un contacto con el nombre del nuevo. 
+	// En el caso de que ya le haya asignado un contacto a este usuario, lo actualiza, si no simplemente lo añade
 	public boolean addContacto(ContactoIndividual contacto) {
 		if (contactos.stream().filter(c -> c instanceof ContactoIndividual)
 				.anyMatch(c -> c.getNombre().equals(contacto.getNombre()))) {
+			contactos.stream().filter(c -> c instanceof ContactoIndividual).forEach(c -> System.out.println(c.getNombre()));
 			return false;
 		}
+		
 		contactos.removeIf(c -> c instanceof ContactoIndividual
 				&& ((ContactoIndividual) c).getUsuario().equals(contacto.getUsuario()));
-
+		
 		return contactos.add(contacto);
 	}
 

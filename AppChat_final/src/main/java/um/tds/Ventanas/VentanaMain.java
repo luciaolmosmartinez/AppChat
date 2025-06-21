@@ -1,42 +1,40 @@
 package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
 import tds.BubbleText;
 import um.tds.Controlador.Controlador;
 import um.tds.Modelado.Contacto;
 import um.tds.Modelado.Mensaje;
 import um.tds.Renderers.MensajeCellRenderer;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.*;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import javax.swing.JList;
-
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JTextField;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import java.awt.Component;
-import java.awt.Color;
-import java.awt.Toolkit;
-
-import javax.swing.JMenuBar;
-import javax.swing.SwingConstants;
-import javax.swing.JMenuItem;
-import java.awt.Point;
-import java.awt.Dimension;
-import java.awt.Cursor;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JMenu;
 
 public class VentanaMain implements ActionListener {
 
@@ -51,11 +49,10 @@ public class VentanaMain implements ActionListener {
 	private JList<Mensaje> list;
 	private GridBagConstraints gbc_bubble_1, gbc_lblImagen, gbc_lblConrtacto, gbc_btnEmoticono, gbc_textField,
 			gbc_btnEnviar, gbc_bubble_1_2, gbc_bubble_1_1;
-	private JScrollPane scrollPane;
+	private JScrollPane scrollPane, scrollPane_1;
 	private GridBagLayout gbl_panelContacto, gbl_panelEscribir, gbl_panelMensajes;
 	private BubbleText bubble, bubble_3, bubble_2, bubble_1;
 	private DefaultListModel<Mensaje> mensajes;
-	private JScrollPane scrollPane_1;
 	private Contacto contacto;
 
 	/**

@@ -28,6 +28,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		}
 	}
 
+	// Registra el usuario dado en la base de datos
 	// cuando se registra un usuario se le asigna un identificador único
 	public void registrarUsuario(Usuario usuario) {
 		// 1. Se comprueba que no está registrada la entidad que corresponde
@@ -42,7 +43,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 			return;
 		}
 		
-		if (!(existeUsuarioConTelefono(usuario.getNumTelefono()) && !(existeUsuarioConEmail(usuario.getEmail())))) {
+		if (!(existeUsuarioConTelefono(usuario.getNumTelefono()))) {
 			// 2. Se registran sus objetos agregados.
 			AdaptadorContacto adaptadorC = AdaptadorContacto.getUnicaInstancia();
 			AdaptadorGrupo adaptadorG = AdaptadorGrupo.getUnicaInstancia();
@@ -84,7 +85,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	}
 
 	
-	
+	// Actualiza el usuario dado en la base de datos
 	public void modificarUsuario(Usuario usuario) {
 		// 1. Se recupera entidad
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
@@ -123,6 +124,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		}
 	}
 
+	// Recupera el usuario guardado en la base de datos con el id dado
 	public Usuario recuperarUsuarioId(int id) {
 		// 1. Si el objeto está en el pool se retorna
 		if (PoolDAO.getUnicaInstancia().contiene(id))
@@ -198,12 +200,14 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		return usuario;
 	}
 	
+	// Recupera el usuario que tenga el telefono dado
 	public Usuario recuperarUsuarioTelefono(String numTelefono) {
 		List<Usuario> users = recuperarTodosUsuarios();
 		return users.stream().filter(
 				u -> u.getNumTelefono().equals(numTelefono)).findFirst().orElse(null);
 	}
 
+	// Recupera una lista con todos los usuarios de la memoria
 	public List<Usuario> recuperarTodosUsuarios() {
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		List<Entidad> eUsuarios = servPersistencia.recuperarEntidades("usuario");
@@ -213,6 +217,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		return usuarios;
 	}
 
+	// Combierte la lista de contactos de un usuario en un String
 	private String obtenerIdsContactos(List<Contacto> contactos) {
 		String lista = "";
 		for (Contacto c : contactos) {
@@ -221,6 +226,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		return lista.trim();
 	}
 
+	// Combierte un String en una lista de contactos
 	private List<Contacto> obtenerContactosDesdeIds(String lista) {
 		List<Contacto> contactos = new LinkedList<Contacto>();
 		StringTokenizer strTok = new StringTokenizer(lista, " ");
@@ -231,6 +237,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		return contactos;
 	}
 
+	// Combierte la lista de mensajes de un usuario en un String
 	private String obtenerIdsMensajes(Map<String,List<Mensaje>> mensajes) {
 		String lista = "";
 		for (List<Mensaje> ms : mensajes.values()) {
@@ -241,6 +248,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		return lista.trim();
 	}
 	
+	// Combierte un String en una lista de mensajes
 	private List<Mensaje> obtenerMensajesDesdeIds(String lista) {
 		List<Mensaje> mensajes = new LinkedList<Mensaje>();
 		StringTokenizer strTok = new StringTokenizer(lista, " ");
@@ -251,25 +259,13 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		return mensajes;
 	}
 
+	// Comprueba si ya existe un usuario en la base de datos que tenga el telefono dado
 	private boolean existeUsuarioConTelefono(String telefono) {
 		List<Entidad> entidades = servPersistencia.recuperarEntidades("usuario");
 
 		for (Entidad e : entidades) {
 			for (Propiedad p : e.getPropiedades()) {
 				if (p.getNombre().equals("numTelefono") && p.getValor().equals(telefono)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	private boolean existeUsuarioConEmail(String email) {
-		List<Entidad> entidades = servPersistencia.recuperarEntidades("usuario");
-
-		for (Entidad e : entidades) {
-			for (Propiedad p : e.getPropiedades()) {
-				if (p.getNombre().equals("email") && p.getValor().equals(email)) {
 					return true;
 				}
 			}

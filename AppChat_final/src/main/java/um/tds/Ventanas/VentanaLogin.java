@@ -1,33 +1,30 @@
 package um.tds.Ventanas;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import java.awt.BorderLayout;
-import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.regex.Pattern;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import java.awt.Dimension;
-
 import javax.swing.ImageIcon;
-import java.awt.Color;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import um.tds.Controlador.Controlador;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Point;
-
-import javax.swing.JPasswordField;
-import java.awt.Toolkit;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Cursor;
 
 public class VentanaLogin implements ActionListener {
 
@@ -36,12 +33,11 @@ public class VentanaLogin implements ActionListener {
 	private JTextField textTelf;
 	private JPanel panelCentro, panel;
 	private GridBagLayout gbl_panelCentro;
-	private JButton btnAcceder, btnNoRecuerdo;
+	private JButton btnAcceder, btnNoRecuerdo, btnCancelar;
 	private JLabel titulo, imagen, lblTelefono, lblContrasea, lblErrorVacio, lblErrorMal, lblErrorTelf;
 	private GridBagConstraints gbc_lblTelefono, gbc_textTelf, gbc_btnAcceder, gbc_lblContrasea, gbc_password,
 			gbc_btnNoRecuerdo, gbc_titulo, gbc_imagen, gbc_btnCancelar, gbc_lblErrorVacio, gbc_lblErrorMal,
 			gbc_lblErrorTelf;
-	private JButton btnCancelar;
 
 	/*public void mostrarLogin(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);

@@ -125,6 +125,25 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 		}
 	}
 
+	public void modificarGrupo(Grupo grupo) {
+		// 1. Se recupera entidad
+		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getId());
+
+		// 2. Se recorren sus propiedades y se actualiza su valor
+		for (Propiedad prop : eGrupo.getPropiedades()) {
+			if (prop.getNombre().equals("id")) {
+				prop.setValor(String.valueOf(grupo.getId()));
+			} else if (prop.getNombre().equals("nombre")) {
+				prop.setValor(grupo.getNombre());
+			} else if (prop.getNombre().equals("imagen")) {
+				prop.setValor(grupo.getImagen());
+			}else if (prop.getNombre().equals("miembros")) {
+				prop.setValor(obtenerIdsMiembros(grupo.getMiembros()));
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
+	}
+
 	/*
 	 * public boolean eliminarGrupo(Grupo grupo) { return false; }
 	 */
