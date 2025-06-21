@@ -33,8 +33,12 @@ import javax.swing.border.EmptyBorder;
 import tds.BubbleText;
 import um.tds.Controlador.Controlador;
 import um.tds.Modelado.Contacto;
+import um.tds.Modelado.ContactoIndividual;
+import um.tds.Modelado.Grupo;
 import um.tds.Modelado.Mensaje;
+import um.tds.Modelado.TipoReceptor;
 import um.tds.Renderers.MensajeCellRenderer;
+import java.awt.Font;
 
 public class VentanaMain implements ActionListener {
 
@@ -67,7 +71,10 @@ public class VentanaMain implements ActionListener {
 	/**
 	 * Create the application.
 	 */
-	public VentanaMain(Dimension tam, Point ubi) {
+	public VentanaMain(Dimension tam, Point ubi, Contacto c) {
+		if (c != null) {
+			this.contacto = c;
+		}
 		initialize(tam, ubi);
 	}
 
@@ -167,24 +174,25 @@ public class VentanaMain implements ActionListener {
 		panelContacto.setBackground(new Color(255, 255, 255));
 		panelCentral.add(panelContacto, BorderLayout.NORTH);
 		gbl_panelContacto = new GridBagLayout();
-		gbl_panelContacto.columnWidths = new int[] { 0, 97, 65, 81, 0 };
+		gbl_panelContacto.columnWidths = new int[] { 0, 97, 65, 81, 82, 0 };
 		gbl_panelContacto.rowHeights = new int[] { 14, 0 };
-		gbl_panelContacto.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panelContacto.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		gbl_panelContacto.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		panelContacto.setLayout(gbl_panelContacto);
 
 		lblImagen = new JLabel("");
 		gbc_lblImagen = new GridBagConstraints();
-		gbc_lblImagen.anchor = GridBagConstraints.NORTHWEST;
+		gbc_lblImagen.anchor = GridBagConstraints.NORTHEAST;
 		gbc_lblImagen.insets = new Insets(0, 0, 0, 5);
 		gbc_lblImagen.gridx = 1;
 		gbc_lblImagen.gridy = 0;
 		panelContacto.add(lblImagen, gbc_lblImagen);
 
 		lblContacto = new JLabel("");
+		lblContacto.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		gbc_lblConrtacto = new GridBagConstraints();
 		gbc_lblConrtacto.insets = new Insets(0, 0, 0, 5);
-		gbc_lblConrtacto.anchor = GridBagConstraints.NORTHWEST;
+		gbc_lblConrtacto.anchor = GridBagConstraints.SOUTHWEST;
 		gbc_lblConrtacto.gridx = 2;
 		gbc_lblConrtacto.gridy = 0;
 		panelContacto.add(lblContacto, gbc_lblConrtacto);
@@ -216,7 +224,7 @@ public class VentanaMain implements ActionListener {
 		textField = new JTextField();
 		gbc_textField = new GridBagConstraints();
 		gbc_textField.insets = new Insets(0, 0, 0, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.fill = GridBagConstraints.BOTH;
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 0;
 		panelEscribir.add(textField, gbc_textField);
@@ -242,7 +250,7 @@ public class VentanaMain implements ActionListener {
 		panelMensajes.setPreferredSize(new Dimension(465, 100));
 		panelMensajes.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		bubble = new BubbleText(panelMensajes, "Adios", Color.PINK, "jaja", BubbleText.SENT, 10);
+		/*bubble = new BubbleText(panelMensajes, "Adios", Color.PINK, "jaja", BubbleText.SENT, 10);
 		bubble.setPreferredSize(new Dimension(465, 100));
 		bubble.setSize(new Dimension(85, 71));
 		bubble.setMinimumSize(new Dimension(5, 5));
@@ -288,7 +296,7 @@ public class VentanaMain implements ActionListener {
 		gbc_bubble_1_2.anchor = GridBagConstraints.SOUTH;
 		gbc_bubble_1_2.gridx = 0;
 		gbc_bubble_1_2.gridy = 4;
-		panelMensajes.add(bubble_3, gbc_bubble_1_2);
+		panelMensajes.add(bubble_3, gbc_bubble_1_2);*/
 
 		panelCentral.setVisible(false);
 
@@ -302,6 +310,10 @@ public class VentanaMain implements ActionListener {
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
+
+		if (contacto != null) {
+			mostrarVentanaConvo();
+		}
 
 	}
 
@@ -330,13 +342,13 @@ public class VentanaMain implements ActionListener {
 			frmAppchat.dispose();
 			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
-		if(e.getSource() == mntmCerrarSesion){
+		if (e.getSource() == mntmCerrarSesion) {
 			Controlador.getUnicaInstancia().cerrarSesion();
 			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
 		}
-		if(e.getSource() == mntmEditarPerfil) {
-			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaMain");
+		if (e.getSource() == mntmEditarPerfil) {
+			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
 			frmAppchat.dispose();
 		}
 		// añadir foto gato en botón emoticono
@@ -350,7 +362,16 @@ public class VentanaMain implements ActionListener {
 	private void mostrarVentanaConvo() {
 		lblContacto.setText(contacto.getNombre());
 		lblImagen.setIcon(new ImageIcon(VentanaMain.class.getResource(contacto.getImagen())));
+		lblImagen.setSize(50,50);
 		ImageInJLabel.resizeImage(lblImagen, VentanaPerfil.class.getResource(contacto.getImagen()));
 		panelCentral.setVisible(true);
+		if(contacto instanceof Grupo) {
+			Controlador.getUnicaInstancia().setContactoActual(String.valueOf(contacto.getId()));
+			Controlador.getUnicaInstancia().setTipoReceptor(TipoReceptor.ID_GRUPO);
+		} else {
+			Controlador.getUnicaInstancia().setContactoActual(String.valueOf(((ContactoIndividual) contacto).getUsuario().getNumTelefono()));
+			Controlador.getUnicaInstancia().setTipoReceptor(TipoReceptor.NUM_TELF);
+		}
+		
 	}
 }

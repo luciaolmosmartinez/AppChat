@@ -80,7 +80,7 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		emoticono = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eMensaje, "emoticono"));
 		emisor = servPersistencia.recuperarPropiedadEntidad(eMensaje, "emisor");
 		receptor = servPersistencia.recuperarPropiedadEntidad(eMensaje, "receptor");
-		fechaHora = LocalDateTime.parse(servPersistencia.recuperarPropiedadEntidad(eMensaje, "fechaHora"));
+		fechaHora = LocalDateTime.parse(servPersistencia.recuperarPropiedadEntidad(eMensaje, "fechaHora"), dateFormat);
 
 
 		// 3. Se crea el objeto, se inicializa con propiedades anteriores y se añade al

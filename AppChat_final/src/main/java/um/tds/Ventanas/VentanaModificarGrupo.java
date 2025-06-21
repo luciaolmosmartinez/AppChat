@@ -13,6 +13,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -52,6 +53,7 @@ public class VentanaModificarGrupo implements ActionListener {
 	private JList<ContactoIndividual> listMiembros, listNoMiembros;
 	private DefaultListModel<ContactoIndividual> contactosMiembros, contactosNoMiembros;
 	private JScrollPane scrollMiembros, scrollNoMiembros;
+	private List<ContactoIndividual> miembrosActualizados;
 
 	/**
 	 * Launch the application.
@@ -129,7 +131,7 @@ public class VentanaModificarGrupo implements ActionListener {
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_panel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_panel.columnWeights = new double[] { 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
+		gbl_panel.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		gbl_panel.rowWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		panel.setLayout(gbl_panel);
 		
@@ -140,8 +142,7 @@ public class VentanaModificarGrupo implements ActionListener {
 		btnAtras.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAtras.setPreferredSize(new Dimension(32, 32));
 		btnAtras.setBackground(new Color(255, 255, 255));
-		btnAtras.setIcon(
-				new ImageIcon(VentanaModificarContacto.class.getResource("/imagenes/mod_boton-de-retroceso.png")));
+		btnAtras.setIcon(new ImageIcon(VentanaModificarGrupo.class.getResource("/imagenes/mod_boton-de-retroceso.png")));
 		btnAtras.setSize(new Dimension(32, 32));
 		GridBagConstraints gbc_btnAtras = new GridBagConstraints();
 		gbc_btnAtras.anchor = GridBagConstraints.NORTHWEST;
@@ -160,16 +161,16 @@ public class VentanaModificarGrupo implements ActionListener {
 		panel.add(lblModificar, gbc_lblModificar);
 
 		lblImagen = new JLabel("");
-		lblImagen.setMinimumSize(new Dimension(10, 10));
-		lblImagen.setSize(250, 250);
-		lblImagen.setIcon(new ImageIcon(VentanaAnadirContacto.class.getResource("/imagenes/gato_perfil.png")));
-		ImageInJLabel.resizeImage(lblImagen, VentanaAnadirContacto.class.getResource("/imagenes/gato_perfil.png"));
+		//lblImagen.setMinimumSize(new Dimension(10, 10));
+		lblImagen.setSize(200, 200);
+		lblImagen.setIcon(new ImageIcon(VentanaAnadirContacto.class.getResource(grupo.getImagen())));
+		ImageInJLabel.resizeImage(lblImagen, VentanaAnadirContacto.class.getResource(grupo.getImagen()));
 		gbc_lblImagen = new GridBagConstraints();
 		gbc_lblImagen.gridwidth = 2;
-		gbc_lblImagen.gridheight = 4;
+		gbc_lblImagen.gridheight = 2;
 		gbc_lblImagen.insets = new Insets(0, 0, 5, 5);
 		gbc_lblImagen.gridx = 1;
-		gbc_lblImagen.gridy = 2;
+		gbc_lblImagen.gridy = 4;
 		panel.add(lblImagen, gbc_lblImagen);
 
 		lblNombre = new JLabel("<html><span style='color:red;'>*</span>Nombre:</html>");
@@ -218,11 +219,13 @@ public class VentanaModificarGrupo implements ActionListener {
 		gbc_scrollMiembros.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollMiembros.gridx = 3;
 		gbc_scrollMiembros.gridy = 4;
-		listMiembros.setCellRenderer(new ContactoCellRenderer());
 		panel.add(scrollMiembros, gbc_scrollMiembros);
 
+		actualizarContactosMiembros();
+		
 		listMiembros = new JList<>(contactosMiembros);
 		listMiembros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listMiembros.setCellRenderer(new ContactoCellRenderer());
 		scrollMiembros.setViewportView(listMiembros);
 
 		scrollNoMiembros = new JScrollPane();
@@ -234,11 +237,13 @@ public class VentanaModificarGrupo implements ActionListener {
 		gbc_scrollNoMiembros.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollNoMiembros.gridx = 6;
 		gbc_scrollNoMiembros.gridy = 4;
-		listNoMiembros.setCellRenderer(new ContactoCellRenderer());
 		panel.add(scrollNoMiembros, gbc_scrollNoMiembros);
 
+		actualizarContactosNoMiembros();
+		
 		listNoMiembros = new JList<>(contactosNoMiembros);
 		listNoMiembros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listNoMiembros.setCellRenderer(new ContactoCellRenderer());
 		scrollNoMiembros.setViewportView(listNoMiembros);
 
 		textFieldImagen = new JTextField();
@@ -302,14 +307,22 @@ public class VentanaModificarGrupo implements ActionListener {
 		mntmContactos.addActionListener(this);
 		mntmCerrarSesion.addActionListener(this);
 		mntmEditarPerfil.addActionListener(this);
-		listMiembros.addListSelectionListener(e -> eliminarMiembro());
-		actualizarContactosMiembros();
-		listNoMiembros.addListSelectionListener(e -> anadirMiembros());
-		actualizarContactosNoMiembros();
+		listMiembros.addListSelectionListener(e -> {
+		    if (!e.getValueIsAdjusting()) {
+		        eliminarMiembro();
+		    }
+		});
+		
+		listNoMiembros.addListSelectionListener(e -> {
+		    if (!e.getValueIsAdjusting()) {
+		        anadirMiembro();
+		    }
+		});
 		
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
+		miembrosActualizados = grupo.getMiembros();
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -317,13 +330,14 @@ public class VentanaModificarGrupo implements ActionListener {
 			if (textFieldNombre.getText().equals("")) {
 				lblError.setVisible(true);
 			} else {
+				boolean igual = (grupo.getMiembros().size() > 0 && grupo.getMiembros().stream().allMatch(m -> miembrosActualizados.contains(m)));
 				if (textFieldNombre.getText().equals(grupo.getNombre())
-						&& textFieldImagen.getText().equals(grupo.getImagen())) {
-					lblError.setText("El nombre y la imagen indicados son los actuales de este grupo");
+						&& textFieldImagen.getText().equals(grupo.getImagen()) && igual) {
+					lblError.setText("No se ha modificado el grupo");
 					lblError.setVisible(true);
 				} else {
 					Controlador.getUnicaInstancia().modificarGrupo(grupo, textFieldNombre.getText(),
-							textFieldImagen.getText());
+							textFieldImagen.getText(),miembrosActualizados);
 					JOptionPane.showMessageDialog(frmAppchat, "Grupo modificado correctamente", "Enhorabuena",
 							JOptionPane.PLAIN_MESSAGE);
 					new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
@@ -339,6 +353,8 @@ public class VentanaModificarGrupo implements ActionListener {
 		if (e.getSource() == btnRestaurar) {
 			textFieldNombre.setText(grupo.getNombre());
 			textFieldImagen.setText(grupo.getImagen());
+			actualizarContactosMiembros();
+			actualizarContactosNoMiembros();
 			lblError.setVisible(false);
 			
 			// RESTAURAR CAMBIOS MIEMBROS
@@ -363,17 +379,35 @@ public class VentanaModificarGrupo implements ActionListener {
 	
 	// NO SE SI ESTÁN BIEN
 	private void eliminarMiembro() {
-		contactosMiembros.removeElement(listMiembros.getSelectedValue());
-		contactosNoMiembros.addElement(listMiembros.getSelectedValue());
+		ContactoIndividual seleccionado = listMiembros.getSelectedValue();
+	    if (seleccionado != null) {
+	    	miembrosActualizados.remove(seleccionado);
+	        contactosMiembros.removeElement(seleccionado);
+	        contactosNoMiembros.addElement(seleccionado);
+	        listMiembros.clearSelection();  // Limpia para evitar loops
+	    }
+		/*scrollMiembros.revalidate();
+		scrollMiembros.repaint();
+		scrollNoMiembros.revalidate();
+		scrollNoMiembros.repaint();*/
 	}
 
 	private void actualizarContactosMiembros() {
 		grupo.getMiembros().stream().forEach(c -> contactosMiembros.addElement(c));
 	}
 	
-	private void anadirMiembros() {
-		contactosNoMiembros.removeElement(listMiembros.getSelectedValue());
-		contactosMiembros.addElement(listMiembros.getSelectedValue());
+	private void anadirMiembro() {
+		ContactoIndividual seleccionado = listNoMiembros.getSelectedValue();
+	    if (seleccionado != null) {
+	    	miembrosActualizados.add(seleccionado);
+	        contactosNoMiembros.removeElement(seleccionado);
+	        contactosMiembros.addElement(seleccionado);
+	        listNoMiembros.clearSelection();  // Limpia para evitar loops
+	    }
+		/*scrollMiembros.revalidate();
+		scrollMiembros.repaint();
+		scrollNoMiembros.revalidate();
+		scrollNoMiembros.repaint();*/
 	}
 
 	private void actualizarContactosNoMiembros() {

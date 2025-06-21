@@ -26,5 +26,36 @@ public abstract class Contacto {
 	}
 
 	public abstract String getImagen();
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj)
+	        return true;
+	    if (obj == null || getClass() != obj.getClass())
+	        return false;
+	    Contacto other = (Contacto) obj;
+	    // Si el id es mayor que 0, comparar por id (identidad única)
+	    if (id > 0 && other.id > 0) {
+	        return id == other.id;
+	    }
+	    // Si no, comparar por nombre
+	    if (nombre == null) {
+	        return other.nombre == null;
+	    } else {
+	        return nombre.equals(other.nombre);
+	    }
+	}
+
+	@Override
+	public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    if (id > 0) {
+	        result = prime * result + id;
+	    } else {
+	        result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+	    }
+	    return result;
+	}
 
 }

@@ -12,49 +12,64 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import um.tds.Controlador.Controlador;
+import um.tds.Modelado.Contacto;
+import um.tds.Modelado.ContactoIndividual;
+import um.tds.Renderers.ContactoCellRenderer;
 
-public class VentanaAnadirContacto implements ActionListener {
+public class VentanaCrearGrupo implements ActionListener {
 
 	private JFrame frmAppchat;
-	private JPanel contentPane, panel_1;
+	private JPanel contentPane, panel, panel_1;
 	private JMenuBar menuBar;
 	private JMenu mnPerfil;
 	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
-	private GridBagConstraints gbc_lblImagen, gbc_txtNombre, gbc_txtTelefono;
-	private JLabel lblImagen, lblNombre, lblTelefono, lblError;
-	private JTextField txtNombre, txtTelefono;
+	private GridBagConstraints gbc_lblImagen, gbc_txtNombre;
+	private JLabel lblImagen, lblNombre, lblError;
+	private JTextField txtNombre;
 	private GridBagLayout gbl_panel_1;
 	private JButton btnAceptar, btnCancelar;
 	private String ventanaAnterior;
-	/**
-	 * Create the frame.
-	 */
-	/*public void mostrarAnadirContacto(Dimension tam, Point ubi, ActionListener ventanaAnterior) {
-		frmAppchat.setVisible(true);
-		frmAppchat.setSize(tam);
-		frmAppchat.setLocation(ubi);
-		this.ventanaAnterior = ventanaAnterior;
-	}*/
+	private JTextField txtRutaImagen;
+	private JLabel lblElegirImagen;
+	private JList<Contacto> list;
+	private DefaultListModel<Contacto> contactos;
+	private JScrollPane scrollPane;
+	private List<Contacto> cSeleccionados;
 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaAnadirContacto(Dimension tam, Point ubi, String ventanaAnterior) {
+	/*
+	 * public void mostrarAnadirContacto(Dimension tam, Point ubi, ActionListener
+	 * ventanaAnterior) { frmAppchat.setVisible(true); frmAppchat.setSize(tam);
+	 * frmAppchat.setLocation(ubi); this.ventanaAnterior = ventanaAnterior; }
+	 */
+
+	/**
+	 * Create the frame.
+	 */
+	public VentanaCrearGrupo(Dimension tam, Point ubi, String ventanaAnterior) {
 		frmAppchat = new JFrame();
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setIconImage(
@@ -97,7 +112,7 @@ public class VentanaAnadirContacto implements ActionListener {
 		mntmCerrarSesion = new JMenuItem("Cerrar sesión");
 		mntmCerrarSesion.setBackground(new Color(255, 255, 255));
 		mnPerfil.add(mntmCerrarSesion);
-		
+
 		contentPane = new JPanel();
 		contentPane.setMaximumSize(new Dimension(494, 200));
 		contentPane.setBackground(new Color(255, 255, 255));
@@ -105,13 +120,36 @@ public class VentanaAnadirContacto implements ActionListener {
 		frmAppchat.setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
+		panel = new JPanel();
+		panel.setBackground(new Color(255, 244, 244));
+		contentPane.add(panel, BorderLayout.WEST);
+
+		scrollPane = new JScrollPane();
+		panel.add(scrollPane);
+
+		contactos = new DefaultListModel<>();
+
+		list = new JList<>(contactos);
+		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		GridBagConstraints gbc_list = new GridBagConstraints();
+		gbc_list.insets = new Insets(0, 0, 5, 5);
+		gbc_list.gridwidth = 2;
+		gbc_list.gridheight = 5;
+		gbc_list.fill = GridBagConstraints.BOTH;
+		gbc_list.gridx = 1;
+		gbc_list.gridy = 1;
+		list.setCellRenderer(new ContactoCellRenderer());
+		//panel.add(list, gbc_list);
+
+		scrollPane.setViewportView(list);
+
 		panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 244, 244));
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_panel_1.rowHeights = new int[] { 0, 0, 218, 0, 0, 0, 0, 0 };
-		gbl_panel_1.columnWeights = new double[] { 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE };
+		gbl_panel_1.columnWeights = new double[] { 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE };
 		gbl_panel_1.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE };
 		panel_1.setLayout(gbl_panel_1);
 
@@ -126,7 +164,7 @@ public class VentanaAnadirContacto implements ActionListener {
 		gbc_lblImagen.gridy = 1;
 		panel_1.add(lblImagen, gbc_lblImagen);
 
-		lblNombre = new JLabel("<html><span style='color:red;'>*</span>Nombre:</html>");
+		lblNombre = new JLabel("<html><span style='color:red;'>*</span>Nombre del grupo:</html>");
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_lblNombre = new GridBagConstraints();
 		gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
@@ -144,24 +182,24 @@ public class VentanaAnadirContacto implements ActionListener {
 		panel_1.add(txtNombre, gbc_txtNombre);
 		txtNombre.setColumns(10);
 
-		lblTelefono = new JLabel("<html><span style='color:red;'>*</span>Teléfono:</html>");
-		lblTelefono.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		GridBagConstraints gbc_lblTelefono = new GridBagConstraints();
-		gbc_lblTelefono.insets = new Insets(0, 0, 5, 5);
-		gbc_lblTelefono.anchor = GridBagConstraints.EAST;
-		gbc_lblTelefono.gridx = 2;
-		gbc_lblTelefono.gridy = 3;
-		panel_1.add(lblTelefono, gbc_lblTelefono);
+		lblElegirImagen = new JLabel("Imagen:");
+		lblElegirImagen.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		GridBagConstraints gbc_lblElegirImagen = new GridBagConstraints();
+		gbc_lblElegirImagen.anchor = GridBagConstraints.EAST;
+		gbc_lblElegirImagen.insets = new Insets(0, 0, 5, 5);
+		gbc_lblElegirImagen.gridx = 2;
+		gbc_lblElegirImagen.gridy = 3;
+		panel_1.add(lblElegirImagen, gbc_lblElegirImagen);
 
-		txtTelefono = new JTextField();
-		gbc_txtTelefono = new GridBagConstraints();
-		gbc_txtTelefono.gridwidth = 3;
-		gbc_txtTelefono.insets = new Insets(0, 0, 5, 5);
-		gbc_txtTelefono.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtTelefono.gridx = 3;
-		gbc_txtTelefono.gridy = 3;
-		panel_1.add(txtTelefono, gbc_txtTelefono);
-		txtTelefono.setColumns(10);
+		txtRutaImagen = new JTextField();
+		txtRutaImagen.setColumns(10);
+		GridBagConstraints gbc_txtRutaImagen = new GridBagConstraints();
+		gbc_txtRutaImagen.gridwidth = 3;
+		gbc_txtRutaImagen.insets = new Insets(0, 0, 5, 5);
+		gbc_txtRutaImagen.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtRutaImagen.gridx = 3;
+		gbc_txtRutaImagen.gridy = 3;
+		panel_1.add(txtRutaImagen, gbc_txtRutaImagen);
 
 		lblError = new JLabel("");
 		lblError.setForeground(Color.RED);
@@ -196,32 +234,33 @@ public class VentanaAnadirContacto implements ActionListener {
 
 		btnAceptar.addActionListener(this);
 		btnCancelar.addActionListener(this);
-		
+		list.addListSelectionListener(e -> contactosSeleccionados());
+		actualizarContactos();
+
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
+		cSeleccionados = new LinkedList<>();
 		this.ventanaAnterior = ventanaAnterior;
-		
+
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnAceptar) {
-			if (txtNombre.getText().equals("") || txtTelefono.getText().equals("")) {
-				lblError.setText("Debe rellenar los campos indicados con un asterisco");
+			if (txtNombre.getText().equals("")) {
+				lblError.setText("Debe ponerle un nombre al grupo");
 			} else {
-				String texto = Controlador.getUnicaInstancia().registrarContacto(txtTelefono.getText(), txtNombre.getText());
-				if(texto.equals("")) {
-					new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
-					// vContactos.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
-					frmAppchat.dispose();
-				} else {
-					lblError.setText(texto);
-				}
-				
+				if (txtRutaImagen.getText().equals(""))
+					Controlador.getUnicaInstancia().registrarGrupo(txtNombre.getText(), "/imagenes/gato_perfil.png",
+							cSeleccionados);
+				new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
+				// vContactos.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
+				frmAppchat.dispose();
 			}
+
 		}
 		if (e.getSource() == btnCancelar) {
-			if(ventanaAnterior.equals("VentanaContactos")) {
+			if (ventanaAnterior.equals("VentanaContactos")) {
 				new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 				frmAppchat.dispose();
 			} else {
@@ -231,4 +270,12 @@ public class VentanaAnadirContacto implements ActionListener {
 		}
 	}
 
+	private void contactosSeleccionados() {
+		cSeleccionados = list.getSelectedValuesList();
+	}
+
+	private void actualizarContactos() {
+		Controlador.getUnicaInstancia().recuperarContactos().stream().filter(c -> c instanceof ContactoIndividual)
+				.forEach(c -> contactos.addElement(c));
+	}
 }

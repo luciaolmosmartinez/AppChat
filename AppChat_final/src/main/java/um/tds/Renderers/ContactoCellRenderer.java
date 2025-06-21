@@ -5,14 +5,13 @@ import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
 import um.tds.Modelado.Contacto;
-import um.tds.Modelado.ContactoIndividual;
-import um.tds.Modelado.Grupo;
 import um.tds.Ventanas.ImageInJLabel;
 import um.tds.Ventanas.VentanaPerfil;
 
@@ -34,12 +33,14 @@ public class ContactoCellRenderer extends JPanel implements ListCellRenderer<Con
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Contacto> list, Contacto contacto, int index,
 			boolean isSelected, boolean cellHasFocus) {
-		// Set the text
-		nameLabel.setText(contacto.getNombre());
+		if (contacto != null) {
+	    	nameLabel.setText(contacto.getNombre());
+	    	imageLabel.setIcon(new ImageIcon(ContactoCellRenderer.class.getResource(contacto.getImagen())));
+			imageLabel.setSize(50,50);
+			ImageInJLabel.resizeImage(imageLabel, VentanaPerfil.class.getResource(contacto.getImagen()));
+	    }
 
-		imageLabel.setIcon(new ImageIcon(ContactoCellRenderer.class.getResource(contacto.getImagen())));
-		imageLabel.setSize(50,50);
-		ImageInJLabel.resizeImage(imageLabel, VentanaPerfil.class.getResource(contacto.getImagen()));
+		
 		
 		// Set background and foreground based on selection
 		if (isSelected) {

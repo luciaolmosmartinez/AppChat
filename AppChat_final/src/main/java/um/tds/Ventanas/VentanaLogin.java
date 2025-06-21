@@ -251,7 +251,7 @@ public class VentanaLogin implements ActionListener {
 			} else {
 				if (esTelfValido(textTelf.getText())) {
 					if (Controlador.getUnicaInstancia().iniciarSesion(textTelf.getText(), password.getPassword())) {
-						new VentanaMain(frmAppchat.getSize(),frmAppchat.getLocation());
+						new VentanaMain(frmAppchat.getSize(),frmAppchat.getLocation(), null);
 						//main.setLocationRelativeTo(frmAppchat);
 						frmAppchat.dispose();
 						//main.mostrarMain(frmAppchat.getSize(),frmAppchat.getLocation());

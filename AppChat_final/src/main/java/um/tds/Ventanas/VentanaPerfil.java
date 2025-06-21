@@ -36,6 +36,7 @@ import javax.swing.SwingConstants;
 import com.toedter.calendar.JDateChooser;
 
 import um.tds.Controlador.Controlador;
+import javax.swing.border.TitledBorder;
 
 public class VentanaPerfil implements ActionListener {
 
@@ -164,8 +165,9 @@ public class VentanaPerfil implements ActionListener {
 
 		if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
 			siPremium = new JLabel();
-			siPremium.setIcon(new ImageIcon(VentanaContactos.class.getResource("/imagenes/orejas_no_premium.png")));
-			siPremium.setSize(new Dimension(32, 32));
+			siPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
+			siPremium.setSize(new Dimension(64,32));
+			ImageInJLabel.resizeImage(siPremium, VentanaPerfil.class.getResource("/imagenes/orejas_premium.png"));
 			GridBagConstraints gbc_siPremium = new GridBagConstraints();
 			gbc_siPremium.insets = new Insets(0, 0, 5, 5);
 			gbc_siPremium.gridx = 5;
@@ -173,9 +175,12 @@ public class VentanaPerfil implements ActionListener {
 			panel.add(siPremium, gbc_siPremium);
 		} else {
 			btnimagenNoPremium = new JButton("");
+			btnimagenNoPremium.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			btnimagenNoPremium.setBackground(new Color(255, 244, 244));
 			btnimagenNoPremium
-					.setIcon(new ImageIcon(VentanaContactos.class.getResource("/imagenes/orejas_no_premium.png")));
-			btnimagenNoPremium.setSize(new Dimension(32, 32));
+					.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_no_premium.png")));
+			btnimagenNoPremium.setSize(new Dimension(64,32));
+			ImageInJLabel.resizeImage(btnimagenNoPremium, VentanaPerfil.class.getResource("/imagenes/orejas_no_premium.png"));
 			btnimagenNoPremium.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					JOptionPane.showMessageDialog(frmAppchat, "¿Está seguro de que desea hacerse premium?",
@@ -235,8 +240,11 @@ public class VentanaPerfil implements ActionListener {
 		panel.add(fecha, gbc_fecha);
 
 		dateChooser = new JDateChooser();
-		dateChooser.setDate(Date.from(Controlador.getUnicaInstancia().getUsuarioActual().getFechaNacimiento()
-				.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+		if(Controlador.getUnicaInstancia().getUsuarioActual().getFechaNacimiento() != null) {
+			dateChooser.setDate(Date.from(Controlador.getUnicaInstancia().getUsuarioActual().getFechaNacimiento()
+					.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+		}
+		
 		dateChooser.setPreferredSize(new Dimension(80, 19));
 		dateChooser.setMinimumSize(new Dimension(40, 19));
 		dateChooser.getCalendarButton().setBackground(Color.WHITE);
@@ -403,7 +411,7 @@ public class VentanaPerfil implements ActionListener {
 		}
 		if (e.getSource() == btnAtras) {
 			if (ventanaAnterior.equals("VentanaMain")) {
-				new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation());
+				new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
 				frmAppchat.dispose();
 			} else if (ventanaAnterior.equals("VentanaContactos")) {
 				new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
@@ -432,7 +440,7 @@ public class VentanaPerfil implements ActionListener {
 									"Enhorabuena", JOptionPane.PLAIN_MESSAGE);
 							// Vuelve a la ventana anterior
 							if (ventanaAnterior.equals("VentanaMain")) {
-								new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation());
+								new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
 								frmAppchat.dispose();
 							} else if (ventanaAnterior.equals("VentanaContactos")) {
 								new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());

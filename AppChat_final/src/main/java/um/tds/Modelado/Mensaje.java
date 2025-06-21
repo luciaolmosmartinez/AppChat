@@ -2,8 +2,6 @@ package um.tds.Modelado;
 
 import java.time.LocalDateTime;
 
-import tds.BubbleText;
-
 public class Mensaje {
 	private int id;
 	private String texto; // null si hay emoticono y no texto?

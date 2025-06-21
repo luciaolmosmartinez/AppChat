@@ -86,29 +86,37 @@ public class Controlador { // clase controlador
 				usuarioR.addMensaje(mensaje);
 				adaptadorUsuario.modificarUsuario(usuarioR); // Actualizar usuario almacenado
 			}
-
 		}
-
 	}
 
-	public void registrarContacto(String numTelefono, String nombre) {
+	public String registrarContacto(String numTelefono, String nombre) {
 		Usuario usuario = recuperarUsuarioTelefono(numTelefono);
-
-		ContactoIndividual contacto = new ContactoIndividual(usuario, nombre);
-
-		// Persistir contacto
-		adaptadorContacto.anadirContacto(contacto);
-
-		// Se añade el contacto al usuario que lo crea
-		usuarioActual.addContacto(contacto);
-
-		// Actualizar usuario almacenado
-		adaptadorUsuario.modificarUsuario(usuarioActual);
+		String resultado;
+		if (usuario != null) {
+			if(usuario != usuarioActual) {
+				ContactoIndividual contacto = new ContactoIndividual(usuario, nombre);
+				// Se añade el contacto al usuario que lo crea
+				resultado = usuarioActual.addContacto(contacto);
+				if (resultado.equals("")) {
+					// Persistir contacto
+					adaptadorContacto.anadirContacto(contacto);
+					// Actualizar usuario almacenado
+					adaptadorUsuario.modificarUsuario(usuarioActual);
+					return "";
+				}
+				return resultado;
+			}
+			return "Está intentando introducir su propio número de teléfono";
+		}
+		return "El número de teléfono introducido no está registrado";
 	}
 
-	public void registrarGrupo(String nombre, String imagen) {
+	public void registrarGrupo(String nombre, String imagen, List<Contacto> contactos) {
 		Grupo grupo = new Grupo(nombre, imagen);
-
+		for(Contacto c : contactos) {
+			grupo.addMiembro((ContactoIndividual) c);
+		}
+		
 		// Persistir grupo
 		adaptadorGrupo.registrarGrupo(grupo);
 
@@ -153,6 +161,14 @@ public class Controlador { // clase controlador
 	public void setUsuarioActual(Usuario usuarioActual) {
 		this.usuarioActual = usuarioActual;
 	}
+	
+	public void setContactoActual(String contactoActual) {
+		this.contactoActual = contactoActual;
+	}
+	
+	public void setTipoReceptor(TipoReceptor tReceptor) {
+		this.tReceptor = tReceptor;
+	}
 
 	// Funciones antiguas
 	public void enviarMensaje(String texto, int emoticono, String receptor, TipoReceptor tipoReceptor) {
@@ -172,11 +188,11 @@ public class Controlador { // clase controlador
 				return recuperarGrupo(Integer.parseInt(mensaje.getReceptor()));
 			} else { // es un contacto individual
 				Usuario u = recuperarUsuarioTelefono(mensaje.getReceptor());
-				return recuperarContactoIndividual(u.getId());
+				return usuarioActual.recuperarContactoPorUsuario(u);
 			}
 		} else { // quiero recuperar el contacto que me lo ha enviado
 			Usuario u = recuperarUsuarioTelefono(mensaje.getEmisor());
-			return recuperarContactoIndividual(u.getId());
+			return usuarioActual.recuperarContactoPorUsuario(u);
 		}
 	}
 
@@ -201,7 +217,8 @@ public class Controlador { // clase controlador
 		return usuarioActual.getContactos();
 	}
 
-	// Recupera una lista con los contatos del usuario actual que no son miembros del grupo dado
+	// Recupera una lista con los contatos del usuario actual que no son miembros
+	// del grupo dado
 	public List<ContactoIndividual> recuperarNoMiembros(Grupo grupo) {
 		List<ContactoIndividual> contactos = usuarioActual.getContactos().stream()
 				.filter(c -> c instanceof ContactoIndividual).map(c -> (ContactoIndividual) c)
@@ -243,8 +260,8 @@ public class Controlador { // clase controlador
 		return false;
 	}
 
-	public boolean modificarGrupo(Grupo grupo, String nombre, String imagen) {
-		Usuario usuario = repoU.modificarGrupo(grupo, nombre, imagen, usuarioActual);
+	public boolean modificarGrupo(Grupo grupo, String nombre, String imagen, List<ContactoIndividual> miembrosActualizados) {
+		Usuario usuario = repoU.modificarGrupo(grupo, nombre, imagen, usuarioActual, miembrosActualizados);
 		if (usuario != null) {
 			adaptadorGrupo.modificarGrupo(grupo);
 			adaptadorUsuario.modificarUsuario(usuario);
