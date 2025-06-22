@@ -12,8 +12,11 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -107,8 +110,16 @@ public class VentanaLogin implements ActionListener {
 		imagen.setVerticalTextPosition(SwingConstants.BOTTOM);
 		imagen.setVerticalAlignment(SwingConstants.BOTTOM);
 		imagen.setSize(new Dimension(140, 80));
-		imagen.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/gato_enter.png")));
-		ImageInJLabel.resizeImage(imagen, VentanaPerfil.class.getResource("/imagenes/gato_enter.png"));
+		
+		try {
+			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/gato_enter.png"));
+			imagen.setIcon(new ImageIcon(image));
+			ImageInJLabel.resizeImage(imagen, image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 		gbc_imagen = new GridBagConstraints();
 		gbc_imagen.gridwidth = 2;
 		gbc_imagen.anchor = GridBagConstraints.SOUTH;

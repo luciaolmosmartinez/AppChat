@@ -1,7 +1,7 @@
 package um.tds.Ventanas;
 
 import java.awt.Image;
-import java.net.URL;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -10,8 +10,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 public class ImageInJLabel {
-	public static void resizeImage(JLabel label, URL originalIcon) {
-		ImageIcon og = new ImageIcon(originalIcon);
+	public static void resizeImage(JLabel label, BufferedImage bufferedImage) {
+		ImageIcon og = new ImageIcon(bufferedImage);
 		if (og.getIconWidth() > 0 && og.getIconHeight() > 0) {
 			Image image = og.getImage();
 			Image resizedImage = image.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
@@ -19,8 +19,8 @@ public class ImageInJLabel {
 		}
 	}
 	
-	public static void resizeImage(JMenu m, URL originalIcon) {
-		ImageIcon og = new ImageIcon(originalIcon);
+	public static void resizeImage(JMenu m, BufferedImage bufferedImage) {
+		ImageIcon og = new ImageIcon(bufferedImage);
 		if (og.getIconWidth() > 0 && og.getIconHeight() > 0) {
 			Image image = og.getImage();
 			Image resizedImage = image.getScaledInstance(m.getWidth(), m.getHeight(), Image.SCALE_SMOOTH);
@@ -28,8 +28,8 @@ public class ImageInJLabel {
 		}
 	}
 	
-	public static void resizeImage(JMenuItem m, URL originalIcon) {
-		ImageIcon og = new ImageIcon(originalIcon);
+	public static void resizeImage(JMenuItem m, BufferedImage bufferedImage) {
+		ImageIcon og = new ImageIcon(bufferedImage);
 		if (og.getIconWidth() > 0 && og.getIconHeight() > 0) {
 			Image image = og.getImage();
 			Image resizedImage = image.getScaledInstance(m.getWidth(), m.getHeight(), Image.SCALE_SMOOTH);
@@ -37,8 +37,8 @@ public class ImageInJLabel {
 		}
 	}
 	
-	public static void resizeImage(JButton b, URL originalIcon) {
-		ImageIcon og = new ImageIcon(originalIcon);
+	public static void resizeImage(JButton b, BufferedImage bufferedImage) {
+		ImageIcon og = new ImageIcon(bufferedImage);
 		if (og.getIconWidth() > 0 && og.getIconHeight() > 0) {
 			Image image = og.getImage();
 			Image resizedImage = image.getScaledInstance(b.getWidth(), b.getHeight(), Image.SCALE_SMOOTH);
@@ -46,7 +46,7 @@ public class ImageInJLabel {
 		}
 	}
 
-	public static void actualizarImagen(JLabel label, URL originalIcon) {
+	public static void actualizarImagen(JLabel label, BufferedImage bufferedImage) {
 		int ancho = label.getWidth();
 		int alto = label.getHeight();
 		
@@ -59,7 +59,7 @@ public class ImageInJLabel {
 			alto = ancho;
 		}
 		// Escalar la imagen manteniendo la calidad
-		ImageIcon og = new ImageIcon(originalIcon);
+		ImageIcon og = new ImageIcon(bufferedImage);
 		Image image = og.getImage();
 		Image imagenEscalada = image.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
 		label.setIcon(new ImageIcon(imagenEscalada));

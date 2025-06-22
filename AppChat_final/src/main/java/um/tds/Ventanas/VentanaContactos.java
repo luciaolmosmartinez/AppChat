@@ -13,7 +13,10 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -79,19 +82,31 @@ public class VentanaContactos implements ActionListener {
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
 
-		mntmPremium = new JMenuItem("PREMIUM");
+		mntmPremium = new JMenuItem("");
 		mntmPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmPremium.setBackground(new Color(255, 255, 255));
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmPremium);
 		if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
-			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
-			mntmPremium.setSize(new Dimension(64, 32));
-			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_premium.png"));
+			try {
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+				mntmPremium.setIcon(new ImageIcon(image));
+				mntmPremium.setSize(new Dimension(64, 32));
+				ImageInJLabel.resizeImage(mntmPremium, image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		} else {
-			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
-			mntmPremium.setSize(new Dimension(64, 32));
-			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+			try {
+				BufferedImage  image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+				mntmPremium.setIcon(new ImageIcon(image));
+				mntmPremium.setSize(new Dimension(64, 32));
+				ImageInJLabel.resizeImage(mntmPremium, image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 		mntmContactos = new JMenuItem("Contactos");
@@ -108,11 +123,16 @@ public class VentanaContactos implements ActionListener {
 		mnPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mnPerfil.setBackground(Color.WHITE);
 		mnPerfil.setSize(30, 30);
-		mnPerfil.setIcon(new ImageIcon(
-				VentanaContactos.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
-		ImageInJLabel.resizeImage(mnPerfil,
-				VentanaContactos.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
-		menuBar.add(mnPerfil);
+
+		try {
+			mnPerfil.setIcon(new ImageIcon(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta()));
+			ImageInJLabel.resizeImage(mnPerfil,
+					Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta());
+			menuBar.add(mnPerfil);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 
 		mntmEditarPerfil = new JMenuItem("Editar perfil");
 		mntmEditarPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -140,17 +160,22 @@ public class VentanaContactos implements ActionListener {
 		btnAtras.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAtras.setPreferredSize(new Dimension(32, 32));
 		btnAtras.setBackground(new Color(255, 255, 255));
-		btnAtras.setIcon(new ImageIcon(VentanaContactos.class.getResource("/imagenes/mod_boton-de-retroceso.png")));
-		btnAtras.setSize(new Dimension(32, 32));
-		ImageInJLabel.resizeImage(btnAtras,
-				VentanaContactos.class.getResource("/imagenes/mod_boton-de-retroceso.png"));
+		try {
+			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/mod_boton-de-retroceso.png"));
+			btnAtras.setIcon(new ImageIcon(image));
+			btnAtras.setSize(new Dimension(32, 32));
+			ImageInJLabel.resizeImage(btnAtras, image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		GridBagConstraints gbc_btnAtras = new GridBagConstraints();
 		gbc_btnAtras.anchor = GridBagConstraints.NORTHWEST;
 		gbc_btnAtras.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAtras.gridx = 0;
 		gbc_btnAtras.gridy = 0;
 		panel.add(btnAtras, gbc_btnAtras);
-		
+
 		lblInfo = new JLabel("Pulsa sobre el contacto o el grupo para modificarlo:");
 		lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_lblInfo = new GridBagConstraints();
@@ -197,7 +222,7 @@ public class VentanaContactos implements ActionListener {
 		gbc_btnNuevoGrupo.gridx = 4;
 		gbc_btnNuevoGrupo.gridy = 4;
 		panel.add(btnNuevoGrupo, gbc_btnNuevoGrupo);
-		
+
 		btnEnviarMensaje = new JButton("Enviar mensaje a");
 		btnEnviarMensaje.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEnviarMensaje.setSize(new Dimension(130, 31));
@@ -211,7 +236,7 @@ public class VentanaContactos implements ActionListener {
 		gbc_btnEnviarMensaje.gridx = 2;
 		gbc_btnEnviarMensaje.gridy = 6;
 		panel.add(btnEnviarMensaje, gbc_btnEnviarMensaje);
-		
+
 		btnNuevoContacto.addActionListener(this);
 		btnAtras.addActionListener(this);
 		mntmPremium.addActionListener(this);
@@ -222,7 +247,7 @@ public class VentanaContactos implements ActionListener {
 		btnEnviarMensaje.addActionListener(this);
 		list.addListSelectionListener(listenerModificar);
 		actualizarContactos();
-		
+
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
@@ -231,9 +256,10 @@ public class VentanaContactos implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnNuevoContacto) {
-			new VentanaAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaContactos");
+			new VentanaAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaContactos");
 			frmAppchat.dispose();
-			//aContacto.mostrarAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(),this);
+			// aContacto.mostrarAnadirContacto(frmAppchat.getSize(),
+			// frmAppchat.getLocation(),this);
 		}
 		if (e.getSource() == btnAtras) {
 			new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
@@ -254,9 +280,16 @@ public class VentanaContactos implements ActionListener {
 						"Dejar de ser premium", JOptionPane.YES_NO_OPTION);
 				if (res == JOptionPane.YES_OPTION) {
 					Controlador.getUnicaInstancia().setPremium(false);
-					mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
-					mntmPremium.setSize(new Dimension(64, 32));
-					ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+					
+					try {
+						BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+						mntmPremium.setIcon(new ImageIcon(image));
+						mntmPremium.setSize(new Dimension(64, 32));
+						ImageInJLabel.resizeImage(mntmPremium,image);
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+					
 				}
 			} else {
 				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
@@ -268,13 +301,13 @@ public class VentanaContactos implements ActionListener {
 			frmAppchat.dispose();
 			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
-		if(e.getSource() == mntmCerrarSesion){
+		if (e.getSource() == mntmCerrarSesion) {
 			Controlador.getUnicaInstancia().cerrarSesion();
 			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
 		}
-		if(e.getSource() == mntmEditarPerfil) {
-			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaContactos");
+		if (e.getSource() == mntmEditarPerfil) {
+			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaContactos");
 			frmAppchat.dispose();
 		}
 	}
@@ -298,5 +331,5 @@ public class VentanaContactos implements ActionListener {
 	private void actualizarContactos() {
 		Controlador.getUnicaInstancia().recuperarContactos().stream().forEach(c -> contactos.addElement(c));
 	}
-	
+
 }

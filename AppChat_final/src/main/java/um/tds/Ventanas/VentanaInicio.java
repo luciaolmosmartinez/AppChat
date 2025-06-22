@@ -13,7 +13,10 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -82,8 +85,16 @@ public class VentanaInicio implements ActionListener {
 		lblNewLabel.setPreferredSize(new Dimension(300, 300));
 		lblNewLabel.setIconTextGap(0);
 		lblNewLabel.setSize(300, 300);
-		lblNewLabel.setIcon(new ImageIcon(VentanaInicio.class.getResource("/imagenes/gatoVentana2_2048.png")));
-		ImageInJLabel.resizeImage(lblNewLabel, VentanaPerfil.class.getResource("/imagenes/gatoVentana2_2048.png"));
+		
+		try {
+			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/gatoVentana2_2048.png"));
+			lblNewLabel.setIcon(new ImageIcon(image));
+			ImageInJLabel.resizeImage(lblNewLabel, image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.fill = GridBagConstraints.VERTICAL;

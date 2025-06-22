@@ -1,5 +1,8 @@
 package um.tds.Modelado;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 public abstract class Contacto {
 	private int id;
 	private String nombre;
@@ -25,7 +28,8 @@ public abstract class Contacto {
 		this.nombre = nombre;
 	}
 
-	public abstract String getImagen();
+	public abstract String getImagenRuta();
+	public abstract BufferedImage getImagenDirecta() throws IOException;
 	
 	@Override
 	public boolean equals(Object obj) {

@@ -1,7 +1,13 @@
 package um.tds.Modelado;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 public class Grupo extends Contacto {
 	private String imagen;
@@ -12,9 +18,25 @@ public class Grupo extends Contacto {
 		this.miembros = new LinkedList<>();
 		this.imagen = imagen;
 	}
-	
-	public String getImagen() {
+	public String getImagenRuta() {
 		return imagen;
+	}
+	
+	@Override
+	public BufferedImage getImagenDirecta() throws IOException {
+		BufferedImage image = null;
+		if (imagen.startsWith("http://") || imagen.startsWith("https://")) {
+			URL url;
+			try {
+				url = new URL(imagen);
+				image = ImageIO.read(url);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			image = ImageIO.read(getClass().getResource(imagen));
+		}
+		return image;
 	}
 
 	public void setImagen(String imagen) {
@@ -63,5 +85,4 @@ public class Grupo extends Contacto {
 	    result = prime * result + ((miembros == null) ? 0 : miembros.hashCode());
 	    return result;
 	}
-
 }

@@ -2,6 +2,7 @@ package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -11,9 +12,12 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,7 +35,6 @@ import um.tds.Controlador.Controlador;
 import um.tds.Modelado.Contacto;
 import um.tds.Modelado.ContactoIndividual;
 import um.tds.Renderers.ContactoCellRenderer;
-import java.awt.Cursor;
 
 public class VentanaCrearGrupo implements ActionListener {
 
@@ -108,8 +111,14 @@ public class VentanaCrearGrupo implements ActionListener {
 
 		lblImagen = new JLabel("");
 		lblImagen.setSize(250, 250);
-		lblImagen.setIcon(new ImageIcon(VentanaAnadirContacto.class.getResource("/imagenes/gato_perfil.png")));
-		ImageInJLabel.resizeImage(lblImagen, VentanaAnadirContacto.class.getResource("/imagenes/gato_perfil.png"));
+		try {
+			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/gato_perfil.png"));
+			lblImagen.setIcon(new ImageIcon(image));
+			ImageInJLabel.resizeImage(lblImagen, image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		gbc_lblImagen = new GridBagConstraints();
 		gbc_lblImagen.gridheight = 3;
 		gbc_lblImagen.insets = new Insets(0, 0, 5, 5);

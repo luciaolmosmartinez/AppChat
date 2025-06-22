@@ -7,6 +7,7 @@ public class FiltroDecorator implements Filtro {
 	protected Filtro filtro;
 	
 	public FiltroDecorator(Filtro filtro) {
+		super();
 		this.filtro = filtro;
 	}
 	

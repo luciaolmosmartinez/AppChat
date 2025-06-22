@@ -2,6 +2,7 @@ package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,26 +13,33 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import um.tds.Controlador.Controlador;
 import um.tds.Modelado.ContactoIndividual;
 import um.tds.Modelado.Grupo;
 import um.tds.Renderers.ContactoCellRenderer;
-import java.util.List;
 
 public class VentanaModificarGrupo implements ActionListener {
 
@@ -46,6 +54,9 @@ public class VentanaModificarGrupo implements ActionListener {
 	private List<ContactoIndividual> miembrosActualizados;
 	private DefaultListModel<ContactoIndividual> contactosMiembros, contactosNoMiembros;
 	private JScrollPane scrollMiembros, scrollNoMiembros;
+	private JMenuBar menuBar;
+	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
+	private JMenu mnPerfil;
 
 	/**
 	 * Launch the application.
@@ -75,7 +86,7 @@ public class VentanaModificarGrupo implements ActionListener {
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
 
-		mntmPremium = new JMenuItem("PREMIUM");
+		mntmPremium = new JMenuItem("");
 		mntmPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmPremium.setBackground(new Color(255, 255, 255));
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -95,11 +106,15 @@ public class VentanaModificarGrupo implements ActionListener {
 		mnPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mnPerfil.setBackground(Color.WHITE);
 		mnPerfil.setSize(30, 30);
-		mnPerfil.setIcon(new ImageIcon(
-				VentanaMain.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
-		ImageInJLabel.resizeImage(mnPerfil,
-				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
-		menuBar.add(mnPerfil);
+
+		try {
+			mnPerfil.setIcon(new ImageIcon(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta()));
+			ImageInJLabel.resizeImage(mnPerfil,
+					Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta());
+			menuBar.add(mnPerfil);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		mntmEditarPerfil = new JMenuItem("Editar perfil");
 		mntmEditarPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -150,8 +165,15 @@ public class VentanaModificarGrupo implements ActionListener {
 		lblImagen = new JLabel("");
 		lblImagen.setMinimumSize(new Dimension(10, 10));
 		lblImagen.setSize(250, 250);
-		lblImagen.setIcon(new ImageIcon(VentanaAnadirContacto.class.getResource("/imagenes/gato_perfil.png")));
-		ImageInJLabel.resizeImage(lblImagen, VentanaAnadirContacto.class.getResource("/imagenes/gato_perfil.png"));
+		
+		try {
+			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/gato_perfil.png"));
+			lblImagen.setIcon(new ImageIcon(image));
+			ImageInJLabel.resizeImage(lblImagen, image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		gbc_lblImagen = new GridBagConstraints();
 		gbc_lblImagen.gridwidth = 2;
 		gbc_lblImagen.gridheight = 4;
@@ -238,7 +260,7 @@ public class VentanaModificarGrupo implements ActionListener {
 		gbc_textFieldImagen.gridy = 6;
 		panel.add(textFieldImagen, gbc_textFieldImagen);
 		textFieldImagen.setColumns(10);
-		textFieldImagen.setText(grupo.getImagen());
+		textFieldImagen.setText(grupo.getImagenRuta());
 
 		lblEliminar = new JLabel("Selecciona un miembro para eliminarlo");
 		GridBagConstraints gbc_lblEliminar = new GridBagConstraints();
@@ -293,15 +315,15 @@ public class VentanaModificarGrupo implements ActionListener {
 		btnAtras.addActionListener(this);
 		btnRestaurar.addActionListener(this);
 		listMiembros.addListSelectionListener(e -> {
-		    if (!e.getValueIsAdjusting()) {
-		        eliminarMiembro();
-		    }
+			if (!e.getValueIsAdjusting()) {
+				eliminarMiembro();
+			}
 		});
-		
+
 		listNoMiembros.addListSelectionListener(e -> {
-		    if (!e.getValueIsAdjusting()) {
-		        anadirMiembro();
-		    }
+			if (!e.getValueIsAdjusting()) {
+				anadirMiembro();
+			}
 		});
 
 		frmAppchat.setVisible(true);
@@ -315,21 +337,22 @@ public class VentanaModificarGrupo implements ActionListener {
 			if (textFieldNombre.getText().equals("")) {
 				lblError.setVisible(true);
 			} else {
-				boolean igual = (grupo.getMiembros().size() > 0 && grupo.getMiembros().stream().allMatch(m -> miembrosActualizados.contains(m)));
+				boolean igual = (grupo.getMiembros().size() > 0
+						&& grupo.getMiembros().stream().allMatch(m -> miembrosActualizados.contains(m)));
 				if (textFieldNombre.getText().equals(grupo.getNombre())
-						&& textFieldImagen.getText().equals(grupo.getImagen()) && igual) {
+						&& textFieldImagen.getText().equals(grupo.getImagenRuta()) && igual) {
 					lblError.setText("No se ha modificado el grupo");
 					lblError.setVisible(true);
 				} else {
 					Controlador.getUnicaInstancia().modificarGrupo(grupo, textFieldNombre.getText(),
-							textFieldImagen.getText(),miembrosActualizados);
+							textFieldImagen.getText(), miembrosActualizados);
 					JOptionPane.showMessageDialog(frmAppchat, "Grupo modificado correctamente", "Enhorabuena",
 							JOptionPane.PLAIN_MESSAGE);
 					new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 					frmAppchat.dispose();
 				}
 			}
-			//PERSISTIR CAMBIOS MIEMBROS
+			// PERSISTIR CAMBIOS MIEMBROS
 		}
 		if (e.getSource() == btnAtras) {
 			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
@@ -337,11 +360,11 @@ public class VentanaModificarGrupo implements ActionListener {
 		}
 		if (e.getSource() == btnRestaurar) {
 			textFieldNombre.setText(grupo.getNombre());
-			textFieldImagen.setText(grupo.getImagen());
+			textFieldImagen.setText(grupo.getImagenRuta());
 			actualizarContactosMiembros();
 			actualizarContactosNoMiembros();
 			lblError.setVisible(false);
-			
+
 			// RESTAURAR CAMBIOS MIEMBROS
 		}
 

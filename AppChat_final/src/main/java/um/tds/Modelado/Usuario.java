@@ -1,10 +1,19 @@
 package um.tds.Modelado;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import um.tds.Controlador.Controlador;
+import javax.imageio.ImageIO;
 
 public class Usuario {
 	private int id;
@@ -71,8 +80,23 @@ public class Usuario {
 		return fechaNacimiento;
 	}
 
-	public String getImagenPerfil() {
+	public String getImagenPerfilRuta() {
 		return imagenPerfil;
+	}
+
+	public BufferedImage getImagenPerfilDirecta() throws IOException {
+		BufferedImage image = null;
+		if (imagenPerfil.startsWith("http://") || imagenPerfil.startsWith("https://")) {
+			URL url;
+			try {
+				image = ImageIO.read(getClass().getResource(imagenPerfil));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			image = ImageIO.read(getClass().getResource(imagenPerfil));
+		}
+		return image;
 	}
 
 	public String getMensajeSaludo() {
@@ -101,10 +125,9 @@ public class Usuario {
 				.collect(Collectors.toCollection(LinkedList::new));
 		return new LinkedList<ContactoIndividual>(contactosIndividuales);
 	}
-	
+
 	public LinkedList<Grupo> getContactosGrupos() {
-		LinkedList<Grupo> grupos = contactos.stream()
-				.filter(c -> c instanceof Grupo).map(c -> (Grupo) c)
+		LinkedList<Grupo> grupos = contactos.stream().filter(c -> c instanceof Grupo).map(c -> (Grupo) c)
 				.collect(Collectors.toCollection(LinkedList::new));
 		return new LinkedList<Grupo>(grupos);
 	}
@@ -114,7 +137,8 @@ public class Usuario {
 	}
 
 	public List<Mensaje> getUltimosMensajes() {
-		List<Mensaje> m =  mensajes.values().stream().map(lista -> lista.get(lista.size() - 1)).collect(Collectors.toList());
+		List<Mensaje> m = mensajes.values().stream().map(lista -> lista.get(lista.size() - 1))
+				.collect(Collectors.toList());
 		return m;
 	}
 
@@ -125,7 +149,7 @@ public class Usuario {
 				if (u != null) {
 					return u.getNumTelefono().equals(otroUsuario);
 				}
-			} else if(c instanceof Grupo) {
+			} else if (c instanceof Grupo) {
 				return String.valueOf(c.getId()).equals(otroUsuario);
 			}
 			return false;
@@ -230,7 +254,7 @@ public class Usuario {
 		} else {
 			return mensajes.get(((ContactoIndividual) contacto).getUsuario().getNumTelefono());
 		}
-
+	}
 
 	// Comprueba el número de mensajes que ha enviado el usuario en el último mes
 	// para ver si merece el descuento
@@ -240,6 +264,16 @@ public class Usuario {
 						&& m.getFechaHora().getMonth().equals(LocalDate.now().minusMonths(1).getMonth())
 						&& m.getFechaHora().getYear() == LocalDate.now().minusMonths(1).getYear())
 				.count();
+	}
+
+	public List<Mensaje> buscarMensajes(Filtro f) {
+		List<Mensaje> listaMensajes = new LinkedList<>();
+		for (List<Mensaje> lista : mensajes.values()) {
+			listaMensajes.addAll(lista);
+		}
+		listaMensajes = f.filtrarMensajes(listaMensajes);
+		listaMensajes.sort(Comparator.comparing(Mensaje::getFechaHora).reversed());
+		return listaMensajes;
 	}
 
 }

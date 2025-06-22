@@ -12,11 +12,14 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -252,8 +255,15 @@ public class VentanaRegistro implements ActionListener {
 
 		foto = new JLabel("");
 		foto.setSize(250, 250);
-		foto.setIcon(new ImageIcon(VentanaRegistro.class.getResource("/imagenes/gato_perfil.png")));
-		ImageInJLabel.resizeImage(foto, VentanaPerfil.class.getResource("/imagenes/gato_perfil.png"));
+
+		try {
+			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/gato_perfil.png"));
+			foto.setIcon(new ImageIcon(image));
+			ImageInJLabel.resizeImage(foto, image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		gbc_foto = new GridBagConstraints();
 		gbc_foto.gridwidth = 2;
 		gbc_foto.fill = GridBagConstraints.BOTH;
@@ -327,7 +337,7 @@ public class VentanaRegistro implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == aceptar) { 
+		if (e.getSource() == aceptar) {
 			if (textNombre.getText().equals("") || textTelefono.getText().equals("") || textEmail.getText().equals("")
 					|| passContrasena.getPassword().length == 0 || passContrasenaRepe.getPassword().length == 0) {
 				lblError.setText("Se deben rellenar todos los campos marcados con *");

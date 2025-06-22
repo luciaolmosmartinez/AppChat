@@ -3,6 +3,7 @@ package um.tds.Renderers;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.BoxLayout;
@@ -17,7 +18,6 @@ import um.tds.Controlador.Controlador;
 import um.tds.Modelado.Mensaje;
 import um.tds.Modelado.TipoReceptor;
 import um.tds.Ventanas.ImageInJLabel;
-import um.tds.Ventanas.VentanaPerfil;
 
 public class MensajeCellRenderer extends JPanel implements ListCellRenderer<Mensaje> {
 	private static final long serialVersionUID = 1L;
@@ -66,31 +66,44 @@ public class MensajeCellRenderer extends JPanel implements ListCellRenderer<Mens
 
 		if (mensaje.getTexto().equals("")) { // es un icono
 			messageLabel.setIcon(BubbleText.getEmoji(mensaje.getEmoticono()));
+			messageLabel.setText("");
 		} else { // es texto
 			messageLabel.setText(mensaje.getTexto());
+			messageLabel.setIcon(null);
 		}
 
 		imageLabel.setSize(50, 50);
 		// mostramos la imagen del contacto
-		if (mensaje.getTipoReceptor().equals(TipoReceptor.ID_GRUPO)) { // imagen del grupo
-			imageLabel.setIcon(new ImageIcon(MensajeCellRenderer.class.getResource(Controlador.getUnicaInstancia()
-					.recuperarGrupo(Integer.parseInt(mensaje.getReceptor())).getImagen())));
-			ImageInJLabel.resizeImage(imageLabel, VentanaPerfil.class.getResource(Controlador.getUnicaInstancia()
-					.recuperarGrupo(Integer.parseInt(mensaje.getReceptor())).getImagen()));
-		} else { // imagen del contacto
-			imageLabel.setIcon(new ImageIcon(MensajeCellRenderer.class.getResource(Controlador.getUnicaInstancia()
-					.recuperarUsuarioTelefono(mensaje.getReceptor()).getImagenPerfil())));
-			ImageInJLabel.resizeImage(imageLabel, VentanaPerfil.class.getResource(
-					Controlador.getUnicaInstancia().recuperarUsuarioTelefono(mensaje.getReceptor()).getImagenPerfil()));
+
+		try {
+			if (mensaje.getTipoReceptor().equals(TipoReceptor.ID_GRUPO)) { // imagen del grupo
+				imageLabel.setIcon(new ImageIcon(Controlador.getUnicaInstancia()
+						.recuperarGrupo(Integer.parseInt(mensaje.getReceptor())).getImagenDirecta()));
+				ImageInJLabel.resizeImage(imageLabel, Controlador.getUnicaInstancia()
+						.recuperarGrupo(Integer.parseInt(mensaje.getReceptor())).getImagenDirecta());
+			} else { // imagen del contacto
+				imageLabel.setIcon(new ImageIcon(Controlador.getUnicaInstancia()
+						.recuperarUsuarioTelefono(mensaje.getReceptor()).getImagenPerfilDirecta()));
+				ImageInJLabel.resizeImage(imageLabel, Controlador.getUnicaInstancia()
+						.recuperarUsuarioTelefono(mensaje.getReceptor()).getImagenPerfilDirecta());
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		timeLabel.setText(mensaje.getFechaHora().format(formatoFecha));
 
-		/*btnAnadir.setIcon(new ImageIcon(MensajeCellRenderer.class.getResource("/imagenes/agregar.png")));
-		btnAnadir.setSize(50,50);
-		ImageInJLabel.resizeImage(imageLabel, VentanaPerfil.class.getResource(
-				Controlador.getUnicaInstancia().recuperarUsuarioTelefono(mensaje.getReceptor()).getImagenPerfil()));
-		btnAnadir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));*/
+		/*
+		 * btnAnadir.setIcon(new
+		 * ImageIcon(MensajeCellRenderer.class.getResource("/imagenes/agregar.png")));
+		 * btnAnadir.setSize(50,50); ImageInJLabel.resizeImage(imageLabel,
+		 * VentanaPerfil.class.getResource(
+		 * Controlador.getUnicaInstancia().recuperarUsuarioTelefono(mensaje.getReceptor(
+		 * )).getImagenPerfil()));
+		 * btnAnadir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		 */
 
 		// Cambiar el fondo si el elemento está seleccionado
 		if (isSelected) {
@@ -101,17 +114,14 @@ public class MensajeCellRenderer extends JPanel implements ListCellRenderer<Mens
 			panelEste.setBackground(Color.WHITE);
 		}
 
-		//btnAnadir.addActionListener(this);
+		// btnAnadir.addActionListener(this);
 
 		return this; // Retornar el componente renderizado
 	}
 
-	/*@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnAnadir) {
-			new VentanaAnadirContacto(tam, ubi, "");
-			frame.dispose();
-			// vAC.mostrarAnadirContacto(tam,ubi);
-		}
-	}*/
+	/*
+	 * @Override public void actionPerformed(ActionEvent e) { if (e.getSource() ==
+	 * btnAnadir) { new VentanaAnadirContacto(tam, ubi, ""); frame.dispose(); //
+	 * vAC.mostrarAnadirContacto(tam,ubi); } }
+	 */
 }

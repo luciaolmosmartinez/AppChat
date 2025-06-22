@@ -13,12 +13,15 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,11 +35,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
 import um.tds.Controlador.Controlador;
-import javax.swing.border.TitledBorder;
 
 public class VentanaPerfil implements ActionListener {
 
@@ -88,13 +91,25 @@ public class VentanaPerfil implements ActionListener {
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmPremium);
 		if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
-			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
-			mntmPremium.setSize(new Dimension(64, 32));
-			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_premium.png"));
+
+			try {
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+				mntmPremium.setIcon(new ImageIcon(image));
+				mntmPremium.setSize(new Dimension(64, 32));
+				ImageInJLabel.resizeImage(mntmPremium, image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} else {
-			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
-			mntmPremium.setSize(new Dimension(64, 32));
-			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+
+			try {
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+				mntmPremium.setIcon(new ImageIcon(image));
+				mntmPremium.setSize(new Dimension(64, 32));
+				ImageInJLabel.resizeImage(mntmPremium, image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		mntmContactos = new JMenuItem("Contactos");
@@ -108,10 +123,16 @@ public class VentanaPerfil implements ActionListener {
 		mnPerfil = new JMenu("Perfil");
 		mnPerfil.setBackground(Color.WHITE);
 		mnPerfil.setSize(30, 30);
-		mnPerfil.setIcon(new ImageIcon(
-				VentanaMain.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
-		ImageInJLabel.resizeImage(mnPerfil,
-				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
+
+		try {
+			mnPerfil.setIcon(
+					new ImageIcon(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta()));
+			ImageInJLabel.resizeImage(mnPerfil,
+					Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		menuBar.add(mnPerfil);
 
 		mntmEditarPerfil = new JMenuItem("Editar perfil");
@@ -168,9 +189,16 @@ public class VentanaPerfil implements ActionListener {
 
 		if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
 			siPremium = new JLabel();
-			siPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
-			siPremium.setSize(new Dimension(64,32));
-			ImageInJLabel.resizeImage(siPremium, VentanaPerfil.class.getResource("/imagenes/orejas_premium.png"));
+
+			try {
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+				siPremium.setIcon(new ImageIcon(image));
+				siPremium.setSize(new Dimension(64, 32));
+				ImageInJLabel.resizeImage(siPremium, image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 			GridBagConstraints gbc_siPremium = new GridBagConstraints();
 			gbc_siPremium.insets = new Insets(0, 0, 5, 5);
 			gbc_siPremium.gridx = 5;
@@ -180,12 +208,19 @@ public class VentanaPerfil implements ActionListener {
 			btnimagenNoPremium = new JButton("");
 			btnimagenNoPremium.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnimagenNoPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			btnimagenNoPremium.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			btnimagenNoPremium.setBackground(new Color(255, 244, 244));
 			btnimagenNoPremium
-					.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_no_premium.png")));
-			btnimagenNoPremium.setSize(new Dimension(64,32));
-			ImageInJLabel.resizeImage(btnimagenNoPremium, VentanaPerfil.class.getResource("/imagenes/orejas_no_premium.png"));
+					.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			btnimagenNoPremium.setBackground(new Color(255, 244, 244));
+
+			try {
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_no_premium.png"));
+				btnimagenNoPremium.setIcon(new ImageIcon(image));
+				btnimagenNoPremium.setSize(new Dimension(64, 32));
+				ImageInJLabel.resizeImage(btnimagenNoPremium, image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 			btnimagenNoPremium.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaPerfil");
@@ -202,10 +237,15 @@ public class VentanaPerfil implements ActionListener {
 		icono = new JLabel("");
 		icono.setAlignmentX(Component.CENTER_ALIGNMENT);
 		icono.setSize(170, 170);
-		icono.setIcon(new ImageIcon(
-				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
-		ImageInJLabel.resizeImage(icono,
-				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
+
+		try {
+			icono.setIcon(new ImageIcon(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta()));
+			ImageInJLabel.resizeImage(icono,
+					Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		icono.setPreferredSize(new Dimension(170, 170));
 		icono.setMaximumSize(new Dimension(512, 512));
 		gbc_icono = new GridBagConstraints();
@@ -244,11 +284,11 @@ public class VentanaPerfil implements ActionListener {
 		panel.add(fecha, gbc_fecha);
 
 		dateChooser = new JDateChooser();
-		if(Controlador.getUnicaInstancia().getUsuarioActual().getFechaNacimiento() != null) {
+		if (Controlador.getUnicaInstancia().getUsuarioActual().getFechaNacimiento() != null) {
 			dateChooser.setDate(Date.from(Controlador.getUnicaInstancia().getUsuarioActual().getFechaNacimiento()
 					.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 		}
-		
+
 		dateChooser.setPreferredSize(new Dimension(80, 19));
 		dateChooser.setMinimumSize(new Dimension(40, 19));
 		dateChooser.getCalendarButton().setBackground(Color.WHITE);
@@ -320,7 +360,7 @@ public class VentanaPerfil implements ActionListener {
 		panel.add(passContrasenaRepe, gbc_passContrasenaRepe);
 
 		textImagen = new JTextField();
-		textImagen.setText(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil());
+		textImagen.setText(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilRuta());
 		textImagen.setColumns(10);
 		GridBagConstraints gbc_textImagen = new GridBagConstraints();
 		gbc_textImagen.insets = new Insets(0, 0, 5, 5);
@@ -410,10 +450,16 @@ public class VentanaPerfil implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnRestaurar) {
 			txtNombre.setText(Controlador.getUnicaInstancia().getUsuarioActual().getNombre());
-			icono.setIcon(new ImageIcon(VentanaPerfil.class
-					.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
-			ImageInJLabel.resizeImage(icono, VentanaPerfil.class
-					.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
+
+			try {
+				icono.setIcon(
+						new ImageIcon(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta()));
+				ImageInJLabel.resizeImage(icono,
+						Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta());
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+
 			txtEmail.setText(Controlador.getUnicaInstancia().getUsuarioActual().getEmail());
 			dateChooser.setDate(Date.from(Controlador.getUnicaInstancia().getUsuarioActual().getFechaNacimiento()
 					.atStartOfDay(ZoneId.systemDefault()).toInstant()));
@@ -421,7 +467,7 @@ public class VentanaPerfil implements ActionListener {
 			passContrasena.setText(contra);
 			passContrasenaRepe.setText(contra);
 			txtsaludo.setText(Controlador.getUnicaInstancia().getUsuarioActual().getMensajeSaludo());
-			textImagen.setText(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil());
+			textImagen.setText(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilRuta());
 			lblError.setVisible(false);
 		}
 		if (e.getSource() == btnAtras) {
@@ -435,7 +481,7 @@ public class VentanaPerfil implements ActionListener {
 				new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
 				frmAppchat.dispose();
 			}
-			
+
 		}
 		if (e.getSource() == btnAceptar) {
 			if (txtNombre.getText().equals("") || txtEmail.getText().equals("")
@@ -488,9 +534,15 @@ public class VentanaPerfil implements ActionListener {
 						"Dejar de ser premium", JOptionPane.YES_NO_OPTION);
 				if (res == JOptionPane.YES_OPTION) {
 					Controlador.getUnicaInstancia().setPremium(false);
-					mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
-					mntmPremium.setSize(new Dimension(64, 32));
-					ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+
+					try {
+						BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+						mntmPremium.setIcon(new ImageIcon(image));
+						mntmPremium.setSize(new Dimension(64, 32));
+						ImageInJLabel.resizeImage(mntmPremium, image);
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
 				}
 			} else {
 				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");

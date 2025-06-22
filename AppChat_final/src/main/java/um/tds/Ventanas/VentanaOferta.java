@@ -12,7 +12,10 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -119,8 +122,15 @@ public class VentanaOferta implements ActionListener {
 		btnPremium.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnPremium.setSize(150, 70);
 		btnPremium.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		btnPremium.setIcon(new ImageIcon(VentanaContactos.class.getResource("/imagenes/orejas_premium.png")));
-		ImageInJLabel.resizeImage(btnPremium, VentanaContactos.class.getResource("/imagenes/orejas_premium.png"));
+
+		try {
+			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+			btnPremium.setIcon(new ImageIcon(image));
+			ImageInJLabel.resizeImage(btnPremium, image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		btnPremium.setPreferredSize(new Dimension(150, 70));
 		GridBagConstraints gbc_btnPremium = new GridBagConstraints();
 		gbc_btnPremium.fill = GridBagConstraints.VERTICAL;
@@ -139,7 +149,7 @@ public class VentanaOferta implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnAtras) {
 			if (ventanaAnterior.equals("VentanaMain")) {
-				new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(),null);
+				new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
 				frmAppchat.dispose();
 			} else if (ventanaAnterior.equals("VentanaContactos")) {
 				new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
@@ -157,8 +167,8 @@ public class VentanaOferta implements ActionListener {
 	}
 
 	public static void escribirPrecio(JLabel label, double original) {
-		String texto = String.format("<html><span style='color: gray; text-decoration: line-through;'>%.2f€/anuales</span> ",
-				original);
+		String texto = String.format(
+				"<html><span style='color: gray; text-decoration: line-through;'>%.2f€/anuales</span> ", original);
 		label.setText(texto);
 	}
 

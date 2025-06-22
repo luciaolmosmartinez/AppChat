@@ -70,7 +70,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 					new Propiedad("contrasena", String.valueOf(usuario.getContrasena())),
 					new Propiedad("numTelefono", usuario.getNumTelefono()), new Propiedad("email", usuario.getEmail()),
 					new Propiedad("fechaNacimiento", fechaN),
-					new Propiedad("imagenPerfil", usuario.getImagenPerfil()),
+					new Propiedad("imagenPerfil", usuario.getImagenPerfilRuta()),
 					new Propiedad("mensajeSaludo", usuario.getMensajeSaludo()),
 					new Propiedad("fechaRegistro", usuario.getFechaRegistro().format(dateFormat)),
 					new Propiedad("premium", String.valueOf(usuario.isPremium())),
@@ -105,7 +105,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 			} else if (prop.getNombre().equals("fechaNacimiento")) {
 				prop.setValor(fechaN);
 			} else if (prop.getNombre().equals("imagenPerfil")) {
-				prop.setValor(usuario.getImagenPerfil());
+				prop.setValor(usuario.getImagenPerfilRuta());
 			} else if (prop.getNombre().equals("mensajeSaludo")) {
 				prop.setValor(usuario.getMensajeSaludo());
 			} else if (prop.getNombre().equals("fechaRegistro")) {

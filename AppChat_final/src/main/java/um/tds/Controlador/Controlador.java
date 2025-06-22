@@ -1,20 +1,36 @@
 package um.tds.Controlador;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.itextpdf.text.DocumentException;
-
-import um.tds.Modelado.*;
-import um.tds.Persistencia.*;
+import um.tds.Modelado.Contacto;
+import um.tds.Modelado.ContactoIndividual;
+import um.tds.Modelado.CreadorPDF;
+import um.tds.Modelado.Filtro;
+import um.tds.Modelado.FiltroContacto;
+import um.tds.Modelado.FiltroFrase;
+import um.tds.Modelado.FiltroTelefono;
+import um.tds.Modelado.Grupo;
+import um.tds.Modelado.Mensaje;
+import um.tds.Modelado.SinFiltro;
+import um.tds.Modelado.TipoReceptor;
+import um.tds.Modelado.Usuario;
+import um.tds.Persistencia.AdaptadorContacto;
+import um.tds.Persistencia.AdaptadorGrupo;
+import um.tds.Persistencia.AdaptadorUsuario;
+import um.tds.Persistencia.DAOException;
+import um.tds.Persistencia.FactoriaDAO;
+import um.tds.Persistencia.IAdaptadorContactoDAO;
+import um.tds.Persistencia.IAdaptadorGrupoDAO;
+import um.tds.Persistencia.IAdaptadorMensajeDAO;
+import um.tds.Persistencia.IAdaptadorUsuarioDAO;
 import um.tds.Repositorio.RepositorioUsuarios;
 import um.tds.ServicioDescuento.ServicioDescuento;
 
 public class Controlador { // clase controlador
-	private static Controlador unicaInstancia;
+	private static Controlador unicaInstancia; // SINGLETON
 
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 	private IAdaptadorMensajeDAO adaptadorMensaje;
@@ -22,31 +38,25 @@ public class Controlador { // clase controlador
 	private IAdaptadorGrupoDAO adaptadorGrupo;
 
 	private Usuario usuarioActual;
-	private RepositorioUsuarios repoU;
 	private String contactoActual;
 	private TipoReceptor tReceptor;
+	private CreadorPDF creador;
 
 	private ServicioDescuento servicioDescuento;
 
-	/*
-	 * private static ControladorAppChat unicaInstancia; private FactoriaDAO
-	 * factoriaDAO; private Contacto contactoSeleccionado;
-	 */
-// DICE QUE LOS FILTROS EN EL CONTROLADOR USANDO LOS ADAPTADORES, NO EN EL REPOSITORIO
-
 	private Controlador() {
 		this.inicializarAdaptadores();
-		this.inicializarRepositorioUsuarios();
 		this.servicioDescuento = new ServicioDescuento();
+		this.creador = new CreadorPDF();
 	}
 
-	public static Controlador getUnicaInstancia() {
+	public static Controlador getUnicaInstancia() { // SINGLETON
 		if (unicaInstancia == null)
 			unicaInstancia = new Controlador();
 		return unicaInstancia;
 	}
 
-	public void inicializarAdaptadores() {
+	public void inicializarAdaptadores() { // Se inicializan los adaptadores
 		FactoriaDAO factoria = null;
 		try {
 			factoria = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
@@ -57,134 +67,6 @@ public class Controlador { // clase controlador
 		adaptadorMensaje = factoria.getMensajeDAO();
 		adaptadorContacto = factoria.getContactoDAO();
 		adaptadorGrupo = factoria.getGrupoDAO();
-	}
-
-	private void inicializarRepositorioUsuarios() {
-		try {
-			repoU = RepositorioUsuarios.getUnicaInstancia();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public boolean registrarUsuario(String nombre, String telefono, String correo, char[] contrasena, LocalDate fecha,
-			String saludo, String imagen) {
-		Usuario usuario = new Usuario(nombre, telefono, correo, contrasena, fecha, saludo, imagen);
-		adaptadorUsuario.registrarUsuario(usuario);
-		return repoU.addUsuario(usuario);
-	}
-
-	public void registrarMensaje(String texto, int emoticono, Usuario u) {
-		Mensaje mensaje; // el emisor será el usuario actual, el receptor será el contacto actual,
-		// tambien se guardara si es un grupo o no
-		if (u == null) { //se lo manda al contacto actual
-			mensaje = new Mensaje(texto, emoticono, usuarioActual.getNumTelefono(), contactoActual, tReceptor);
-		} else { //se lo manda a un numero que no tiene guardado
-			mensaje = new Mensaje(texto, emoticono, usuarioActual.getNumTelefono(), u.getNumTelefono(), tReceptor);
-		}
-
-		// Persistir mensaje
-		adaptadorMensaje.registrarMensaje(mensaje);
-
-		// Se recuperan los usuarios relaccionados con el mensaje y se les añade mensaje
-		// Usuario usuarioE = repoU.getUsuario(usuarioActual.getNumTelefono());
-		Usuario usuarioR = null;
-		usuarioActual.addMensaje(mensaje);
-		adaptadorUsuario.modificarUsuario(usuarioActual); // Actualizar usuario almacenado
-		if (tReceptor.equals(TipoReceptor.ID_GRUPO)) {
-			Grupo g = recuperarGrupo(Integer.parseInt(contactoActual));
-			for (ContactoIndividual c : g.getMiembros()) {
-				usuarioR = c.getUsuario();
-				usuarioR.addMensaje(mensaje);
-				adaptadorUsuario.modificarUsuario(usuarioR);
-			}
-		} else {
-			String id = recuperarOtroUsuario(mensaje);
-			usuarioR = RepositorioUsuarios.getUnicaInstancia().getUsuario(id);
-			usuarioR.addMensaje(mensaje);
-			adaptadorUsuario.modificarUsuario(usuarioR); // Actualizar usuario almacenado
-		}
-
-	}
-
-	public String registrarContacto(String numTelefono, String nombre) {
-		Usuario usuario = recuperarUsuarioTelefono(numTelefono);
-
-		/*ContactoIndividual contacto = new ContactoIndividual(usuario, nombre);
-
-		// Persistir contacto
-		adaptadorContacto.anadirContacto(contacto);
-
-		// Se añade el contacto al usuario que lo crea
-		usuarioActual.addContacto(contacto);
-
-		// Actualizar usuario almacenado
-		adaptadorUsuario.modificarUsuario(usuarioActual);
-		
-	}*/
-	
-		String resultado;
-		if (usuario != null) {
-			if (usuario != usuarioActual) {
-				ContactoIndividual contacto = new ContactoIndividual(usuario, nombre);
-				// Se añade el contacto al usuario que lo crea
-				resultado = usuarioActual.addContacto(contacto);
-				if (resultado.equals("")) {
-					// Persistir contacto
-					adaptadorContacto.anadirContacto(contacto);
-					// Actualizar usuario almacenado
-					adaptadorUsuario.modificarUsuario(usuarioActual);
-					return "";
-				}
-				return resultado;
-			}
-			return "Está intentando introducir su propio número de teléfono";
-		}
-		return "El número de teléfono introducido no está registrado";
-	}
-
-	public void registrarGrupo(String nombre, String imagen, List<Contacto> miembros) {
-		Grupo grupo = new Grupo(nombre, imagen);
-		
-		for (Contacto c : miembros) {
-			grupo.addMiembro((ContactoIndividual) c);
-		}
-
-		// Persistir grupo
-		adaptadorGrupo.registrarGrupo(grupo);
-
-		// Se añade el grupo al usuario que lo crea
-		usuarioActual.addGrupo(grupo);
-
-		// Actualizar usuario almacenado
-		adaptadorUsuario.modificarUsuario(usuarioActual);
-	}
-
-	public Grupo recuperarGrupo(int id) {
-		return AdaptadorGrupo.getUnicaInstancia().recuperarGrupo(id);
-	}
-
-	public Usuario recuperarUsuarioTelefono(String numTelefono) {
-		return AdaptadorUsuario.getUnicaInstancia().recuperarUsuarioTelefono(numTelefono);
-	}
-
-	public Contacto recuperarContactoIndividual(int id) {
-		return AdaptadorContacto.getUnicaInstancia().recuperarContacto(id);
-	}
-
-	public boolean iniciarSesion(String telefono, char[] contrasena) {
-		this.usuarioActual = repoU.comprobarUsuario(telefono, contrasena);
-		if (usuarioActual != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public void cerrarSesion() {
-		this.usuarioActual = null;
-		contactoActual = null;
-		tReceptor = null;
 	}
 
 	public Usuario getUsuarioActual() {
@@ -203,13 +85,117 @@ public class Controlador { // clase controlador
 		this.tReceptor = tReceptor;
 	}
 
-	// Funciones antiguas
-	public void enviarMensaje(String texto, int emoticono, String receptor, TipoReceptor tipoReceptor) {
-		Mensaje mensaje = usuarioActual.enviarMensaje(texto, emoticono, receptor, tipoReceptor);
-		adaptadorMensaje.registrarMensaje(mensaje);
-		// repoU.addMensaje(mensaje);
+	//METODOS USUARIO ACTUAL
+	
+	// Se registra el usuario en el servidor de persistencia y se guarda en el
+	// repositorio
+	public boolean registrarUsuario(String nombre, String telefono, String correo, char[] contrasena, LocalDate fecha,
+			String saludo, String imagen) {
+		Usuario usuario = new Usuario(nombre, telefono, correo, contrasena, fecha, saludo, imagen);
+		adaptadorUsuario.registrarUsuario(usuario);
+		return RepositorioUsuarios.getUnicaInstancia().addUsuario(usuario);
 	}
 
+	// Se inicia sesion
+	public boolean iniciarSesion(String telefono, char[] contrasena) {
+		this.usuarioActual = RepositorioUsuarios.getUnicaInstancia().comprobarUsuario(telefono, contrasena);
+		if (usuarioActual != null) { // El usuario actual es el que ha iniciado sesion
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// Se cierra sesion
+	public void cerrarSesion() {
+		this.usuarioActual = null;
+		contactoActual = null;
+		tReceptor = null;
+	}
+
+	
+	//METODOS MENSAJE
+	
+	// Se registra el mensaje en el servidor de persistencia
+	public void registrarMensaje(String texto, int emoticono, Usuario u) {
+		Mensaje mensaje; // emisor -> usuario actual, receptor -> contacto actual o el usuario u
+		// se guardara si es un grupo o no (TipoReceptor)
+
+		if (u == null) { // se lo manda al contacto actual
+			mensaje = new Mensaje(texto, emoticono, usuarioActual.getNumTelefono(), contactoActual, tReceptor);
+		} else { // se lo manda a un numero que no tiene guardado (u)
+			mensaje = new Mensaje(texto, emoticono, usuarioActual.getNumTelefono(), u.getNumTelefono(), tReceptor);
+		}
+
+		// Persistir mensaje
+		adaptadorMensaje.registrarMensaje(mensaje);
+
+		// Se recuperan los usuarios relaccionados con el mensaje y se les añade mensaje
+		Usuario usuarioR = null;
+		usuarioActual.addMensaje(mensaje);
+		adaptadorUsuario.modificarUsuario(usuarioActual); // Actualizar usuario almacenado
+
+		// "Envia" el mensaje de una manera u otra segun el tipo de receptor que sea
+		if (tReceptor.equals(TipoReceptor.ID_GRUPO)) {
+			Grupo g = recuperarGrupo(Integer.parseInt(contactoActual));
+			for (ContactoIndividual c : g.getMiembros()) {
+				// Se les envia el mensaje a todos los miembros del grupo por separado
+				usuarioR = c.getUsuario();
+				usuarioR.addMensaje(mensaje);
+				adaptadorUsuario.modificarUsuario(usuarioR);
+			}
+		} else {
+			String id = recuperarOtroUsuario(mensaje);
+			usuarioR = RepositorioUsuarios.getUnicaInstancia().getUsuario(id);
+			usuarioR.addMensaje(mensaje);
+
+			adaptadorUsuario.modificarUsuario(usuarioR); // Actualizar usuario almacenado
+		}
+	}
+
+	// Se registra un contacto y se persiste en el servidor de persistencia
+	public String registrarContacto(String numTelefono, String nombre) {
+		Usuario usuario = recuperarUsuarioTelefono(numTelefono); // Se recupera el usuario a añadir como contacto
+
+		String resultado;
+		if (usuario != null) { // Si se ha podido recuperar un usuario
+			if (usuario != usuarioActual) {
+				ContactoIndividual contacto = new ContactoIndividual(usuario, nombre);
+				// Se añade el contacto al usuario que lo crea
+				resultado = usuarioActual.addContacto(contacto);
+				if (resultado.equals("")) {
+					// Persistir contacto
+					adaptadorContacto.anadirContacto(contacto);
+					// Actualizar usuario almacenado
+					adaptadorUsuario.modificarUsuario(usuarioActual);
+					return "";
+				}
+				return resultado;
+			}
+			return "Está intentando introducir su propio número de teléfono";
+		}
+		return "El número de teléfono introducido no está registrado";
+	}
+
+	// Se registra un grupo y se persiste en el servidor de persistencia
+	public void registrarGrupo(String nombre, String imagen, List<Contacto> miembros) {
+		Grupo grupo = new Grupo(nombre, imagen);
+
+		for (Contacto c : miembros) { // Se anaden los miembros uno a uno
+			grupo.addMiembro((ContactoIndividual) c);
+		}
+
+		// Persistir grupo
+		adaptadorGrupo.registrarGrupo(grupo);
+
+		// Se añade el grupo al usuario que lo crea
+		usuarioActual.addGrupo(grupo);
+
+		// Actualizar usuario almacenado
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+	}
+
+	// Se recupera el contacto dueño
 	public Contacto recuperarContactoMensaje(Mensaje mensaje) {
 		if (mensaje.getEmisor().equals(usuarioActual.getNumTelefono())) { // quiero recuperar el contacto al que se lo
 																			// he enviado
@@ -217,20 +203,36 @@ public class Controlador { // clase controlador
 				return recuperarGrupo(Integer.parseInt(mensaje.getReceptor()));
 			} else if (mensaje.getTipoReceptor().equals(TipoReceptor.NUM_TELF)) { // es un contacto individual
 				Usuario u = recuperarUsuarioTelefono(mensaje.getReceptor());
-				Contacto contacto = recuperarContactos().stream().filter(c -> ((ContactoIndividual) c).getUsuario().equals(u)).findFirst().orElse(null);
-				if(contacto != null) {
-					
+				Contacto contacto = recuperarContactos().stream()
+						.filter(c -> ((ContactoIndividual) c).getUsuario().equals(u)).findFirst().orElse(null);
+				if (contacto != null) {
+					return recuperarContactoIndividual(contacto.getId());
 				}
-				return recuperarContactoIndividual(contacto.getId());			
 			}
 		} else { // quiero recuperar el contacto que me lo ha enviado
 			Usuario u = recuperarUsuarioTelefono(mensaje.getEmisor());
-			if(usuarioActual.isContacto(u.getNumTelefono())) {
-				Contacto contacto = recuperarContactos().stream().filter(c -> ((ContactoIndividual) c).getUsuario().equals(u)).findFirst().orElse(null);
+			if (usuarioActual.isContacto(u.getNumTelefono())) {
+				Contacto contacto = recuperarContactos().stream()
+						.filter(c -> ((ContactoIndividual) c).getUsuario().equals(u)).findFirst().orElse(null);
 				return recuperarContactoIndividual(contacto.getId());
 			}
 		}
 		return null;
+	}
+
+	// Se recupera el grupo a partir de su id
+	public Grupo recuperarGrupo(int id) {
+		return AdaptadorGrupo.getUnicaInstancia().recuperarGrupo(id);
+	}
+
+	// Se recupera el usuario a partir de su numero de telefono
+	public Usuario recuperarUsuarioTelefono(String numTelefono) {
+		return AdaptadorUsuario.getUnicaInstancia().recuperarUsuarioTelefono(numTelefono);
+	}
+
+	// Se recupera el contacto individual a partir de su id
+	public Contacto recuperarContactoIndividual(int id) {
+		return AdaptadorContacto.getUnicaInstancia().recuperarContacto(id);
 	}
 
 	public List<Mensaje> getUltimosMensajes() {
@@ -254,7 +256,8 @@ public class Controlador { // clase controlador
 		return usuarioActual.getContactos();
 	}
 
-	// Recupera una lista con los contatos del usuario actual que no son miembros del grupo dado
+	// Recupera una lista con los contatos del usuario actual que no son miembros
+	// del grupo dado
 	public List<ContactoIndividual> recuperarNoMiembros(Grupo grupo) {
 		List<ContactoIndividual> contactos = usuarioActual.getContactos().stream()
 				.filter(c -> c instanceof ContactoIndividual).map(c -> (ContactoIndividual) c)
@@ -287,7 +290,7 @@ public class Controlador { // clase controlador
 	// y se actualiza en la base de datos tanto para el contacto como para el
 	// usuario
 	public boolean modificarContacto(ContactoIndividual contacto, String nombre) {
-		Usuario usuario = repoU.modificarContacto(contacto, nombre, usuarioActual);
+		Usuario usuario = RepositorioUsuarios.getUnicaInstancia().modificarContacto(contacto, nombre, usuarioActual);
 		if (usuario != null) {
 			adaptadorContacto.modificarContacto(contacto);
 			adaptadorUsuario.modificarUsuario(usuario);
@@ -295,10 +298,11 @@ public class Controlador { // clase controlador
 		}
 		return false;
 	}
-	
+
 	public boolean modificarGrupo(Grupo grupo, String nombre, String imagen,
 			List<ContactoIndividual> miembrosActualizados) {
-		Usuario usuario = RepositorioUsuarios.getUnicaInstancia().modificarGrupo(grupo, nombre, imagen, usuarioActual, miembrosActualizados);
+		Usuario usuario = RepositorioUsuarios.getUnicaInstancia().modificarGrupo(grupo, nombre, imagen, usuarioActual,
+				miembrosActualizados);
 
 		if (usuario != null) {
 			adaptadorGrupo.modificarGrupo(grupo);
@@ -307,7 +311,6 @@ public class Controlador { // clase controlador
 		}
 		return false;
 	}
-
 
 	public double getPrecioPremium() {
 		return servicioDescuento.getPrecioPremium();
@@ -321,15 +324,14 @@ public class Controlador { // clase controlador
 		usuarioActual.setPremium(premium);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
-	
+
 	public boolean createPdfContactos(Path ruta) {
-		CreadorPDF creador = new CreadorPDF();
 		return creador.createPdfContactos(usuarioActual, ruta);
 	}
-	
-	public boolean createPdfMensajes(Contacto contacto, Path ruta) {
-		CreadorPDF creador = new CreadorPDF();
-		return creador.createPdfMensajes(usuarioActual, contacto, ruta);
+
+	public boolean createPdfMensajes(Contacto contacto, Usuario otro, Path ruta) {
+		return creador.createPdfMensajes(usuarioActual, contacto, otro, ruta);
+	}
 
 	public List<Mensaje> recuperarConversacion(Contacto contacto) {
 		return usuarioActual.recuperarConversacion(contacto);
@@ -337,5 +339,18 @@ public class Controlador { // clase controlador
 
 	public List<Mensaje> recuperarConversacion(Usuario u) {
 		return usuarioActual.getMensajes().get(u.getNumTelefono());
+	}
+
+	public List<Mensaje> busquedaMensajes(String txtFrase, String txtTelefono, String txtContacto) {
+		Filtro filtro = new SinFiltro();
+		if (!txtFrase.equals("")) {
+			filtro = new FiltroFrase(filtro, txtFrase);
+		} else if (!txtTelefono.equals("")) {
+			filtro = new FiltroTelefono(filtro, txtTelefono);
+		} else if (!txtContacto.equals("")) {
+			filtro = new FiltroContacto(filtro, txtContacto);
+		}
+
+		return usuarioActual.buscarMensajes(filtro);
 	}
 }

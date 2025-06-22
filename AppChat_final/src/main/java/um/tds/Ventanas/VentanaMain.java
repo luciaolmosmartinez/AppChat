@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -12,18 +13,20 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.file.Files;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -41,8 +44,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import com.itextpdf.text.DocumentException;
-
 import tds.BubbleText;
 import um.tds.Controlador.Controlador;
 import um.tds.Modelado.Contacto;
@@ -52,8 +53,6 @@ import um.tds.Modelado.Mensaje;
 import um.tds.Modelado.TipoReceptor;
 import um.tds.Modelado.Usuario;
 import um.tds.Renderers.MensajeCellRenderer;
-import javax.swing.border.TitledBorder;
-import java.awt.Font;
 
 public class VentanaMain implements ActionListener {
 
@@ -62,31 +61,20 @@ public class VentanaMain implements ActionListener {
 	private JMenuBar menuBar;
 	private JLabel lblImagen, lblContacto;
 	private JButton btnEmoticono, btnEnviar, btnAgregar;
-	private JTextField textField;
+	private JTextField textMensaje;
 	private JMenu mnPerfil, mnPdf;
 	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion, mntmContactosPdf,
 			mntmMensajesPdf;
 	private JList<Mensaje> list;
-	private GridBagConstraints gbc_lblImagen, gbc_lblConrtacto, gbc_btnEmoticono, gbc_textField, gbc_btnEnviar, gbc_btnAgregar;
-	private JScrollPane scrollPane, scrollPane_1;
+	private GridBagConstraints gbc_lblImagen, gbc_lblConrtacto, gbc_btnEmoticono, gbc_textMensaje, gbc_btnEnviar,
+			gbc_btnAgregar;
+	private JScrollPane scrollPaneConversacion, scrollPaneListaMensajes;
 	private GridBagLayout gbl_panelContacto, gbl_panelEscribir;
 	private BoxLayout gbl_panelMensajes;
 	private DefaultListModel<Mensaje> mensajes;
 	private Contacto contacto;
 	private Usuario u;
 
-	/**
-	 * Create the frame.
-	 */
-	/*
-	 * public void mostrarMain(Dimension tam, Point ubi) {
-	 * frmAppchat.setVisible(true); frmAppchat.setSize(tam);
-	 * frmAppchat.setLocation(ubi); }
-	 */
-
-	/**
-	 * Create the application.
-	 */
 	public VentanaMain(Dimension tam, Point ubi, Contacto c) {
 		this.contacto = c;
 		initialize(tam, ubi);
@@ -113,13 +101,26 @@ public class VentanaMain implements ActionListener {
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmPremium);
 		if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
-			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
-			mntmPremium.setSize(new Dimension(64, 32));
-			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_premium.png"));
+			try {
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+				mntmPremium.setIcon(new ImageIcon(image));
+				mntmPremium.setSize(new Dimension(64, 32));
+				ImageInJLabel.resizeImage(mntmPremium, image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		} else {
-			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
-			mntmPremium.setSize(new Dimension(64, 32));
-			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+
+			try {
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_No_premium.png"));
+				mntmPremium.setIcon(new ImageIcon(image));
+				mntmPremium.setSize(new Dimension(64, 32));
+				ImageInJLabel.resizeImage(mntmPremium, image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 		mnPdf = new JMenu("Documento PDF");
@@ -151,11 +152,16 @@ public class VentanaMain implements ActionListener {
 		mnPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mnPerfil.setBackground(Color.WHITE);
 		mnPerfil.setSize(30, 30);
-		mnPerfil.setIcon(new ImageIcon(
-				VentanaMain.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
-		ImageInJLabel.resizeImage(mnPerfil,
-				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
-		menuBar.add(mnPerfil);
+
+		try {
+			mnPerfil.setIcon(
+					new ImageIcon(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta()));
+			ImageInJLabel.resizeImage(mnPerfil,
+					Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta());
+			menuBar.add(mnPerfil);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		mntmEditarPerfil = new JMenuItem("Editar perfil");
 		mntmEditarPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -185,13 +191,13 @@ public class VentanaMain implements ActionListener {
 		// panel = new JPanel();
 		// panelOeste.add(panel);
 
-		scrollPane_1 = new JScrollPane();
-		frmAppchat.getContentPane().add(scrollPane_1, BorderLayout.WEST);
-		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPaneListaMensajes = new JScrollPane();
+		frmAppchat.getContentPane().add(scrollPaneListaMensajes, BorderLayout.WEST);
+		scrollPaneListaMensajes.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 		list = new JList<>(mensajes);
 		list.setFixedCellWidth(300);
-		scrollPane_1.setViewportView(list);
+		scrollPaneListaMensajes.setViewportView(list);
 		list.setCellRenderer(new MensajeCellRenderer());
 
 		panelCentral = new JPanel();
@@ -199,26 +205,26 @@ public class VentanaMain implements ActionListener {
 		contentPane.add(panelCentral, BorderLayout.CENTER);
 		panelCentral.setLayout(new BorderLayout(0, 0));
 
-		scrollPane = new JScrollPane();
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setSize(new Dimension(465, 100));
-		scrollPane.setBackground(new Color(255, 255, 255));
-		scrollPane.setMaximumSize(new Dimension(1400, 200));
-		scrollPane.setPreferredSize(new Dimension(465, 100));
+		scrollPaneConversacion = new JScrollPane();
+		scrollPaneConversacion.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneConversacion.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPaneConversacion.setSize(new Dimension(465, 100));
+		scrollPaneConversacion.setBackground(new Color(255, 255, 255));
+		scrollPaneConversacion.setMaximumSize(new Dimension(1400, 200));
+		scrollPaneConversacion.setPreferredSize(new Dimension(465, 100));
 		// scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		panelCentral.add(scrollPane, BorderLayout.CENTER);
+		panelCentral.add(scrollPaneConversacion, BorderLayout.CENTER);
 
 		panelMensajes = new JPanel();
 		panelMensajes.setBackground(new Color(255, 255, 255));
 		panelMensajes.setLayout(new BoxLayout(panelMensajes, BoxLayout.Y_AXIS));
 		panelMensajes.setAlignmentY(Component.TOP_ALIGNMENT);
 		gbl_panelMensajes = new BoxLayout(panelMensajes, BoxLayout.Y_AXIS);
-		
+
 		panelMensajes.setLayout(gbl_panelMensajes);
 		panelMensajes.setMinimumSize(new Dimension(465, 100));
-		
-		scrollPane.setViewportView(panelMensajes);
+
+		scrollPaneConversacion.setViewportView(panelMensajes);
 
 		panelContacto = new JPanel();
 		panelContacto.setBackground(new Color(255, 255, 255));
@@ -229,19 +235,20 @@ public class VentanaMain implements ActionListener {
 		gbl_panelContacto.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		gbl_panelContacto.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		panelContacto.setLayout(gbl_panelContacto);
-		
+
 		panelEmoticonos = new JPanel();
-		panelEmoticonos.setPreferredSize(new Dimension(350, 300)); //tamano perfecto para que salgan todos los emoticonos bien
-		
-		for(int i = 0; i <= BubbleText.MAXICONO; i++) {
+		panelEmoticonos.setPreferredSize(new Dimension(350, 300)); // tamano perfecto para que salgan todos los
+																	// emoticonos bien
+
+		for (int i = 0; i <= BubbleText.MAXICONO; i++) {
 			JButton b = new JButton(BubbleText.getEmoji(i));
 			b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			int indice = i;
 			b.addActionListener(e -> mensajeEmoticono(indice));
 			panelEmoticonos.add(b);
-			//panelEmoticonos.add(Box.createRigidArea(new Dimension(25, 0)));		
+			// panelEmoticonos.add(Box.createRigidArea(new Dimension(25, 0)));
 		}
-		
+
 		lblImagen = new JLabel("");
 		gbc_lblImagen = new GridBagConstraints();
 		gbc_lblImagen.anchor = GridBagConstraints.NORTHWEST;
@@ -257,7 +264,7 @@ public class VentanaMain implements ActionListener {
 		gbc_lblConrtacto.gridx = 2;
 		gbc_lblConrtacto.gridy = 0;
 		panelContacto.add(lblContacto, gbc_lblConrtacto);
-		
+
 		btnAgregar = new JButton("");
 		btnAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAgregar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -282,8 +289,15 @@ public class VentanaMain implements ActionListener {
 		btnEmoticono.setMinimumSize(new Dimension(10, 10));
 		btnEmoticono.setBackground(new Color(255, 255, 255));
 		btnEmoticono.setSize(30, 30);
-		btnEmoticono.setIcon(new ImageIcon(VentanaMain.class.getResource("/imagenes/gato_cabeza.png")));
-		ImageInJLabel.resizeImage(btnEmoticono, VentanaPerfil.class.getResource("/imagenes/gato_cabeza.png"));
+
+		try {
+			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/gato_cabeza.png"));
+			btnEmoticono.setIcon(new ImageIcon(image));
+			ImageInJLabel.resizeImage(btnEmoticono, image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		btnEmoticono.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		gbc_btnEmoticono = new GridBagConstraints();
 		gbc_btnEmoticono.insets = new Insets(0, 0, 0, 5);
@@ -292,14 +306,14 @@ public class VentanaMain implements ActionListener {
 		gbc_btnEmoticono.gridy = 0;
 		panelEscribir.add(btnEmoticono, gbc_btnEmoticono);
 
-		textField = new JTextField();
-		gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 0, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 0;
-		panelEscribir.add(textField, gbc_textField);
-		textField.setColumns(10);
+		textMensaje = new JTextField();
+		gbc_textMensaje = new GridBagConstraints();
+		gbc_textMensaje.insets = new Insets(0, 0, 0, 5);
+		gbc_textMensaje.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textMensaje.gridx = 1;
+		gbc_textMensaje.gridy = 0;
+		panelEscribir.add(textMensaje, gbc_textMensaje);
+		textMensaje.setColumns(10);
 
 		btnEnviar = new JButton("Enviar");
 		btnEnviar.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -361,10 +375,11 @@ public class VentanaMain implements ActionListener {
 		mntmPremium.addActionListener(this);
 		mntmContactosPdf.addActionListener(this);
 		mntmMensajesPdf.addActionListener(this);
+		mntmMensajes.addActionListener(this);
 		list.addListSelectionListener(e -> {
-		    if (!e.getValueIsAdjusting()) {
-		    	conversacionSeleccionada();
-		    }
+			if (!e.getValueIsAdjusting()) {
+				conversacionSeleccionada();
+			}
 		});
 
 		frmAppchat.setVisible(true);
@@ -383,10 +398,10 @@ public class VentanaMain implements ActionListener {
 		// Si no hay texto meter "" si no hay emoticono meter -1, no pueden estar los
 		// dos
 		if (e.getSource() == btnEnviar) {
-			if (textField.getText().equals("")) {
+			if (textMensaje.getText().equals("")) {
 
 			} else {
-				Controlador.getUnicaInstancia().registrarMensaje(textField.getText(), -1, u);
+				Controlador.getUnicaInstancia().registrarMensaje(textMensaje.getText(), -1, u);
 				List<Mensaje> mensajesRecientes = Controlador.getUnicaInstancia().getUltimosMensajes();
 				mensajes.clear();
 				for (Mensaje m : mensajesRecientes) {
@@ -395,7 +410,7 @@ public class VentanaMain implements ActionListener {
 				list.setModel(mensajes);
 				list.setCellRenderer(
 						new MensajeCellRenderer(/* frmAppchat.getSize(), frmAppchat.getLocation(), frmAppchat */));
-				textField.setText("");
+				textMensaje.setText("");
 				mostrarVentanaConvo(u);
 				panelMensajes.revalidate();
 				panelMensajes.repaint();
@@ -408,8 +423,9 @@ public class VentanaMain implements ActionListener {
 			dialog.setLocationRelativeTo(frmAppchat);
 			dialog.setVisible(true);
 		}
-		if(e.getSource() == btnAgregar) {
-			new VentanaAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaMain:"+lblContacto.getText());
+		if (e.getSource() == btnAgregar) {
+			new VentanaAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(),
+					"VentanaMain:" + lblContacto.getText());
 			frmAppchat.dispose();
 		}
 		if (e.getSource() == mntmPremium) {
@@ -418,10 +434,16 @@ public class VentanaMain implements ActionListener {
 						"Dejar de ser premium", JOptionPane.YES_NO_OPTION);
 				if (res == JOptionPane.YES_OPTION) {
 					Controlador.getUnicaInstancia().setPremium(false);
-					mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
-					mntmPremium.setSize(new Dimension(64, 32));
-					ImageInJLabel.resizeImage(mntmPremium,
-							VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+
+					try {
+						BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+						mntmPremium.setIcon(new ImageIcon(image));
+						mntmPremium.setSize(new Dimension(64, 32));
+						ImageInJLabel.resizeImage(mntmPremium, image);
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+
 				}
 			} else {
 				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
@@ -451,12 +473,12 @@ public class VentanaMain implements ActionListener {
 						Path ruta = Paths.get(fileC.getSelectedFile().getAbsolutePath());
 						// Genera el pdf
 						if (contacto == null) {
-							if (!Controlador.getUnicaInstancia().createPdfMensajes(, ruta)) {
+							if (!Controlador.getUnicaInstancia().createPdfMensajes(null, u, ruta)) {
 								JOptionPane.showMessageDialog(frmAppchat, "Ha habido un error al crear el documento",
 										"Error", JOptionPane.PLAIN_MESSAGE);
 							}
 						} else {
-							if (!Controlador.getUnicaInstancia().createPdfMensajes(contacto, ruta)) {
+							if (!Controlador.getUnicaInstancia().createPdfMensajes(contacto, null, ruta)) {
 								JOptionPane.showMessageDialog(frmAppchat, "Ha habido un error al crear el documento",
 										"Error", JOptionPane.PLAIN_MESSAGE);
 							}
@@ -473,24 +495,26 @@ public class VentanaMain implements ActionListener {
 			}
 		}
 		if (e.getSource() == mntmContactos) {
+			frmAppchat.dispose();
 			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
-			frmAppchat.dispose();
-			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
-		if(e.getSource() == mntmCerrarSesion){
+		if (e.getSource() == mntmCerrarSesion) {
 			Controlador.getUnicaInstancia().cerrarSesion();
+			frmAppchat.dispose();
 			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
-			frmAppchat.dispose();
 		}
-		if(e.getSource() == mntmEditarPerfil) {
-			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaMain");
+		if (e.getSource() == mntmEditarPerfil) {
 			frmAppchat.dispose();
+			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
 		}
-		// añadir foto gato en botón emoticono
+		if (e.getSource() == mntmMensajes) {
+			frmAppchat.dispose();
+			new VentanaBusqueda(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
+		}
 	}
 
 	private void conversacionSeleccionada() {
-		//u = null;
+		u = null;
 		Mensaje seleccionado = list.getSelectedValue();
 		if (seleccionado != null) {
 			contacto = Controlador.getUnicaInstancia().recuperarContactoMensaje(seleccionado);
@@ -509,12 +533,19 @@ public class VentanaMain implements ActionListener {
 		panelMensajes.removeAll();
 		if (u != null) { // conversacion con usuario no contacto
 			lblContacto.setText(u.getNumTelefono());
-			lblImagen.setIcon(new ImageIcon(VentanaMain.class.getResource(u.getImagenPerfil())));
-			lblImagen.setSize(50, 50);
-			ImageInJLabel.resizeImage(lblImagen, VentanaMain.class.getResource(u.getImagenPerfil()));
-			btnAgregar.setIcon(new ImageIcon(VentanaMain.class.getResource("/imagenes/agregar.png")));
-			btnAgregar.setSize(50,50);
-			ImageInJLabel.resizeImage(btnAgregar, VentanaMain.class.getResource("/imagenes/agregar.png"));
+
+			try {
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/agregar.png"));
+				lblImagen.setIcon(new ImageIcon(u.getImagenPerfilDirecta()));
+				lblImagen.setSize(50, 50);
+				ImageInJLabel.resizeImage(lblImagen, u.getImagenPerfilDirecta());
+				btnAgregar.setIcon(new ImageIcon(image));
+				btnAgregar.setSize(50, 50);
+				ImageInJLabel.resizeImage(btnAgregar, image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 			panelContacto.add(btnAgregar, gbc_btnAgregar);
 			btnAgregar.addActionListener(this);
 
@@ -524,7 +555,7 @@ public class VentanaMain implements ActionListener {
 			for (Mensaje m : tmp) {
 				if (m.getTexto().equals("")) {
 					if (m.getEmisor().equals(u.getNumTelefono())) {
-						panelMensajes.add(new BubbleText(panelMensajes, m.getEmoticono(), new Color(254,219,219), "",
+						panelMensajes.add(new BubbleText(panelMensajes, m.getEmoticono(), new Color(254, 219, 219), "",
 								BubbleText.RECEIVED, 10));
 					} else {
 						panelMensajes.add(
@@ -532,8 +563,8 @@ public class VentanaMain implements ActionListener {
 					}
 				} else {
 					if (m.getEmisor().equals(u.getNumTelefono())) {
-						panelMensajes.add(
-								new BubbleText(panelMensajes, m.getTexto(), new Color(254,219,219), "", BubbleText.RECEIVED, 10));
+						panelMensajes.add(new BubbleText(panelMensajes, m.getTexto(), new Color(254, 219, 219), "",
+								BubbleText.RECEIVED, 10));
 					} else {
 						panelMensajes
 								.add(new BubbleText(panelMensajes, m.getTexto(), Color.PINK, "", BubbleText.SENT, 10));
@@ -544,9 +575,14 @@ public class VentanaMain implements ActionListener {
 
 		} else { // conversacion con contacto
 			lblContacto.setText(contacto.getNombre());
-			lblImagen.setIcon(new ImageIcon(VentanaMain.class.getResource(contacto.getImagen())));
-			lblImagen.setSize(50, 50);
-			ImageInJLabel.resizeImage(lblImagen, VentanaPerfil.class.getResource(contacto.getImagen()));
+			try {
+				lblImagen.setIcon(new ImageIcon(contacto.getImagenDirecta()));
+				lblImagen.setSize(50, 50);
+				ImageInJLabel.resizeImage(lblImagen, contacto.getImagenDirecta());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 			String c = "";
 			if (contacto instanceof Grupo) {
 				c = String.valueOf(contacto.getId());
@@ -562,15 +598,15 @@ public class VentanaMain implements ActionListener {
 				for (Mensaje m : tmp) {
 					if (m.getTexto().equals("")) {
 						if (m.getEmisor().equals(c)) {
-							panelMensajes.add(new BubbleText(panelMensajes, m.getEmoticono(), new Color(254,219,219), "",
-									BubbleText.RECEIVED, 10));
+							panelMensajes.add(new BubbleText(panelMensajes, m.getEmoticono(), new Color(254, 219, 219),
+									"", BubbleText.RECEIVED, 10));
 						} else {
 							panelMensajes.add(new BubbleText(panelMensajes, m.getEmoticono(), Color.PINK, "",
 									BubbleText.SENT, 10));
 						}
 					} else {
 						if (m.getEmisor().equals(c)) {
-							panelMensajes.add(new BubbleText(panelMensajes, m.getTexto(), new Color(254,219,219), "",
+							panelMensajes.add(new BubbleText(panelMensajes, m.getTexto(), new Color(254, 219, 219), "",
 									BubbleText.RECEIVED, 10));
 						} else {
 							panelMensajes.add(
@@ -583,7 +619,7 @@ public class VentanaMain implements ActionListener {
 
 		}
 		SwingUtilities.invokeLater(() -> {
-			JScrollBar vertical = scrollPane.getVerticalScrollBar();
+			JScrollBar vertical = scrollPaneConversacion.getVerticalScrollBar();
 			vertical.setValue(vertical.getMaximum());
 		});
 		panelMensajes.revalidate();
@@ -597,7 +633,7 @@ public class VentanaMain implements ActionListener {
 		panelMensajes.revalidate();
 		panelMensajes.repaint();
 	}
-	
+
 	private void mensajeEmoticono(int i) {
 		Controlador.getUnicaInstancia().registrarMensaje("", i, u);
 		List<Mensaje> mensajesRecientes = Controlador.getUnicaInstancia().getUltimosMensajes();
@@ -606,9 +642,8 @@ public class VentanaMain implements ActionListener {
 			mensajes.addElement(m);
 		}
 		list.setModel(mensajes);
-		list.setCellRenderer(
-				new MensajeCellRenderer(/* frmAppchat.getSize(), frmAppchat.getLocation(), frmAppchat */));
-		textField.setText("");
+		list.setCellRenderer(new MensajeCellRenderer(/* frmAppchat.getSize(), frmAppchat.getLocation(), frmAppchat */));
+		textMensaje.setText("");
 		mostrarVentanaConvo(u);
 		panelMensajes.revalidate();
 		panelMensajes.repaint();

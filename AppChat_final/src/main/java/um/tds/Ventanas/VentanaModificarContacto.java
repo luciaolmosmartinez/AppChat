@@ -12,7 +12,10 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -37,18 +40,6 @@ public class VentanaModificarContacto implements ActionListener {
 
 	/**
 	 * Launch the application.
-	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { VentanaModificarContacto window = new
-	 * VentanaModificarContacto(); window.frame.setVisible(true); } catch (Exception
-	 * e) { e.printStackTrace(); } } }); }
-	 */
-
-	/*
-	 * public void mostrarModificarContacto(Dimension tam, Point ubi) {
-	 * frmAppchat.setVisible(true); frmAppchat.setSize(tam);
-	 * frmAppchat.setLocation(ubi); }
 	 */
 
 	/**
@@ -107,8 +98,15 @@ public class VentanaModificarContacto implements ActionListener {
 		lblImagen = new JLabel("");
 		lblImagen.setMinimumSize(new Dimension(10, 10));
 		lblImagen.setSize(250, 250);
-		lblImagen.setIcon(new ImageIcon(VentanaAnadirContacto.class.getResource("/imagenes/gato_perfil.png")));
-		ImageInJLabel.resizeImage(lblImagen, VentanaAnadirContacto.class.getResource("/imagenes/gato_perfil.png"));
+
+		try {
+			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/gato_perfil.png"));
+			lblImagen.setIcon(new ImageIcon(image));
+			ImageInJLabel.resizeImage(lblImagen, image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		gbc_lblImagen = new GridBagConstraints();
 		gbc_lblImagen.gridheight = 5;
 		gbc_lblImagen.insets = new Insets(0, 0, 5, 5);

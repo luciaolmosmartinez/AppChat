@@ -53,7 +53,7 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 
 		// 4. Se le añaden las propiedades a la entidad creada
 		eGrupo.setPropiedades(new ArrayList<Propiedad>(
-				Arrays.asList(new Propiedad("nombre", grupo.getNombre()), new Propiedad("imagen", grupo.getImagen()),
+				Arrays.asList(new Propiedad("nombre", grupo.getNombre()), new Propiedad("imagen", grupo.getImagenRuta()),
 						new Propiedad("miembros", obtenerIdsMiembros(grupo.getMiembros())),
 						new Propiedad("tipo", "grupo"))));
 
@@ -139,7 +139,7 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 			} else if (prop.getNombre().equals("nombre")) {
 				prop.setValor(grupo.getNombre());
 			} else if (prop.getNombre().equals("imagen")) {
-				prop.setValor(grupo.getImagen());
+				prop.setValor(grupo.getImagenRuta());
 			} else if (prop.getNombre().equals("miembros")) {
 				prop.setValor(obtenerIdsMiembros(grupo.getMiembros()));
 			}
