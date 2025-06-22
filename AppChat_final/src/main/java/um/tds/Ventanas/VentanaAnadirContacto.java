@@ -15,10 +15,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -38,26 +41,16 @@ public class VentanaAnadirContacto implements ActionListener {
 	private JFrame frmAppchat;
 	private JPanel contentPane, panel_1;
 	private JMenuBar menuBar;
-	private JMenu mnPerfil;
-	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
+	private JMenu mnPerfil, mnPdf;
+	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion, mntmContactosPdf,
+			mntmMensajesPdf;
 	private GridBagConstraints gbc_lblImagen, gbc_txtNombre, gbc_txtTelefono;
 	private JLabel lblImagen, lblNombre, lblTelefono, lblError;
 	private JTextField txtNombre, txtTelefono;
 	private GridBagLayout gbl_panel_1;
 	private JButton btnAceptar, btnCancelar;
 	private String ventanaAnterior;
-	/**
-	 * Create the frame.
-	 */
-	/*
-	 * public void mostrarAnadirContacto(Dimension tam, Point ubi, ActionListener
-	 * ventanaAnterior) { frmAppchat.setVisible(true); frmAppchat.setSize(tam);
-	 * frmAppchat.setLocation(ubi); this.ventanaAnterior = ventanaAnterior; }
-	 */
 
-	/**
-	 * Create the frame.
-	 */
 	public VentanaAnadirContacto(Dimension tam, Point ubi, String ventanaAnterior) {
 		String[] partes = ventanaAnterior.split(":");
 		this.ventanaAnterior = partes[0];
@@ -75,7 +68,7 @@ public class VentanaAnadirContacto implements ActionListener {
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
 
-		mntmPremium = new JMenuItem("PREMIUM");
+		mntmPremium = new JMenuItem("");
 		mntmPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmPremium.setBackground(new Color(255, 255, 255));
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -92,7 +85,7 @@ public class VentanaAnadirContacto implements ActionListener {
 
 		} else {
 			try {
-				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/no_premium_orejas.png"));
 				mntmPremium.setIcon(new ImageIcon(image));
 				mntmPremium.setSize(new Dimension(64, 32));
 				ImageInJLabel.resizeImage(mntmPremium, image);
@@ -100,6 +93,23 @@ public class VentanaAnadirContacto implements ActionListener {
 				e.printStackTrace();
 			}
 		}
+
+		mnPdf = new JMenu("Documento PDF");
+		mnPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mnPdf.setHorizontalAlignment(SwingConstants.LEFT);
+		mnPdf.setPreferredSize(new Dimension(180, 26));
+		mnPdf.setBackground(Color.WHITE);
+		menuBar.add(mnPdf);
+
+		mntmContactosPdf = new JMenuItem("Generar documento con información de contactos");
+		mntmContactosPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmContactosPdf.setBackground(new Color(255, 255, 255));
+		mnPdf.add(mntmContactosPdf);
+
+		mntmMensajesPdf = new JMenuItem("Generar documento con la conversación");
+		mntmMensajesPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmMensajesPdf.setBackground(new Color(255, 255, 255));
+		mnPdf.add(mntmMensajesPdf);
 
 		mntmContactos = new JMenuItem("Contactos");
 		mntmContactos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -249,6 +259,8 @@ public class VentanaAnadirContacto implements ActionListener {
 		mntmContactos.addActionListener(this);
 		mntmCerrarSesion.addActionListener(this);
 		mntmEditarPerfil.addActionListener(this);
+		mntmContactosPdf.addActionListener(this);
+		mntmMensajesPdf.addActionListener(this);
 
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
@@ -299,6 +311,28 @@ public class VentanaAnadirContacto implements ActionListener {
 				}
 			} else {
 				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaAnadirContacto");
+				frmAppchat.dispose();
+			}
+		}
+		if (e.getSource() == mntmContactosPdf) {
+			JFileChooser fileC = new JFileChooser();
+			int seleccion = fileC.showSaveDialog(null);
+
+			if (seleccion == JFileChooser.APPROVE_OPTION) {
+				Path ruta = Paths.get(fileC.getSelectedFile().getAbsolutePath());
+				// Genera el pdf
+				if (!Controlador.getUnicaInstancia().createPdfContactos(ruta)) {
+					JOptionPane.showMessageDialog(frmAppchat, "Ha habido un error al crear el documento", "Error",
+							JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		}
+		if (e.getSource() == mntmMensajesPdf) {
+			if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
+				JOptionPane.showMessageDialog(frmAppchat, "Debes tener abierta la conversación que deseas exportar",
+						"Información", JOptionPane.PLAIN_MESSAGE);
+			} else {
+				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
 				frmAppchat.dispose();
 			}
 		}

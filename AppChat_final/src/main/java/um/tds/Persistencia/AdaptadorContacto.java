@@ -2,7 +2,6 @@ package um.tds.Persistencia;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import beans.Entidad;

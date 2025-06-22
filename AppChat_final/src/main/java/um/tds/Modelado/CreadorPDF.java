@@ -65,6 +65,7 @@ public class CreadorPDF {
 		documento.add(titulo);
 	}
 
+	//Version para contacto individual
 	private void agregarListadoContactos(Document documento, List<ContactoIndividual> contactos) {
 		AtomicInteger contador = new AtomicInteger(1);
 		contactos.forEach(contacto -> {
@@ -78,6 +79,7 @@ public class CreadorPDF {
 		});
 	}
 
+	//Version para grupo
 	private void agregarListadoGrupos(Document documento, List<Grupo> grupos) {
 		AtomicInteger contador = new AtomicInteger(1);
 		grupos.forEach(grupo -> {
@@ -93,7 +95,7 @@ public class CreadorPDF {
 		});
 	}
 
-	// Para crear el documento con la conversación
+	// Para crear el documento con la conversacion
 	public boolean createPdfMensajes(Usuario usuario, Contacto contacto, Usuario otro, Path ruta) {
 		FileOutputStream archivo = null;
 		try {

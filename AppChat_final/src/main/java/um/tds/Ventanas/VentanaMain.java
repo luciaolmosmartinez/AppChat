@@ -113,7 +113,7 @@ public class VentanaMain implements ActionListener {
 		} else {
 
 			try {
-				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_No_premium.png"));
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_no_premium.png"));
 				mntmPremium.setIcon(new ImageIcon(image));
 				mntmPremium.setSize(new Dimension(64, 32));
 				ImageInJLabel.resizeImage(mntmPremium, image);
@@ -124,16 +124,19 @@ public class VentanaMain implements ActionListener {
 		}
 
 		mnPdf = new JMenu("Documento PDF");
+		mnPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mnPdf.setHorizontalAlignment(SwingConstants.LEFT);
 		mnPdf.setPreferredSize(new Dimension(180, 26));
 		mnPdf.setBackground(Color.WHITE);
 		menuBar.add(mnPdf);
 
 		mntmContactosPdf = new JMenuItem("Generar documento con información de contactos");
+		mntmContactosPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmContactosPdf.setBackground(new Color(255, 255, 255));
 		mnPdf.add(mntmContactosPdf);
 
 		mntmMensajesPdf = new JMenuItem("Generar documento con la conversación");
+		mntmMensajesPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmMensajesPdf.setBackground(new Color(255, 255, 255));
 		mnPdf.add(mntmMensajesPdf);
 
@@ -180,16 +183,7 @@ public class VentanaMain implements ActionListener {
 		frmAppchat.setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
-		/*
-		 * panelOeste = new JPanel(); panelOeste.setMinimumSize(new Dimension(100, 10));
-		 * panelOeste.setBackground(new Color(255, 255, 255));
-		 * contentPane.add(panelOeste, BorderLayout.WEST);
-		 */
-
 		mensajes = new DefaultListModel<>();
-
-		// panel = new JPanel();
-		// panelOeste.add(panel);
 
 		scrollPaneListaMensajes = new JScrollPane();
 		frmAppchat.getContentPane().add(scrollPaneListaMensajes, BorderLayout.WEST);
@@ -212,7 +206,6 @@ public class VentanaMain implements ActionListener {
 		scrollPaneConversacion.setBackground(new Color(255, 255, 255));
 		scrollPaneConversacion.setMaximumSize(new Dimension(1400, 200));
 		scrollPaneConversacion.setPreferredSize(new Dimension(465, 100));
-		// scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panelCentral.add(scrollPaneConversacion, BorderLayout.CENTER);
 
 		panelMensajes = new JPanel();
@@ -246,7 +239,6 @@ public class VentanaMain implements ActionListener {
 			int indice = i;
 			b.addActionListener(e -> mensajeEmoticono(indice));
 			panelEmoticonos.add(b);
-			// panelEmoticonos.add(Box.createRigidArea(new Dimension(25, 0)));
 		}
 
 		lblImagen = new JLabel("");
@@ -326,43 +318,6 @@ public class VentanaMain implements ActionListener {
 		gbc_btnEnviar.gridy = 0;
 		panelEscribir.add(btnEnviar, gbc_btnEnviar);
 
-		/*
-		 * bubble = new BubbleText(panelMensajes, "Adios", Color.PINK, "jaja",
-		 * BubbleText.SENT, 10); bubble.setPreferredSize(new Dimension(465, 100));
-		 * bubble.setSize(new Dimension(85, 71)); bubble.setMinimumSize(new Dimension(5,
-		 * 5));
-		 * 
-		 * gbc_bubble_1 = new GridBagConstraints(); gbc_bubble_1.anchor =
-		 * GridBagConstraints.SOUTH; gbc_bubble_1.fill = GridBagConstraints.HORIZONTAL;
-		 * gbc_bubble_1.insets = new Insets(0, 0, 5, 0); gbc_bubble_1.gridx = 0;
-		 * gbc_bubble_1.gridy = 0; panelMensajes.add(bubble, gbc_bubble_1); bubble_1 =
-		 * new BubbleText(panelMensajes, "adiós", Color.PINK, "jaja", BubbleText.SENT,
-		 * 10); bubble_1.setPreferredSize(new Dimension(465, 100)); bubble_1.setSize(new
-		 * Dimension(85, 71)); bubble_1.setMinimumSize(new Dimension(5, 5));
-		 * 
-		 * gbc_bubble_1 = new GridBagConstraints(); gbc_bubble_1.anchor =
-		 * GridBagConstraints.SOUTH; gbc_bubble_1.fill = GridBagConstraints.HORIZONTAL;
-		 * gbc_bubble_1.insets = new Insets(0, 0, 5, 0); gbc_bubble_1.gridx = 0;
-		 * gbc_bubble_1.gridy = 2; panelMensajes.add(bubble_1, gbc_bubble_1); bubble_2 =
-		 * new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje",
-		 * BubbleText.RECEIVED, 10); bubble_2.setPreferredSize(new Dimension(465, 100));
-		 * bubble_2.setSize(new Dimension(85, 71)); bubble_2.setMinimumSize(new
-		 * Dimension(5, 5));
-		 * 
-		 * gbc_bubble_1_1 = new GridBagConstraints(); gbc_bubble_1_1.fill =
-		 * GridBagConstraints.HORIZONTAL; gbc_bubble_1_1.anchor =
-		 * GridBagConstraints.SOUTH; gbc_bubble_1_1.insets = new Insets(0, 0, 5, 0);
-		 * gbc_bubble_1_1.gridx = 0; gbc_bubble_1_1.gridy = 3;
-		 * panelMensajes.add(bubble_2, gbc_bubble_1_1); bubble_3 = new
-		 * BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED,
-		 * 10); bubble_3.setPreferredSize(new Dimension(465, 100)); bubble_3.setSize(new
-		 * Dimension(85, 71)); bubble_3.setMinimumSize(new Dimension(5, 5));
-		 * 
-		 * gbc_bubble_1_2 = new GridBagConstraints(); gbc_bubble_1_2.fill =
-		 * GridBagConstraints.HORIZONTAL; gbc_bubble_1_2.anchor =
-		 * GridBagConstraints.SOUTH; gbc_bubble_1_2.gridx = 0; gbc_bubble_1_2.gridy = 4;
-		 * panelMensajes.add(bubble_3, gbc_bubble_1_2);
-		 */
 		actualizarMensajes();
 
 		panelCentral.setVisible(false);

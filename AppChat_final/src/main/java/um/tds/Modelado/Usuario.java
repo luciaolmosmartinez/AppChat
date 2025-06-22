@@ -87,9 +87,8 @@ public class Usuario {
 	public BufferedImage getImagenPerfilDirecta() throws IOException {
 		BufferedImage image = null;
 		if (imagenPerfil.startsWith("http://") || imagenPerfil.startsWith("https://")) {
-			URL url;
 			try {
-				image = ImageIO.read(getClass().getResource(imagenPerfil));
+				image = ImageIO.read(new URL(imagenPerfil));
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}

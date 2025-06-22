@@ -15,17 +15,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -42,8 +46,9 @@ public class VentanaBusqueda implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JMenuBar menuBar;
-	private JMenu mnPerfil;
-	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
+	private JMenu mnPerfil, mnPdf;
+	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion, mntmContactosPdf,
+			mntmMensajesPdf;
 	private JPanel panel;
 	private JList<Mensaje> list;
 	private DefaultListModel<Mensaje> mensajes;
@@ -92,6 +97,23 @@ public class VentanaBusqueda implements ActionListener {
 		mntmPremium.setBackground(new Color(255, 255, 255));
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmPremium);
+		
+		mnPdf = new JMenu("Documento PDF");
+		mnPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mnPdf.setHorizontalAlignment(SwingConstants.LEFT);
+		mnPdf.setPreferredSize(new Dimension(180, 26));
+		mnPdf.setBackground(Color.WHITE);
+		menuBar.add(mnPdf);
+
+		mntmContactosPdf = new JMenuItem("Generar documento con información de contactos");
+		mntmContactosPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmContactosPdf.setBackground(new Color(255, 255, 255));
+		mnPdf.add(mntmContactosPdf);
+
+		mntmMensajesPdf = new JMenuItem("Generar documento con la conversación");
+		mntmMensajesPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmMensajesPdf.setBackground(new Color(255, 255, 255));
+		mnPdf.add(mntmMensajesPdf);
 
 		mntmContactos = new JMenuItem("Contactos");
 		mntmContactos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -102,7 +124,7 @@ public class VentanaBusqueda implements ActionListener {
 		mntmMensajes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmMensajes.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmMensajes);
-
+		
 		mnPerfil = new JMenu("Perfil");
 		mnPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mnPerfil.setBackground(Color.WHITE);
@@ -246,6 +268,8 @@ public class VentanaBusqueda implements ActionListener {
 		mntmContactos.addActionListener(this);
 		mntmCerrarSesion.addActionListener(this);
 		mntmEditarPerfil.addActionListener(this);
+		mntmContactosPdf.addActionListener(this);
+		mntmMensajesPdf.addActionListener(this);
 
 		rdbtnFiltroContactos.addActionListener(this);
 		rdbtnFiltroPorTelefono.addActionListener(this);
@@ -276,6 +300,28 @@ public class VentanaBusqueda implements ActionListener {
 		if (e.getSource() == mntmPremium) {
 			new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaContactos");
 			frmAppchat.dispose();
+		}
+		if (e.getSource() == mntmContactosPdf) {
+			JFileChooser fileC = new JFileChooser();
+			int seleccion = fileC.showSaveDialog(null);
+
+			if (seleccion == JFileChooser.APPROVE_OPTION) {
+				Path ruta = Paths.get(fileC.getSelectedFile().getAbsolutePath());
+				// Genera el pdf
+				if (!Controlador.getUnicaInstancia().createPdfContactos(ruta)) {
+					JOptionPane.showMessageDialog(frmAppchat, "Ha habido un error al crear el documento", "Error",
+							JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		}
+		if (e.getSource() == mntmMensajesPdf) {
+			if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
+					JOptionPane.showMessageDialog(frmAppchat, "Debes tener abierta la conversación que deseas exportar",
+							"Información", JOptionPane.PLAIN_MESSAGE);
+			} else {
+				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
+				frmAppchat.dispose();
+			}
 		}
 		if (e.getSource() == mntmContactos) {
 			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());

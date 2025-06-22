@@ -15,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -24,6 +26,7 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -46,8 +49,9 @@ public class VentanaPerfil implements ActionListener {
 	private JFrame frmAppchat;
 	private JTextField txtNombre, txtEmail, textImagen;
 	private JMenuBar menuBar;
-	private JMenu mnPerfil;
-	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
+	private JMenu mnPerfil, mnPdf;
+	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion, mntmContactosPdf,
+			mntmMensajesPdf;
 	private JPanel panel;
 	private GridBagLayout gbl_panel;
 	private JLabel nombre, icono, telefono, telf, fecha, lblEmail, saludo, lblRegistro, contrasenaRepe, contrasena,
@@ -103,7 +107,7 @@ public class VentanaPerfil implements ActionListener {
 		} else {
 
 			try {
-				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_no_premium.png"));
 				mntmPremium.setIcon(new ImageIcon(image));
 				mntmPremium.setSize(new Dimension(64, 32));
 				ImageInJLabel.resizeImage(mntmPremium, image);
@@ -112,15 +116,35 @@ public class VentanaPerfil implements ActionListener {
 			}
 		}
 
+		mnPdf = new JMenu("Documento PDF");
+		mnPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mnPdf.setHorizontalAlignment(SwingConstants.LEFT);
+		mnPdf.setPreferredSize(new Dimension(180, 26));
+		mnPdf.setBackground(Color.WHITE);
+		menuBar.add(mnPdf);
+
+		mntmContactosPdf = new JMenuItem("Generar documento con información de contactos");
+		mntmContactosPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmContactosPdf.setBackground(new Color(255, 255, 255));
+		mnPdf.add(mntmContactosPdf);
+
+		mntmMensajesPdf = new JMenuItem("Generar documento con la conversación");
+		mntmMensajesPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmMensajesPdf.setBackground(new Color(255, 255, 255));
+		mnPdf.add(mntmMensajesPdf);
+
 		mntmContactos = new JMenuItem("Contactos");
+		mntmContactos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmContactos.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmContactos);
 
 		mntmMensajes = new JMenuItem("Mensajes");
+		mntmMensajes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmMensajes.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmMensajes);
 
 		mnPerfil = new JMenu("Perfil");
+		mnPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mnPerfil.setBackground(Color.WHITE);
 		mnPerfil.setSize(30, 30);
 
@@ -136,6 +160,7 @@ public class VentanaPerfil implements ActionListener {
 		menuBar.add(mnPerfil);
 
 		mntmEditarPerfil = new JMenuItem("Editar perfil");
+		mntmEditarPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmEditarPerfil.setBackground(new Color(255, 255, 255));
 		mnPerfil.add(mntmEditarPerfil);
 
@@ -437,6 +462,8 @@ public class VentanaPerfil implements ActionListener {
 		mntmCerrarSesion.addActionListener(this);
 		mntmEditarPerfil.addActionListener(this);
 		mntmPremium.addActionListener(this);
+		mntmContactosPdf.addActionListener(this);
+		mntmMensajesPdf.addActionListener(this);
 
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
@@ -489,6 +516,7 @@ public class VentanaPerfil implements ActionListener {
 				lblError.setText("Se deben rellenar todos los campos marcados con *");
 				lblError.setVisible(true);
 			} else {
+				//Solo intentara modificar el usuario si se ha modificado algun dato de verdad
 				if (esCorreoValido(txtEmail.getText())) {
 					if (Arrays.equals(passContrasena.getPassword(), passContrasenaRepe.getPassword())) {
 						LocalDate fechaNacimiento = null;
@@ -544,6 +572,28 @@ public class VentanaPerfil implements ActionListener {
 						ex.printStackTrace();
 					}
 				}
+			} else {
+				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
+				frmAppchat.dispose();
+			}
+		}
+		if (e.getSource() == mntmContactosPdf) {
+			JFileChooser fileC = new JFileChooser();
+			int seleccion = fileC.showSaveDialog(null);
+
+			if (seleccion == JFileChooser.APPROVE_OPTION) {
+				Path ruta = Paths.get(fileC.getSelectedFile().getAbsolutePath());
+				// Genera el pdf
+				if (!Controlador.getUnicaInstancia().createPdfContactos(ruta)) {
+					JOptionPane.showMessageDialog(frmAppchat, "Ha habido un error al crear el documento", "Error",
+							JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		}
+		if (e.getSource() == mntmMensajesPdf) {
+			if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
+					JOptionPane.showMessageDialog(frmAppchat, "Debes tener abierta la conversación que deseas exportar",
+							"Información", JOptionPane.PLAIN_MESSAGE);
 			} else {
 				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
 				frmAppchat.dispose();
