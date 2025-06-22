@@ -33,12 +33,6 @@ public class VentanaOferta implements ActionListener {
 	/**
 	 * Launch the application.
 	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { VentanaOferta window = new
-	 * VentanaOferta(); window.frame.setVisible(true); } catch (Exception e) {
-	 * e.printStackTrace(); } } }); }
-	 */
 
 	/**
 	 * Create the application.
@@ -120,6 +114,7 @@ public class VentanaOferta implements ActionListener {
 		panel.add(lblBeneficios, gbc_lblBeneficios);
 
 		btnPremium = new JButton("PREMIUM");
+		btnPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnPremium.setBackground(new Color(255, 255, 255));
 		btnPremium.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnPremium.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -142,7 +137,7 @@ public class VentanaOferta implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnAtras) {
 			if (ventanaAnterior.equals("VentanaMain")) {
-				new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation());
+				new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(),null);
 				frmAppchat.dispose();
 			} else if (ventanaAnterior.equals("VentanaContactos")) {
 				new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());

@@ -51,7 +51,7 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 		eContacto.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre", contacto.getNombre()),
 				new Propiedad("usuario", String.valueOf(contacto.getUsuario().getId())),
 				new Propiedad("tipo", "individual"))));
-
+		
 		// 5. Se registra la entidad y se asocia id al objeto almacenado.
 		eContacto = servPersistencia.registrarEntidad(eContacto);
 		contacto.setId(eContacto.getId());
@@ -108,7 +108,7 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 
 		// 2. Recuperar entidad
 		Entidad eContacto = servPersistencia.recuperarEntidad(id);
-
+		
 		String tipo = servPersistencia.recuperarPropiedadEntidad(eContacto, "tipo"); // Asumiendo que guardas esto
 
 		if (tipo == null) {
@@ -118,7 +118,7 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 
 		if (tipo.equalsIgnoreCase("individual")) {
 			// Recuperar contacto individual
-			return recuperarContactoIndividual(id, eContacto);
+			return recuperarContactoIndividual(id/*, eContacto*/);
 		} else if (tipo.equalsIgnoreCase("grupo")) {
 			// Recuperar grupo con AdaptadorGrupo
 			return AdaptadorGrupo.getUnicaInstancia().recuperarGrupo(id);
@@ -128,10 +128,20 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 		}
 	}
 
-	private ContactoIndividual recuperarContactoIndividual(int id, Entidad eContactoIndividual) {
+	private ContactoIndividual recuperarContactoIndividual(int id/* , Entidad eContactoIndividual */) {
 		// Código similar al que tienes en recuperarContactoActual...
-		String nombre = servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, "nombre");
-		int idUsuario = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, "usuario"));
+		// 1. Si el objeto está en el pool se retorna
+		if (PoolDAO.getUnicaInstancia().contiene(id)) {
+			Object obj = PoolDAO.getUnicaInstancia().getObjeto(id);
+			if (obj instanceof Contacto) {
+				return (ContactoIndividual) obj;
+			}
+		}
+
+		// 2. Recuperar entidad
+		Entidad eContacto = servPersistencia.recuperarEntidad(id);
+		String nombre = servPersistencia.recuperarPropiedadEntidad(eContacto, "nombre");
+		int idUsuario = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eContacto, "usuario"));
 		Usuario usuario = AdaptadorUsuario.getUnicaInstancia().recuperarUsuarioId(idUsuario);
 		ContactoIndividual contacto = new ContactoIndividual(usuario, nombre);
 		contacto.setId(id);

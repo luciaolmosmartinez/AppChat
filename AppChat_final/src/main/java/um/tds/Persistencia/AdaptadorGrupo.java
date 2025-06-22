@@ -57,6 +57,8 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 						new Propiedad("miembros", obtenerIdsMiembros(grupo.getMiembros())),
 						new Propiedad("tipo", "grupo"))));
 
+		System.out.println("EGRUPO TIENE COMO NOMBRE: " + grupo.getNombre());
+		
 		// 5. Se registra la entidad y se asocia id al objeto almacenado.
 		eGrupo = servPersistencia.registrarEntidad(eGrupo);
 		grupo.setId(eGrupo.getId());

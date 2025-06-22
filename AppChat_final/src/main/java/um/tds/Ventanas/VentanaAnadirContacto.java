@@ -27,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import um.tds.Controlador.Controlador;
+import java.awt.Cursor;
 
 public class VentanaAnadirContacto implements ActionListener {
 
@@ -44,17 +45,19 @@ public class VentanaAnadirContacto implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	/*public void mostrarAnadirContacto(Dimension tam, Point ubi, ActionListener ventanaAnterior) {
-		frmAppchat.setVisible(true);
-		frmAppchat.setSize(tam);
-		frmAppchat.setLocation(ubi);
-		this.ventanaAnterior = ventanaAnterior;
-	}*/
+	/*
+	 * public void mostrarAnadirContacto(Dimension tam, Point ubi, ActionListener
+	 * ventanaAnterior) { frmAppchat.setVisible(true); frmAppchat.setSize(tam);
+	 * frmAppchat.setLocation(ubi); this.ventanaAnterior = ventanaAnterior; }
+	 */
 
 	/**
 	 * Create the frame.
 	 */
 	public VentanaAnadirContacto(Dimension tam, Point ubi, String ventanaAnterior) {
+		String[] partes = ventanaAnterior.split(":");
+		this.ventanaAnterior = partes[0]; 
+		
 		frmAppchat = new JFrame();
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setIconImage(
@@ -69,19 +72,23 @@ public class VentanaAnadirContacto implements ActionListener {
 		frmAppchat.setJMenuBar(menuBar);
 
 		mntmPremium = new JMenuItem("PREMIUM");
+		mntmPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmPremium.setBackground(new Color(255, 255, 255));
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmPremium);
 
 		mntmContactos = new JMenuItem("Contactos");
+		mntmContactos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmContactos.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmContactos);
 
 		mntmMensajes = new JMenuItem("Mensajes");
+		mntmMensajes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmMensajes.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmMensajes);
 
 		mnPerfil = new JMenu("Perfil");
+		mnPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mnPerfil.setBackground(Color.WHITE);
 		mnPerfil.setSize(30, 30);
 		mnPerfil.setIcon(new ImageIcon(
@@ -91,13 +98,15 @@ public class VentanaAnadirContacto implements ActionListener {
 		menuBar.add(mnPerfil);
 
 		mntmEditarPerfil = new JMenuItem("Editar perfil");
+		mntmEditarPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmEditarPerfil.setBackground(new Color(255, 255, 255));
 		mnPerfil.add(mntmEditarPerfil);
 
 		mntmCerrarSesion = new JMenuItem("Cerrar sesión");
+		mntmCerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmCerrarSesion.setBackground(new Color(255, 255, 255));
 		mnPerfil.add(mntmCerrarSesion);
-		
+
 		contentPane = new JPanel();
 		contentPane.setMaximumSize(new Dimension(494, 200));
 		contentPane.setBackground(new Color(255, 255, 255));
@@ -162,6 +171,10 @@ public class VentanaAnadirContacto implements ActionListener {
 		gbc_txtTelefono.gridy = 3;
 		panel_1.add(txtTelefono, gbc_txtTelefono);
 		txtTelefono.setColumns(10);
+		
+		if (this.ventanaAnterior.equals("VentanaMain")) {
+			txtTelefono.setText(partes[1]);
+		}
 
 		lblError = new JLabel("");
 		lblError.setForeground(Color.RED);
@@ -173,9 +186,10 @@ public class VentanaAnadirContacto implements ActionListener {
 		panel_1.add(lblError, gbc_lblError);
 
 		btnAceptar = new JButton("Aceptar");
+		btnAceptar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAceptar.setBackground(new Color(255, 255, 255));
 		btnAceptar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
 		gbc_btnAceptar.fill = GridBagConstraints.BOTH;
 		gbc_btnAceptar.insets = new Insets(0, 0, 5, 5);
@@ -184,9 +198,10 @@ public class VentanaAnadirContacto implements ActionListener {
 		panel_1.add(btnAceptar, gbc_btnAceptar);
 
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCancelar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		btnCancelar.setBackground(new Color(255, 255, 255));
-		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.fill = GridBagConstraints.BOTH;
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
@@ -200,12 +215,10 @@ public class VentanaAnadirContacto implements ActionListener {
 		mntmContactos.addActionListener(this);
 		mntmCerrarSesion.addActionListener(this);
 		mntmEditarPerfil.addActionListener(this);
-		
+
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
-		this.ventanaAnterior = ventanaAnterior;
-		
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -213,19 +226,20 @@ public class VentanaAnadirContacto implements ActionListener {
 			if (txtNombre.getText().equals("") || txtTelefono.getText().equals("")) {
 				lblError.setText("Debe rellenar los campos indicados con un asterisco");
 			} else {
-				String texto = Controlador.getUnicaInstancia().registrarContacto(txtTelefono.getText(), txtNombre.getText());
-				if(texto.equals("")) {
+				String texto = Controlador.getUnicaInstancia().registrarContacto(txtTelefono.getText(),
+						txtNombre.getText());
+				if (texto.equals("")) {
 					new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 					// vContactos.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 					frmAppchat.dispose();
 				} else {
 					lblError.setText(texto);
 				}
-				
+
 			}
 		}
 		if (e.getSource() == btnCancelar) {
-			if(ventanaAnterior.equals("VentanaContactos")) {
+			if (ventanaAnterior.equals("VentanaContactos")) {
 				new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 				frmAppchat.dispose();
 			} else {
@@ -234,7 +248,7 @@ public class VentanaAnadirContacto implements ActionListener {
 			}
 		}
 		if (e.getSource() == mntmPremium) {
-			new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaAnadirContacto");
+			new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaAnadirContacto");
 			frmAppchat.dispose();
 		}
 		if (e.getSource() == mntmContactos) {
@@ -242,13 +256,13 @@ public class VentanaAnadirContacto implements ActionListener {
 			frmAppchat.dispose();
 			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
-		if(e.getSource() == mntmCerrarSesion){
+		if (e.getSource() == mntmCerrarSesion) {
 			Controlador.getUnicaInstancia().cerrarSesion();
 			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
 		}
-		if(e.getSource() == mntmEditarPerfil) {
-			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaAnadirContacto");
+		if (e.getSource() == mntmEditarPerfil) {
+			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaAnadirContacto");
 			frmAppchat.dispose();
 		}
 	}

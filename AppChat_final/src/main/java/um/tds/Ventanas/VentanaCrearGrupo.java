@@ -36,6 +36,7 @@ import um.tds.Controlador.Controlador;
 import um.tds.Modelado.Contacto;
 import um.tds.Modelado.ContactoIndividual;
 import um.tds.Renderers.ContactoCellRenderer;
+import java.awt.Cursor;
 
 public class VentanaCrearGrupo implements ActionListener {
 
@@ -45,25 +46,20 @@ public class VentanaCrearGrupo implements ActionListener {
 	private JMenu mnPerfil;
 	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
 	private GridBagConstraints gbc_lblImagen, gbc_txtNombre;
-	private JLabel lblImagen, lblNombre, lblError;
+	private JLabel lblImagen, lblNombre, lblError, lblElegirImagen;
 	private JTextField txtNombre;
 	private GridBagLayout gbl_panel_1;
 	private JButton btnAceptar, btnCancelar;
 	private String ventanaAnterior;
 	private JTextField txtRutaImagen;
-	private JLabel lblElegirImagen;
 	private JList<Contacto> list;
 	private DefaultListModel<Contacto> contactos;
 	private JScrollPane scrollPane;
 	private List<Contacto> cSeleccionados;
+	private JLabel lblNewLabel;
 
 	/**
 	 * Create the frame.
-	 */
-	/*
-	 * public void mostrarAnadirContacto(Dimension tam, Point ubi, ActionListener
-	 * ventanaAnterior) { frmAppchat.setVisible(true); frmAppchat.setSize(tam);
-	 * frmAppchat.setLocation(ubi); this.ventanaAnterior = ventanaAnterior; }
 	 */
 
 	/**
@@ -200,6 +196,15 @@ public class VentanaCrearGrupo implements ActionListener {
 		gbc_txtRutaImagen.gridx = 3;
 		gbc_txtRutaImagen.gridy = 3;
 		panel_1.add(txtRutaImagen, gbc_txtRutaImagen);
+		
+		lblNewLabel = new JLabel("<html><div style='text-align: center;'>Para seleccionar más de un miembro para el grupo,<br>haga click sobre ellos mientras mantiene pulsada la tecla \"CTRL\"</html>");
+		lblNewLabel.setBackground(new Color(255, 244, 244));
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 1;
+		gbc_lblNewLabel.gridy = 4;
+		panel_1.add(lblNewLabel, gbc_lblNewLabel);
 
 		lblError = new JLabel("");
 		lblError.setForeground(Color.RED);
@@ -211,9 +216,10 @@ public class VentanaCrearGrupo implements ActionListener {
 		panel_1.add(lblError, gbc_lblError);
 
 		btnAceptar = new JButton("Aceptar");
+		btnAceptar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAceptar.setBackground(new Color(255, 255, 255));
 		btnAceptar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
 		gbc_btnAceptar.fill = GridBagConstraints.BOTH;
 		gbc_btnAceptar.insets = new Insets(0, 0, 5, 5);
@@ -222,9 +228,10 @@ public class VentanaCrearGrupo implements ActionListener {
 		panel_1.add(btnAceptar, gbc_btnAceptar);
 
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCancelar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		btnCancelar.setBackground(new Color(255, 255, 255));
-		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.fill = GridBagConstraints.BOTH;
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
@@ -254,7 +261,6 @@ public class VentanaCrearGrupo implements ActionListener {
 					Controlador.getUnicaInstancia().registrarGrupo(txtNombre.getText(), "/imagenes/gato_perfil.png",
 							cSeleccionados);
 				new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
-				// vContactos.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 				frmAppchat.dispose();
 			}
 

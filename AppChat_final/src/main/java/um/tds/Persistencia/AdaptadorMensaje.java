@@ -81,7 +81,7 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		emisor = servPersistencia.recuperarPropiedadEntidad(eMensaje, "emisor");
 		receptor = servPersistencia.recuperarPropiedadEntidad(eMensaje, "receptor");
 		fechaHora = LocalDateTime.parse(servPersistencia.recuperarPropiedadEntidad(eMensaje, "fechaHora"), dateFormat);
-
+		tipoReceptor = TipoReceptor.valueOf(servPersistencia.recuperarPropiedadEntidad(eMensaje,"tipoReceptor"));
 
 		// 3. Se crea el objeto, se inicializa con propiedades anteriores y se añade al
 		// pool si es necesario

@@ -58,12 +58,6 @@ public class VentanaPerfil implements ActionListener {
 	private JPasswordField passContrasena, passContrasenaRepe;
 	private String ventanaAnterior;
 
-	/*
-	 * public void mostrarPerfil(Dimension tam, Point ubi) {
-	 * frmAppchat.setVisible(true); frmAppchat.setSize(tam);
-	 * frmAppchat.setLocation(ubi); }
-	 */
-
 	/**
 	 * Create the application.
 	 */
@@ -175,6 +169,8 @@ public class VentanaPerfil implements ActionListener {
 			panel.add(siPremium, gbc_siPremium);
 		} else {
 			btnimagenNoPremium = new JButton("");
+			btnimagenNoPremium.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnimagenNoPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			btnimagenNoPremium.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			btnimagenNoPremium.setBackground(new Color(255, 244, 244));
 			btnimagenNoPremium
@@ -362,14 +358,24 @@ public class VentanaPerfil implements ActionListener {
 		panel.add(lblRegistro, gbc_lblRegistro);
 
 		btnRestaurar = new JButton("Restaurar valores");
+		btnRestaurar.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnRestaurar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnRestaurar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		btnRestaurar.setBackground(new Color(255, 255, 255));
 		gbc_btnRestaurar = new GridBagConstraints();
+		gbc_btnRestaurar.fill = GridBagConstraints.BOTH;
 		gbc_btnRestaurar.insets = new Insets(0, 0, 5, 5);
 		gbc_btnRestaurar.gridx = 4;
 		gbc_btnRestaurar.gridy = 12;
 		panel.add(btnRestaurar, gbc_btnRestaurar);
 
 		btnAceptar = new JButton("Aceptar");
+		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnAceptar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnAceptar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		btnAceptar.setBackground(new Color(255, 255, 255));
 		gbc_btnNewButton_2 = new GridBagConstraints();
+		gbc_btnNewButton_2.fill = GridBagConstraints.BOTH;
 		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_2.gridx = 5;
 		gbc_btnNewButton_2.gridy = 12;
@@ -465,7 +471,6 @@ public class VentanaPerfil implements ActionListener {
 		if (e.getSource() == mntmContactos) {
 			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
-			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
 		if (e.getSource() == mntmCerrarSesion) {
 			Controlador.getUnicaInstancia().cerrarSesion();

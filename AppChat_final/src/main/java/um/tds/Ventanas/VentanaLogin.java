@@ -34,10 +34,9 @@ public class VentanaLogin implements ActionListener {
 	private JPanel panelCentro, panel;
 	private GridBagLayout gbl_panelCentro;
 	private JButton btnAcceder, btnNoRecuerdo, btnCancelar;
-	private JLabel titulo, imagen, lblTelefono, lblContrasea, lblErrorVacio, lblErrorMal, lblErrorTelf;
+	private JLabel titulo, imagen, lblTelefono, lblContrasea, lblError;
 	private GridBagConstraints gbc_lblTelefono, gbc_textTelf, gbc_btnAcceder, gbc_lblContrasea, gbc_password,
-			gbc_btnNoRecuerdo, gbc_titulo, gbc_imagen, gbc_btnCancelar, gbc_lblErrorVacio, gbc_lblErrorMal,
-			gbc_lblErrorTelf;
+			gbc_btnNoRecuerdo, gbc_titulo, gbc_imagen, gbc_btnCancelar, gbc_lblError;
 
 	/*public void mostrarLogin(Dimension tam, Point ubi) {
 		frmAppchat.setVisible(true);
@@ -71,9 +70,9 @@ public class VentanaLogin implements ActionListener {
 		panelCentro.setBorder(null);
 		gbl_panelCentro = new GridBagLayout();
 		gbl_panelCentro.columnWidths = new int[] { 50, 150, 259, 96, 99, 150, 50, 0 };
-		gbl_panelCentro.rowHeights = new int[] { 0, 20, 0, 0, 0, 0, 0, 0, 0, 50, 0 };
+		gbl_panelCentro.rowHeights = new int[] { 0, 20, 0, 0, 0, 0, 0, 0, 50, 0 };
 		gbl_panelCentro.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
-		gbl_panelCentro.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+		gbl_panelCentro.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
 				Double.MIN_VALUE };
 		panelCentro.setLayout(gbl_panelCentro);
 
@@ -188,35 +187,15 @@ public class VentanaLogin implements ActionListener {
 		gbc_btnCancelar.gridy = 5;
 		panelCentro.add(btnCancelar, gbc_btnCancelar);
 
-		lblErrorVacio = new JLabel("Se deben rellenar todos los campos");
-		lblErrorVacio.setForeground(new Color(255, 0, 0));
-		gbc_lblErrorVacio = new GridBagConstraints();
-		gbc_lblErrorVacio.gridwidth = 3;
-		gbc_lblErrorVacio.insets = new Insets(0, 0, 5, 5);
-		gbc_lblErrorVacio.gridx = 1;
-		gbc_lblErrorVacio.gridy = 6;
-		panelCentro.add(lblErrorVacio, gbc_lblErrorVacio);
-		lblErrorVacio.setVisible(false);
-
-		lblErrorTelf = new JLabel("El teléfono no existe");
-		lblErrorTelf.setForeground(new Color(255, 0, 0));
-		gbc_lblErrorTelf = new GridBagConstraints();
-		gbc_lblErrorTelf.gridwidth = 3;
-		gbc_lblErrorTelf.insets = new Insets(0, 0, 5, 5);
-		gbc_lblErrorTelf.gridx = 1;
-		gbc_lblErrorTelf.gridy = 7;
-		panelCentro.add(lblErrorTelf, gbc_lblErrorTelf);
-		lblErrorTelf.setVisible(false);
-
-		lblErrorMal = new JLabel("Credenciales inválidos");
-		lblErrorMal.setForeground(new Color(255, 0, 0));
-		gbc_lblErrorMal = new GridBagConstraints();
-		gbc_lblErrorMal.gridwidth = 3;
-		gbc_lblErrorMal.insets = new Insets(0, 0, 5, 5);
-		gbc_lblErrorMal.gridx = 1;
-		gbc_lblErrorMal.gridy = 8;
-		panelCentro.add(lblErrorMal, gbc_lblErrorMal);
-		lblErrorMal.setVisible(false);
+		lblError = new JLabel("");
+		lblError.setForeground(new Color(255, 0, 0));
+		gbc_lblError = new GridBagConstraints();
+		gbc_lblError.gridwidth = 3;
+		gbc_lblError.insets = new Insets(0, 0, 5, 5);
+		gbc_lblError.gridx = 1;
+		gbc_lblError.gridy = 6;
+		panelCentro.add(lblError, gbc_lblError);
+		lblError.setVisible(false);
 
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (int) ((dimension.getWidth() - frmAppchat.getWidth()) / 2);
@@ -238,16 +217,13 @@ public class VentanaLogin implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnAcceder) {
-			if (lblErrorMal.isVisible()) {
-				lblErrorMal.setVisible(false);
-			} else if (lblErrorVacio.isVisible()) {
-				lblErrorVacio.setVisible(false);
-			} else if (lblErrorTelf.isVisible()) {
-				lblErrorTelf.setVisible(false);
+			if (lblError.isVisible()) {
+				lblError.setVisible(false);
 			}
 
 			if (textTelf.getText().equals("") || password.getPassword().length == 0) {
-				lblErrorVacio.setVisible(true);
+				lblError.setText("Se deben rellenar todos los campos");
+				lblError.setVisible(true);
 			} else {
 				if (esTelfValido(textTelf.getText())) {
 					if (Controlador.getUnicaInstancia().iniciarSesion(textTelf.getText(), password.getPassword())) {
@@ -258,11 +234,13 @@ public class VentanaLogin implements ActionListener {
 					} else {
 						textTelf.setText("");
 						password.setText("");
-						lblErrorMal.setVisible(true);
+						lblError.setText("Credenciales inválidos");
+						lblError.setVisible(true);
 					}
 				} else {
 					textTelf.setText("");
-					lblErrorTelf.setVisible(true);
+					lblError.setText("El teléfono no existe");
+					lblError.setVisible(true);
 				}
 			}
 
