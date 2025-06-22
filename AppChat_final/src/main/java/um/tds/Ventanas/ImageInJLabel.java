@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class ImageInJLabel {
 	public static void resizeImage(JLabel label, URL originalIcon) {
@@ -19,6 +20,15 @@ public class ImageInJLabel {
 	}
 	
 	public static void resizeImage(JMenu m, URL originalIcon) {
+		ImageIcon og = new ImageIcon(originalIcon);
+		if (og.getIconWidth() > 0 && og.getIconHeight() > 0) {
+			Image image = og.getImage();
+			Image resizedImage = image.getScaledInstance(m.getWidth(), m.getHeight(), Image.SCALE_SMOOTH);
+			m.setIcon(new ImageIcon(resizedImage));
+		}
+	}
+	
+	public static void resizeImage(JMenuItem m, URL originalIcon) {
 		ImageIcon og = new ImageIcon(originalIcon);
 		if (og.getIconWidth() > 0 && og.getIconHeight() > 0) {
 			Image image = og.getImage();

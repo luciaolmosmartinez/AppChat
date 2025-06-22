@@ -20,6 +20,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -32,9 +33,6 @@ public class VentanaBusqueda implements ActionListener {
 	private JFrame frmAppchat;
 	private JPanel contentPane, panel, panel_1, panel_2;
 	private JTextField textField;
-	private JMenuBar menuBar;
-	private JMenu mnPerfil;
-	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
 	private JRadioButton rdbtnNewRadioButton, rdbtnNewRadioButton_1, rdbtnNewRadioButton_2;
 	private JButton btnNewButton;
 	private GridBagLayout gbl_panel, gbl_panel_1;
@@ -59,41 +57,6 @@ public class VentanaBusqueda implements ActionListener {
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAppchat.setBounds(100, 100, 633, 409);
-
-		menuBar = new JMenuBar();
-		menuBar.setBackground(Color.WHITE);
-		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
-		frmAppchat.setJMenuBar(menuBar);
-
-		mntmPremium = new JMenuItem("PREMIUM");
-		mntmPremium.setBackground(new Color(255, 255, 255));
-		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
-		menuBar.add(mntmPremium);
-
-		mntmContactos = new JMenuItem("Contactos");
-		mntmContactos.setBackground(new Color(255, 255, 255));
-		menuBar.add(mntmContactos);
-
-		mntmMensajes = new JMenuItem("Mensajes");
-		mntmMensajes.setBackground(new Color(255, 255, 255));
-		menuBar.add(mntmMensajes);
-
-		mnPerfil = new JMenu("Perfil");
-		mnPerfil.setBackground(Color.WHITE);
-		mnPerfil.setSize(30, 30);
-		mnPerfil.setIcon(new ImageIcon(
-				VentanaMain.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
-		ImageInJLabel.resizeImage(mnPerfil,
-				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
-		menuBar.add(mnPerfil);
-
-		mntmEditarPerfil = new JMenuItem("Editar perfil");
-		mntmEditarPerfil.setBackground(new Color(255, 255, 255));
-		mnPerfil.add(mntmEditarPerfil);
-
-		mntmCerrarSesion = new JMenuItem("Cerrar sesión");
-		mntmCerrarSesion.setBackground(new Color(255, 255, 255));
-		mnPerfil.add(mntmCerrarSesion);
 
 		frmAppchat.setContentPane(contentPane);
 
@@ -171,35 +134,13 @@ public class VentanaBusqueda implements ActionListener {
 		gbc_list.gridy = 1;
 		panel_1.add(list, gbc_list);
 		
-		mntmPremium.addActionListener(this);
-		mntmContactos.addActionListener(this);
-		mntmCerrarSesion.addActionListener(this);
-		mntmEditarPerfil.addActionListener(this);
-		
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == mntmPremium) {
-			new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaBusqueda");
-			frmAppchat.dispose();
-		}
-		if (e.getSource() == mntmContactos) {
-			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
-			frmAppchat.dispose();
-			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
-		}
-		if(e.getSource() == mntmCerrarSesion){
-			Controlador.getUnicaInstancia().cerrarSesion();
-			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
-			frmAppchat.dispose();
-		}
-		if(e.getSource() == mntmEditarPerfil) {
-			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaBusqueda");
-			frmAppchat.dispose();
-		}
+		
 	}
 
 }

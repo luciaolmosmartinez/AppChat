@@ -89,10 +89,19 @@ public class VentanaPerfil implements ActionListener {
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
 
-		mntmPremium = new JMenuItem("PREMIUM");
+		mntmPremium = new JMenuItem("");
 		mntmPremium.setBackground(new Color(255, 255, 255));
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmPremium);
+		if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
+			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
+			mntmPremium.setSize(new Dimension(64, 32));
+			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_premium.png"));
+		} else {
+			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
+			mntmPremium.setSize(new Dimension(64, 32));
+			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+		}
 
 		mntmContactos = new JMenuItem("Contactos");
 		mntmContactos.setBackground(new Color(255, 255, 255));
@@ -415,7 +424,11 @@ public class VentanaPerfil implements ActionListener {
 			} else if (ventanaAnterior.equals("VentanaContactos")) {
 				new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 				frmAppchat.dispose();
+			} else {
+				new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
+				frmAppchat.dispose();
 			}
+			
 		}
 		if (e.getSource() == btnAceptar) {
 			if (txtNombre.getText().equals("") || txtEmail.getText().equals("")
@@ -460,6 +473,21 @@ public class VentanaPerfil implements ActionListener {
 					lblError.setText("La dirección de correo electrónico no existe");
 					lblError.setVisible(true);
 				}
+			}
+		}
+		if (e.getSource() == mntmPremium) {
+			if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
+				int res = JOptionPane.showConfirmDialog(frmAppchat, "¿Está seguro de que desea dejar de ser Premium?",
+						"Dejar de ser premium", JOptionPane.YES_NO_OPTION);
+				if (res == JOptionPane.YES_OPTION) {
+					Controlador.getUnicaInstancia().setPremium(false);
+					mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
+					mntmPremium.setSize(new Dimension(64, 32));
+					ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+				}
+			} else {
+				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
+				frmAppchat.dispose();
 			}
 		}
 		if (e.getSource() == mntmContactos) {

@@ -199,7 +199,7 @@ public class VentanaPago implements ActionListener {
 								JOptionPane.showMessageDialog(frmAppchat, "Pago realizado correctamente",
 										"Enhorabuena", JOptionPane.PLAIN_MESSAGE);
 								Controlador.getUnicaInstancia().setPremium(true);
-								new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation());
+								new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
 								frmAppchat.dispose();
 							} else {
 								textFechaCaducidad.setText("");

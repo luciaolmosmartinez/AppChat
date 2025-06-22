@@ -23,12 +23,14 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import tds.BubbleText;
 import um.tds.Controlador.Controlador;
@@ -93,11 +95,20 @@ public class VentanaMain implements ActionListener {
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
 
-		mntmPremium = new JMenuItem("PREMIUM");
+		mntmPremium = new JMenuItem("");
 		mntmPremium.setBackground(new Color(255, 255, 255));
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmPremium);
-
+		if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
+			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
+			mntmPremium.setSize(new Dimension(64, 32));
+			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_premium.png"));
+		} else {
+			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
+			mntmPremium.setSize(new Dimension(64, 32));
+			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+		}
+		
 		mntmContactos = new JMenuItem("Contactos");
 		mntmContactos.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmContactos);
@@ -250,53 +261,43 @@ public class VentanaMain implements ActionListener {
 		panelMensajes.setPreferredSize(new Dimension(465, 100));
 		panelMensajes.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		/*bubble = new BubbleText(panelMensajes, "Adios", Color.PINK, "jaja", BubbleText.SENT, 10);
-		bubble.setPreferredSize(new Dimension(465, 100));
-		bubble.setSize(new Dimension(85, 71));
-		bubble.setMinimumSize(new Dimension(5, 5));
-
-		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.SOUTH;
-		gbc_bubble_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
-		gbc_bubble_1.gridx = 0;
-		gbc_bubble_1.gridy = 0;
-		panelMensajes.add(bubble, gbc_bubble_1);
-		bubble_1 = new BubbleText(panelMensajes, "adiós", Color.PINK, "jaja", BubbleText.SENT, 10);
-		bubble_1.setPreferredSize(new Dimension(465, 100));
-		bubble_1.setSize(new Dimension(85, 71));
-		bubble_1.setMinimumSize(new Dimension(5, 5));
-
-		gbc_bubble_1 = new GridBagConstraints();
-		gbc_bubble_1.anchor = GridBagConstraints.SOUTH;
-		gbc_bubble_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_bubble_1.insets = new Insets(0, 0, 5, 0);
-		gbc_bubble_1.gridx = 0;
-		gbc_bubble_1.gridy = 2;
-		panelMensajes.add(bubble_1, gbc_bubble_1);
-		bubble_2 = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
-		bubble_2.setPreferredSize(new Dimension(465, 100));
-		bubble_2.setSize(new Dimension(85, 71));
-		bubble_2.setMinimumSize(new Dimension(5, 5));
-
-		gbc_bubble_1_1 = new GridBagConstraints();
-		gbc_bubble_1_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_bubble_1_1.anchor = GridBagConstraints.SOUTH;
-		gbc_bubble_1_1.insets = new Insets(0, 0, 5, 0);
-		gbc_bubble_1_1.gridx = 0;
-		gbc_bubble_1_1.gridy = 3;
-		panelMensajes.add(bubble_2, gbc_bubble_1_1);
-		bubble_3 = new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED, 10);
-		bubble_3.setPreferredSize(new Dimension(465, 100));
-		bubble_3.setSize(new Dimension(85, 71));
-		bubble_3.setMinimumSize(new Dimension(5, 5));
-
-		gbc_bubble_1_2 = new GridBagConstraints();
-		gbc_bubble_1_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_bubble_1_2.anchor = GridBagConstraints.SOUTH;
-		gbc_bubble_1_2.gridx = 0;
-		gbc_bubble_1_2.gridy = 4;
-		panelMensajes.add(bubble_3, gbc_bubble_1_2);*/
+		/*
+		 * bubble = new BubbleText(panelMensajes, "Adios", Color.PINK, "jaja",
+		 * BubbleText.SENT, 10); bubble.setPreferredSize(new Dimension(465, 100));
+		 * bubble.setSize(new Dimension(85, 71)); bubble.setMinimumSize(new Dimension(5,
+		 * 5));
+		 * 
+		 * gbc_bubble_1 = new GridBagConstraints(); gbc_bubble_1.anchor =
+		 * GridBagConstraints.SOUTH; gbc_bubble_1.fill = GridBagConstraints.HORIZONTAL;
+		 * gbc_bubble_1.insets = new Insets(0, 0, 5, 0); gbc_bubble_1.gridx = 0;
+		 * gbc_bubble_1.gridy = 0; panelMensajes.add(bubble, gbc_bubble_1); bubble_1 =
+		 * new BubbleText(panelMensajes, "adiós", Color.PINK, "jaja", BubbleText.SENT,
+		 * 10); bubble_1.setPreferredSize(new Dimension(465, 100)); bubble_1.setSize(new
+		 * Dimension(85, 71)); bubble_1.setMinimumSize(new Dimension(5, 5));
+		 * 
+		 * gbc_bubble_1 = new GridBagConstraints(); gbc_bubble_1.anchor =
+		 * GridBagConstraints.SOUTH; gbc_bubble_1.fill = GridBagConstraints.HORIZONTAL;
+		 * gbc_bubble_1.insets = new Insets(0, 0, 5, 0); gbc_bubble_1.gridx = 0;
+		 * gbc_bubble_1.gridy = 2; panelMensajes.add(bubble_1, gbc_bubble_1); bubble_2 =
+		 * new BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje",
+		 * BubbleText.RECEIVED, 10); bubble_2.setPreferredSize(new Dimension(465, 100));
+		 * bubble_2.setSize(new Dimension(85, 71)); bubble_2.setMinimumSize(new
+		 * Dimension(5, 5));
+		 * 
+		 * gbc_bubble_1_1 = new GridBagConstraints(); gbc_bubble_1_1.fill =
+		 * GridBagConstraints.HORIZONTAL; gbc_bubble_1_1.anchor =
+		 * GridBagConstraints.SOUTH; gbc_bubble_1_1.insets = new Insets(0, 0, 5, 0);
+		 * gbc_bubble_1_1.gridx = 0; gbc_bubble_1_1.gridy = 3;
+		 * panelMensajes.add(bubble_2, gbc_bubble_1_1); bubble_3 = new
+		 * BubbleText(panelMensajes, "HOLA", Color.PINK, "jeje", BubbleText.RECEIVED,
+		 * 10); bubble_3.setPreferredSize(new Dimension(465, 100)); bubble_3.setSize(new
+		 * Dimension(85, 71)); bubble_3.setMinimumSize(new Dimension(5, 5));
+		 * 
+		 * gbc_bubble_1_2 = new GridBagConstraints(); gbc_bubble_1_2.fill =
+		 * GridBagConstraints.HORIZONTAL; gbc_bubble_1_2.anchor =
+		 * GridBagConstraints.SOUTH; gbc_bubble_1_2.gridx = 0; gbc_bubble_1_2.gridy = 4;
+		 * panelMensajes.add(bubble_3, gbc_bubble_1_2);
+		 */
 
 		panelCentral.setVisible(false);
 
@@ -339,8 +340,19 @@ public class VentanaMain implements ActionListener {
 			}
 		}
 		if (e.getSource() == mntmPremium) {
-			new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaMain");
-			frmAppchat.dispose();
+			if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
+				int res = JOptionPane.showConfirmDialog(frmAppchat, "¿Está seguro de que desea dejar de ser Premium?",
+						"Dejar de ser premium", JOptionPane.YES_NO_OPTION);
+				if (res == JOptionPane.YES_OPTION) {
+					Controlador.getUnicaInstancia().setPremium(false);
+					mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
+					mntmPremium.setSize(new Dimension(64, 32));
+					ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+				}
+			} else {
+				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
+				frmAppchat.dispose();
+			}
 		}
 		if (e.getSource() == mntmContactos) {
 			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
@@ -367,16 +379,17 @@ public class VentanaMain implements ActionListener {
 	private void mostrarVentanaConvo() {
 		lblContacto.setText(contacto.getNombre());
 		lblImagen.setIcon(new ImageIcon(VentanaMain.class.getResource(contacto.getImagen())));
-		lblImagen.setSize(50,50);
+		lblImagen.setSize(50, 50);
 		ImageInJLabel.resizeImage(lblImagen, VentanaPerfil.class.getResource(contacto.getImagen()));
 		panelCentral.setVisible(true);
-		if(contacto instanceof Grupo) {
+		if (contacto instanceof Grupo) {
 			Controlador.getUnicaInstancia().setContactoActual(String.valueOf(contacto.getId()));
 			Controlador.getUnicaInstancia().setTipoReceptor(TipoReceptor.ID_GRUPO);
 		} else {
-			Controlador.getUnicaInstancia().setContactoActual(String.valueOf(((ContactoIndividual) contacto).getUsuario().getNumTelefono()));
+			Controlador.getUnicaInstancia()
+					.setContactoActual(String.valueOf(((ContactoIndividual) contacto).getUsuario().getNumTelefono()));
 			Controlador.getUnicaInstancia().setTipoReceptor(TipoReceptor.NUM_TELF);
 		}
-		
+
 	}
 }

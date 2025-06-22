@@ -1,19 +1,9 @@
 package um.tds.Modelado;
 
-import java.time.LocalDate;
-
 public class DescuentoFecha implements Descuento {
+	private final static double DESCUENTO_FECHA_REGISTRO = 0.10;
 
-	private LocalDate comienzo;
-	private LocalDate fin;
-
-	public DescuentoFecha(LocalDate comienzo, LocalDate fin) {
-		this.comienzo = comienzo;
-		this.fin = fin;
-	}
-
-	public boolean calcularDescuento(LocalDate registroU) {
-		boolean descuento = true;
-		return descuento;
+	public double calcularDescuento(double precio) {
+		return (1.0 - DESCUENTO_FECHA_REGISTRO) * precio ;
 	}
 }

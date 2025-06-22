@@ -16,7 +16,6 @@ public class Usuario {
 	private LocalDate fechaRegistro; // fecha en la que el usuario se registro, para poder calcular el descuento
 	private boolean premium;
 	private List<Contacto> contactos; // lista de contactos que tiene el usuario
-	private Descuento descuento;
 	/* private List<Mensaje> mensajes; */ // Lista con los mensajes que ha recibido o enviado el usuario
 	private Map<String, List<Mensaje>> mensajes; // Mapa con los mensajes intercambiados con otros usuarios
 
@@ -86,10 +85,6 @@ public class Usuario {
 		return premium;
 	}
 
-	public Descuento getDescuento() {
-		return descuento;
-	}
-
 	public boolean esEnPeriodo(LocalDate inicio, LocalDate fin) {
 		return (this.fechaRegistro.isAfter(inicio) && this.fechaRegistro.isBefore(fin));
 	}
@@ -154,37 +149,37 @@ public class Usuario {
 		this.premium = premium;
 	}
 
-	public void setDescuento(Descuento descuento) {
-		this.descuento = descuento;
-	}
-
 	public void addMensaje(Mensaje mensaje) {
 		/* mensajes.add(mensaje); */
 		if (mensaje.getEmisor().equals(String.valueOf(getId()))) { // lo guarda en la lista del receptor (el otro)
 			if (!mensajes.containsKey(mensaje.getReceptor())) {
-		        mensajes.put(mensaje.getReceptor(), new LinkedList<>());
-		    }
+				mensajes.put(mensaje.getReceptor(), new LinkedList<>());
+			}
 			mensajes.get(mensaje.getReceptor()).add(mensaje);
 		} else { // lo guarda en la lista del emisor (el otro)
 			if (!mensajes.containsKey(mensaje.getEmisor())) {
-		        mensajes.put(mensaje.getEmisor(), new LinkedList<>());
-		    }
+				mensajes.put(mensaje.getEmisor(), new LinkedList<>());
+			}
 			mensajes.get(mensaje.getEmisor()).add(mensaje);
 		}
 
 	}
 
-	// Para añadir contactos, primero comprueba que no tenga un contacto con el nombre del nuevo. 
-	// En el caso de que ya le haya asignado un contacto a este usuario, lo actualiza, si no simplemente lo añade
+	// Para añadir contactos, primero comprueba que no tenga un contacto con el
+	// nombre del nuevo.
+	// En el caso de que ya le haya asignado un contacto a este usuario, lo
+	// actualiza, si no simplemente lo añade
 	public String addContacto(ContactoIndividual contacto) {
-		if (contactos.stream().filter(c -> c instanceof ContactoIndividual).map(c -> (ContactoIndividual) c) 
-				.anyMatch(c -> (c.getNombre().equals(contacto.getNombre()) || c.getUsuario().equals(contacto.getUsuario())))) {
+		if (contactos.stream().filter(c -> c instanceof ContactoIndividual).map(c -> (ContactoIndividual) c).anyMatch(
+				c -> (c.getNombre().equals(contacto.getNombre()) || c.getUsuario().equals(contacto.getUsuario())))) {
 			// ya existe un contacto individual con este nombre
 			return "Ya existe este contacto";
 		}
-		
-		/*contactos.removeIf(c -> c instanceof ContactoIndividual
-				&& ((ContactoIndividual) c).getUsuario().equals(contacto.getUsuario()));*/
+
+		/*
+		 * contactos.removeIf(c -> c instanceof ContactoIndividual &&
+		 * ((ContactoIndividual) c).getUsuario().equals(contacto.getUsuario()));
+		 */
 		contactos.add(contacto);
 		return "";
 	}
@@ -199,9 +194,19 @@ public class Usuario {
 		// receptor, tipoReceptor);
 		// return mensaje;
 	}
-	
+
 	public Contacto recuperarContactoPorUsuario(Usuario u) {
-		return contactos.stream().filter( c -> ((ContactoIndividual) c).getUsuario().equals(u)).findFirst().orElse(null);
+		return contactos.stream().filter(c -> ((ContactoIndividual) c).getUsuario().equals(u)).findFirst().orElse(null);
+	}
+
+	// Comprueba el número de mensajes que ha enviado el usuario en el último mes
+	// para ver si merece el descuento
+	public int getNumMensajesEnviadosUltimoMes() {
+		return (int) mensajes.values().stream().flatMap(List::stream)
+				.filter(m -> m.getEmisor().equals(this.getNumTelefono())
+						&& m.getFechaHora().getMonth().equals(LocalDate.now().minusMonths(1).getMonth())
+						&& m.getFechaHora().getYear() == LocalDate.now().minusMonths(1).getYear())
+				.count();
 	}
 
 }

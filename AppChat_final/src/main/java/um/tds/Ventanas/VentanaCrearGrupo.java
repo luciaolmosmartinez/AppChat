@@ -2,7 +2,6 @@ package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -21,14 +20,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -41,17 +36,12 @@ public class VentanaCrearGrupo implements ActionListener {
 
 	private JFrame frmAppchat;
 	private JPanel contentPane, panel, panel_1;
-	private JMenuBar menuBar;
-	private JMenu mnPerfil;
-	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
 	private GridBagConstraints gbc_lblImagen, gbc_txtNombre;
-	private JLabel lblImagen, lblNombre, lblError;
-	private JTextField txtNombre;
+	private JLabel lblImagen, lblNombre, lblError, lblElegirImagen;
+	private JTextField txtNombre, txtRutaImagen;
 	private GridBagLayout gbl_panel_1;
 	private JButton btnAceptar, btnCancelar;
 	private String ventanaAnterior;
-	private JTextField txtRutaImagen;
-	private JLabel lblElegirImagen;
 	private JList<Contacto> list;
 	private DefaultListModel<Contacto> contactos;
 	private JScrollPane scrollPane;
@@ -78,40 +68,6 @@ public class VentanaCrearGrupo implements ActionListener {
 		frmAppchat.setVisible(true);
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAppchat.setBounds(100, 100, 946, 585);
-
-		menuBar = new JMenuBar();
-		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
-		frmAppchat.setJMenuBar(menuBar);
-
-		mntmPremium = new JMenuItem("PREMIUM");
-		mntmPremium.setBackground(new Color(255, 255, 255));
-		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
-		menuBar.add(mntmPremium);
-
-		mntmContactos = new JMenuItem("Contactos");
-		mntmContactos.setBackground(new Color(255, 255, 255));
-		menuBar.add(mntmContactos);
-
-		mntmMensajes = new JMenuItem("Mensajes");
-		mntmMensajes.setBackground(new Color(255, 255, 255));
-		menuBar.add(mntmMensajes);
-
-		mnPerfil = new JMenu("Perfil");
-		mnPerfil.setBackground(Color.WHITE);
-		mnPerfil.setSize(30, 30);
-		mnPerfil.setIcon(new ImageIcon(
-				VentanaMain.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
-		ImageInJLabel.resizeImage(mnPerfil,
-				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
-		menuBar.add(mnPerfil);
-
-		mntmEditarPerfil = new JMenuItem("Editar perfil");
-		mntmEditarPerfil.setBackground(new Color(255, 255, 255));
-		mnPerfil.add(mntmEditarPerfil);
-
-		mntmCerrarSesion = new JMenuItem("Cerrar sesión");
-		mntmCerrarSesion.setBackground(new Color(255, 255, 255));
-		mnPerfil.add(mntmCerrarSesion);
 
 		contentPane = new JPanel();
 		contentPane.setMaximumSize(new Dimension(494, 200));

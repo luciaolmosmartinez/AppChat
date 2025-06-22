@@ -119,18 +119,20 @@ public class VentanaOferta implements ActionListener {
 		gbc_lblBeneficios.gridy = 7;
 		panel.add(lblBeneficios, gbc_lblBeneficios);
 
-		btnPremium = new JButton("PREMIUM");
+		btnPremium = new JButton();
 		btnPremium.setBackground(new Color(255, 255, 255));
 		btnPremium.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnPremium.setSize(150, 70);
 		btnPremium.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		btnPremium.setIcon(new ImageIcon(VentanaContactos.class.getResource("/imagenes/orejas_no_premium.png")));
+		btnPremium.setIcon(new ImageIcon(VentanaContactos.class.getResource("/imagenes/orejas_premium.png")));
+		ImageInJLabel.resizeImage(btnPremium, VentanaContactos.class.getResource("/imagenes/orejas_premium.png"));
+		btnPremium.setPreferredSize(new Dimension(150, 70));
 		GridBagConstraints gbc_btnPremium = new GridBagConstraints();
-		gbc_btnPremium.fill = GridBagConstraints.BOTH;
+		gbc_btnPremium.fill = GridBagConstraints.VERTICAL;
 		gbc_btnPremium.insets = new Insets(0, 0, 5, 5);
 		gbc_btnPremium.gridx = 2;
 		gbc_btnPremium.gridy = 9;
 		panel.add(btnPremium, gbc_btnPremium);
-
 		btnAtras.addActionListener(this);
 		btnPremium.addActionListener(this);
 
@@ -142,7 +144,7 @@ public class VentanaOferta implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnAtras) {
 			if (ventanaAnterior.equals("VentanaMain")) {
-				new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation());
+				new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(),null);
 				frmAppchat.dispose();
 			} else if (ventanaAnterior.equals("VentanaContactos")) {
 				new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
@@ -160,13 +162,13 @@ public class VentanaOferta implements ActionListener {
 	}
 
 	public static void escribirPrecio(JLabel label, double original) {
-		String texto = String.format("<html><span style='color: gray; text-decoration: line-through;'>%.2f€</span> ",
+		String texto = String.format("<html><span style='color: gray; text-decoration: line-through;'>%.2f€/anuales</span> ",
 				original);
 		label.setText(texto);
 	}
 
 	public static void escribirPrecioOferta(JLabel label, double descuento) {
-		String texto = String.format("<html><span style='color: green; font-weight: bold;'>%.2f€</span></html>",
+		String texto = String.format("<html><span style='color: green; font-weight: bold;'>%.2f€/anuales</span></html>",
 				descuento);
 		label.setText(texto);
 	}
