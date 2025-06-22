@@ -44,19 +44,13 @@ public class VentanaContactos implements ActionListener {
 	private JPanel panel;
 	private JList<Contacto> list;
 	private DefaultListModel<Contacto> contactos;
-	private JButton btnNuevoContacto, btnNuevoGrupo, btnAtras;
+	private JButton btnNuevoContacto, btnNuevoGrupo, btnAtras, btnEnviarMensaje;
 	private JLabel lblInfo;
-	private JButton btnEnviarMensaje;
 	private javax.swing.event.ListSelectionListener listenerModificar;
 	private javax.swing.event.ListSelectionListener listenerMandarMensaje;
 
 	/**
 	 * Create the frame.
-	 */
-	/*
-	 * public void mostrarContactos(Dimension tam, Point ubi) {
-	 * frmAppchat.setVisible(true); frmAppchat.setSize(tam);
-	 * frmAppchat.setLocation(ubi); }
 	 */
 
 	/**
@@ -85,7 +79,8 @@ public class VentanaContactos implements ActionListener {
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
 
-		mntmPremium = new JMenuItem("");
+		mntmPremium = new JMenuItem("PREMIUM");
+		mntmPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmPremium.setBackground(new Color(255, 255, 255));
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmPremium);
@@ -100,27 +95,32 @@ public class VentanaContactos implements ActionListener {
 		}
 
 		mntmContactos = new JMenuItem("Contactos");
+		mntmContactos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmContactos.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmContactos);
 
 		mntmMensajes = new JMenuItem("Mensajes");
+		mntmMensajes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmMensajes.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmMensajes);
 
 		mnPerfil = new JMenu("Perfil");
+		mnPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mnPerfil.setBackground(Color.WHITE);
 		mnPerfil.setSize(30, 30);
 		mnPerfil.setIcon(new ImageIcon(
-				VentanaMain.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
+				VentanaContactos.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
 		ImageInJLabel.resizeImage(mnPerfil,
-				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
+				VentanaContactos.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
 		menuBar.add(mnPerfil);
 
 		mntmEditarPerfil = new JMenuItem("Editar perfil");
+		mntmEditarPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmEditarPerfil.setBackground(new Color(255, 255, 255));
 		mnPerfil.add(mntmEditarPerfil);
 
 		mntmCerrarSesion = new JMenuItem("Cerrar sesión");
+		mntmCerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmCerrarSesion.setBackground(new Color(255, 255, 255));
 		mnPerfil.add(mntmCerrarSesion);
 
@@ -142,13 +142,15 @@ public class VentanaContactos implements ActionListener {
 		btnAtras.setBackground(new Color(255, 255, 255));
 		btnAtras.setIcon(new ImageIcon(VentanaContactos.class.getResource("/imagenes/mod_boton-de-retroceso.png")));
 		btnAtras.setSize(new Dimension(32, 32));
+		ImageInJLabel.resizeImage(btnAtras,
+				VentanaContactos.class.getResource("/imagenes/mod_boton-de-retroceso.png"));
 		GridBagConstraints gbc_btnAtras = new GridBagConstraints();
 		gbc_btnAtras.anchor = GridBagConstraints.NORTHWEST;
 		gbc_btnAtras.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAtras.gridx = 0;
 		gbc_btnAtras.gridy = 0;
 		panel.add(btnAtras, gbc_btnAtras);
-
+		
 		lblInfo = new JLabel("Pulsa sobre el contacto o el grupo para modificarlo:");
 		lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_lblInfo = new GridBagConstraints();
@@ -195,11 +197,12 @@ public class VentanaContactos implements ActionListener {
 		gbc_btnNuevoGrupo.gridx = 4;
 		gbc_btnNuevoGrupo.gridy = 4;
 		panel.add(btnNuevoGrupo, gbc_btnNuevoGrupo);
-
+		
 		btnEnviarMensaje = new JButton("Enviar mensaje a");
+		btnEnviarMensaje.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEnviarMensaje.setSize(new Dimension(130, 31));
 		btnEnviarMensaje.setPreferredSize(new Dimension(130, 31));
-		btnEnviarMensaje.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnEnviarMensaje.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnEnviarMensaje.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		btnEnviarMensaje.setBackground(Color.WHITE);
 		GridBagConstraints gbc_btnEnviarMensaje = new GridBagConstraints();
@@ -208,7 +211,7 @@ public class VentanaContactos implements ActionListener {
 		gbc_btnEnviarMensaje.gridx = 2;
 		gbc_btnEnviarMensaje.gridy = 6;
 		panel.add(btnEnviarMensaje, gbc_btnEnviarMensaje);
-
+		
 		btnNuevoContacto.addActionListener(this);
 		btnAtras.addActionListener(this);
 		mntmPremium.addActionListener(this);
@@ -219,7 +222,7 @@ public class VentanaContactos implements ActionListener {
 		btnEnviarMensaje.addActionListener(this);
 		list.addListSelectionListener(listenerModificar);
 		actualizarContactos();
-
+		
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
@@ -228,10 +231,9 @@ public class VentanaContactos implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnNuevoContacto) {
-			new VentanaAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaContactos");
+			new VentanaAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaContactos");
 			frmAppchat.dispose();
-			// aContacto.mostrarAnadirContacto(frmAppchat.getSize(),
-			// frmAppchat.getLocation(),this);
+			//aContacto.mostrarAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(),this);
 		}
 		if (e.getSource() == btnAtras) {
 			new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
@@ -266,13 +268,13 @@ public class VentanaContactos implements ActionListener {
 			frmAppchat.dispose();
 			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
-		if (e.getSource() == mntmCerrarSesion) {
+		if(e.getSource() == mntmCerrarSesion){
 			Controlador.getUnicaInstancia().cerrarSesion();
 			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
 		}
-		if (e.getSource() == mntmEditarPerfil) {
-			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaContactos");
+		if(e.getSource() == mntmEditarPerfil) {
+			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaContactos");
 			frmAppchat.dispose();
 		}
 	}
@@ -290,10 +292,11 @@ public class VentanaContactos implements ActionListener {
 
 	private void contactoSeleccionadoMandarMensaje() {
 		new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), list.getSelectedValue());
+		frmAppchat.dispose();
 	}
 
 	private void actualizarContactos() {
 		Controlador.getUnicaInstancia().recuperarContactos().stream().forEach(c -> contactos.addElement(c));
 	}
-
+	
 }

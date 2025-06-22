@@ -89,10 +89,10 @@ public class RepositorioUsuarios {
 	}
 	
 	// Actualiza el grupo sin importar si ya existe otro grupo con el mismo nombre.
-	public Usuario modificarGrupo(Grupo grupo, String nombre, String imagen, Usuario usuario, List<ContactoIndividual> miembrosActualizados) {
+	public Usuario modificarGrupo(Grupo grupo, String nombre, String imagen, Usuario usuario, List<ContactoIndividual> miembros) {
 		grupo.setNombre(nombre);
 		grupo.setImagen(imagen);
-		grupo.actualizarMiembros(miembrosActualizados);
+
 		return usuario;
 	}
 }

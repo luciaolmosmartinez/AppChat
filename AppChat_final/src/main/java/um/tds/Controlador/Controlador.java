@@ -74,34 +74,58 @@ public class Controlador { // clase controlador
 		return repoU.addUsuario(usuario);
 	}
 
-	public void registrarMensaje(String texto, int emoticono) {
+	public void registrarMensaje(String texto, int emoticono, Usuario u) {
 		Mensaje mensaje; // el emisor será el usuario actual, el receptor será el contacto actual,
-							// tambien se guardara si es un grupo o no
-		mensaje = new Mensaje(texto, emoticono, usuarioActual.getNumTelefono(), contactoActual, tReceptor);
+		// tambien se guardara si es un grupo o no
+		if (u == null) { //se lo manda al contacto actual
+			mensaje = new Mensaje(texto, emoticono, usuarioActual.getNumTelefono(), contactoActual, tReceptor);
+		} else { //se lo manda a un numero que no tiene guardado
+			mensaje = new Mensaje(texto, emoticono, usuarioActual.getNumTelefono(), u.getNumTelefono(), tReceptor);
+		}
 
 		// Persistir mensaje
 		adaptadorMensaje.registrarMensaje(mensaje);
 
 		// Se recuperan los usuarios relaccionados con el mensaje y se les añade mensaje
-		Usuario usuarioE = repoU.getUsuario(usuarioActual.getNumTelefono());
-		Usuario usuarioR;
-		usuarioE.addMensaje(mensaje);
-		adaptadorUsuario.modificarUsuario(usuarioE); // Actualizar usuario almacenado
+		// Usuario usuarioE = repoU.getUsuario(usuarioActual.getNumTelefono());
+		Usuario usuarioR = null;
+		usuarioActual.addMensaje(mensaje);
+		adaptadorUsuario.modificarUsuario(usuarioActual); // Actualizar usuario almacenado
 		if (tReceptor.equals(TipoReceptor.ID_GRUPO)) {
 			Grupo g = recuperarGrupo(Integer.parseInt(contactoActual));
 			for (ContactoIndividual c : g.getMiembros()) {
 				usuarioR = c.getUsuario();
 				usuarioR.addMensaje(mensaje);
-				adaptadorUsuario.modificarUsuario(usuarioR); // Actualizar usuario almacenado
+				adaptadorUsuario.modificarUsuario(usuarioR);
 			}
+		} else {
+			String id = recuperarOtroUsuario(mensaje);
+			usuarioR = RepositorioUsuarios.getUnicaInstancia().getUsuario(id);
+			usuarioR.addMensaje(mensaje);
+			adaptadorUsuario.modificarUsuario(usuarioR); // Actualizar usuario almacenado
 		}
+
 	}
 
 	public String registrarContacto(String numTelefono, String nombre) {
 		Usuario usuario = recuperarUsuarioTelefono(numTelefono);
+
+		/*ContactoIndividual contacto = new ContactoIndividual(usuario, nombre);
+
+		// Persistir contacto
+		adaptadorContacto.anadirContacto(contacto);
+
+		// Se añade el contacto al usuario que lo crea
+		usuarioActual.addContacto(contacto);
+
+		// Actualizar usuario almacenado
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		
+	}*/
+	
 		String resultado;
 		if (usuario != null) {
-			if(usuario != usuarioActual) {
+			if (usuario != usuarioActual) {
 				ContactoIndividual contacto = new ContactoIndividual(usuario, nombre);
 				// Se añade el contacto al usuario que lo crea
 				resultado = usuarioActual.addContacto(contacto);
@@ -119,12 +143,13 @@ public class Controlador { // clase controlador
 		return "El número de teléfono introducido no está registrado";
 	}
 
-	public void registrarGrupo(String nombre, String imagen, List<Contacto> contactos) {
+	public void registrarGrupo(String nombre, String imagen, List<Contacto> miembros) {
 		Grupo grupo = new Grupo(nombre, imagen);
-		for(Contacto c : contactos) {
+		
+		for (Contacto c : miembros) {
 			grupo.addMiembro((ContactoIndividual) c);
 		}
-		
+
 		// Persistir grupo
 		adaptadorGrupo.registrarGrupo(grupo);
 
@@ -169,11 +194,11 @@ public class Controlador { // clase controlador
 	public void setUsuarioActual(Usuario usuarioActual) {
 		this.usuarioActual = usuarioActual;
 	}
-	
+
 	public void setContactoActual(String contactoActual) {
 		this.contactoActual = contactoActual;
 	}
-	
+
 	public void setTipoReceptor(TipoReceptor tReceptor) {
 		this.tReceptor = tReceptor;
 	}
@@ -190,14 +215,22 @@ public class Controlador { // clase controlador
 																			// he enviado
 			if (mensaje.getTipoReceptor().equals(TipoReceptor.ID_GRUPO)) { // es un grupo
 				return recuperarGrupo(Integer.parseInt(mensaje.getReceptor()));
-			} else { // es un contacto individual
+			} else if (mensaje.getTipoReceptor().equals(TipoReceptor.NUM_TELF)) { // es un contacto individual
 				Usuario u = recuperarUsuarioTelefono(mensaje.getReceptor());
-				return usuarioActual.recuperarContactoPorUsuario(u);
+				Contacto contacto = recuperarContactos().stream().filter(c -> ((ContactoIndividual) c).getUsuario().equals(u)).findFirst().orElse(null);
+				if(contacto != null) {
+					
+				}
+				return recuperarContactoIndividual(contacto.getId());			
 			}
 		} else { // quiero recuperar el contacto que me lo ha enviado
 			Usuario u = recuperarUsuarioTelefono(mensaje.getEmisor());
-			return usuarioActual.recuperarContactoPorUsuario(u);
+			if(usuarioActual.isContacto(u.getNumTelefono())) {
+				Contacto contacto = recuperarContactos().stream().filter(c -> ((ContactoIndividual) c).getUsuario().equals(u)).findFirst().orElse(null);
+				return recuperarContactoIndividual(contacto.getId());
+			}
 		}
+		return null;
 	}
 
 	public List<Mensaje> getUltimosMensajes() {
@@ -221,8 +254,7 @@ public class Controlador { // clase controlador
 		return usuarioActual.getContactos();
 	}
 
-	// Recupera una lista con los contatos del usuario actual que no son miembros
-	// del grupo dado
+	// Recupera una lista con los contatos del usuario actual que no son miembros del grupo dado
 	public List<ContactoIndividual> recuperarNoMiembros(Grupo grupo) {
 		List<ContactoIndividual> contactos = usuarioActual.getContactos().stream()
 				.filter(c -> c instanceof ContactoIndividual).map(c -> (ContactoIndividual) c)
@@ -263,9 +295,11 @@ public class Controlador { // clase controlador
 		}
 		return false;
 	}
+	
+	public boolean modificarGrupo(Grupo grupo, String nombre, String imagen,
+			List<ContactoIndividual> miembrosActualizados) {
+		Usuario usuario = RepositorioUsuarios.getUnicaInstancia().modificarGrupo(grupo, nombre, imagen, usuarioActual, miembrosActualizados);
 
-	public boolean modificarGrupo(Grupo grupo, String nombre, String imagen, List<ContactoIndividual> miembrosActualizados) {
-		Usuario usuario = repoU.modificarGrupo(grupo, nombre, imagen, usuarioActual, miembrosActualizados);
 		if (usuario != null) {
 			adaptadorGrupo.modificarGrupo(grupo);
 			adaptadorUsuario.modificarUsuario(usuario);
@@ -273,6 +307,7 @@ public class Controlador { // clase controlador
 		}
 		return false;
 	}
+
 
 	public double getPrecioPremium() {
 		return servicioDescuento.getPrecioPremium();
@@ -295,5 +330,12 @@ public class Controlador { // clase controlador
 	public boolean createPdfMensajes(Contacto contacto, Path ruta) {
 		CreadorPDF creador = new CreadorPDF();
 		return creador.createPdfMensajes(usuarioActual, contacto, ruta);
+
+	public List<Mensaje> recuperarConversacion(Contacto contacto) {
+		return usuarioActual.recuperarConversacion(contacto);
+	}
+
+	public List<Mensaje> recuperarConversacion(Usuario u) {
+		return usuarioActual.getMensajes().get(u.getNumTelefono());
 	}
 }

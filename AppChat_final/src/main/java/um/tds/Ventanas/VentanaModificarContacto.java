@@ -156,9 +156,12 @@ public class VentanaModificarContacto implements ActionListener {
 		panel.add(lblTelf, gbc_lblTelf);
 
 		btnRestaurar = new JButton("Restaurar");
-		btnRestaurar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnRestaurar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnRestaurar.setBackground(new Color(255, 255, 255));
+		btnRestaurar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnRestaurar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_btnRestaurar = new GridBagConstraints();
+		gbc_btnRestaurar.fill = GridBagConstraints.BOTH;
 		gbc_btnRestaurar.insets = new Insets(0, 0, 5, 5);
 		gbc_btnRestaurar.gridx = 3;
 		gbc_btnRestaurar.gridy = 8;
@@ -174,7 +177,9 @@ public class VentanaModificarContacto implements ActionListener {
 		lblError.setVisible(false);
 
 		btnAceptar = new JButton("Aceptar");
-		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnAceptar.setBackground(new Color(255, 255, 255));
+		btnAceptar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnAceptar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
 		gbc_btnAceptar.insets = new Insets(0, 0, 5, 5);

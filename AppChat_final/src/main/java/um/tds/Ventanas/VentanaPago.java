@@ -37,12 +37,6 @@ public class VentanaPago implements ActionListener {
 	/**
 	 * Launch the application.
 	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { VentanaPago window = new
-	 * VentanaPago(); window.frame.setVisible(true); } catch (Exception e) {
-	 * e.printStackTrace(); } } }); }
-	 */
 
 	/**
 	 * Create the application.
@@ -141,7 +135,7 @@ public class VentanaPago implements ActionListener {
 		textCvv.setColumns(10);
 
 		btnAceptar = new JButton("Aceptar");
-		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnAceptar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		btnAceptar.setBackground(Color.WHITE);
 		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
@@ -163,7 +157,7 @@ public class VentanaPago implements ActionListener {
 		lblError.setVisible(false);
 
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnCancelar.setBackground(new Color(255, 255, 255));
 		btnCancelar.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
@@ -199,7 +193,7 @@ public class VentanaPago implements ActionListener {
 								JOptionPane.showMessageDialog(frmAppchat, "Pago realizado correctamente",
 										"Enhorabuena", JOptionPane.PLAIN_MESSAGE);
 								Controlador.getUnicaInstancia().setPremium(true);
-								new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
+								new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(),null);
 								frmAppchat.dispose();
 							} else {
 								textFechaCaducidad.setText("");

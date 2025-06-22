@@ -53,12 +53,6 @@ public class VentanaRegistro implements ActionListener {
 	private Component horizontalGlue;
 	private JPasswordField passContrasena, passContrasenaRepe;
 
-	/*
-	 * public void mostrarRegistro(Dimension tam, Point ubi) {
-	 * frmAppchat.setVisible(true); frmAppchat.setSize(tam);
-	 * frmAppchat.setLocation(ubi); }
-	 */
-
 	/**
 	 * Create the frame.
 	 */
@@ -385,8 +379,6 @@ public class VentanaRegistro implements ActionListener {
 			}
 		} else { // btnCancelar
 			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
-			// inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
-			// inicio.setLocationRelativeTo(frmAppchat);
 			frmAppchat.dispose();
 			return;
 		}

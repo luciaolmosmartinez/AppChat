@@ -33,12 +33,6 @@ public class VentanaOferta implements ActionListener {
 	/**
 	 * Launch the application.
 	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { VentanaOferta window = new
-	 * VentanaOferta(); window.frame.setVisible(true); } catch (Exception e) {
-	 * e.printStackTrace(); } } }); }
-	 */
 
 	/**
 	 * Create the application.
@@ -119,7 +113,8 @@ public class VentanaOferta implements ActionListener {
 		gbc_lblBeneficios.gridy = 7;
 		panel.add(lblBeneficios, gbc_lblBeneficios);
 
-		btnPremium = new JButton();
+		btnPremium = new JButton("");
+		btnPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnPremium.setBackground(new Color(255, 255, 255));
 		btnPremium.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnPremium.setSize(150, 70);

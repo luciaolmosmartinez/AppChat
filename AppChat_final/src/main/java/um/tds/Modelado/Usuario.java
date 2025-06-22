@@ -114,7 +114,8 @@ public class Usuario {
 	}
 
 	public List<Mensaje> getUltimosMensajes() {
-		return mensajes.values().stream().map(lista -> lista.get(lista.size() - 1)).collect(Collectors.toList());
+		List<Mensaje> m =  mensajes.values().stream().map(lista -> lista.get(lista.size() - 1)).collect(Collectors.toList());
+		return m;
 	}
 
 	public boolean isContacto(String otroUsuario) {
@@ -124,6 +125,8 @@ public class Usuario {
 				if (u != null) {
 					return u.getNumTelefono().equals(otroUsuario);
 				}
+			} else if(c instanceof Grupo) {
+				return String.valueOf(c.getId()).equals(otroUsuario);
 			}
 			return false;
 		});
@@ -168,17 +171,20 @@ public class Usuario {
 	public void addMensaje(Mensaje mensaje) {
 		/* mensajes.add(mensaje); */
 		if (mensaje.getEmisor().equals(String.valueOf(getId()))) { // lo guarda en la lista del receptor (el otro)
-			if (!mensajes.containsKey(mensaje.getReceptor())) {
-				mensajes.put(mensaje.getReceptor(), new LinkedList<>());
-			}
 			mensajes.get(mensaje.getReceptor()).add(mensaje);
 		} else { // lo guarda en la lista del emisor (el otro)
-			if (!mensajes.containsKey(mensaje.getEmisor())) {
-				mensajes.put(mensaje.getEmisor(), new LinkedList<>());
+			if (mensaje.getEmisor().equals(getNumTelefono())) { // lo guarda en la lista del receptor (el otro)
+				if (!mensajes.containsKey(mensaje.getReceptor())) {
+					mensajes.put(mensaje.getReceptor(), new LinkedList<>());
+				}
+				mensajes.get(mensaje.getReceptor()).add(mensaje);
+			} else { // lo guarda en la lista del emisor (el otro)
+				if (!mensajes.containsKey(mensaje.getEmisor())) {
+					mensajes.put(mensaje.getEmisor(), new LinkedList<>());
+				}
+				mensajes.get(mensaje.getEmisor()).add(mensaje);
 			}
-			mensajes.get(mensaje.getEmisor()).add(mensaje);
 		}
-
 	}
 
 	// Para añadir contactos, primero comprueba que no tenga un contacto con el
@@ -201,6 +207,9 @@ public class Usuario {
 	}
 
 	public boolean addGrupo(Grupo grupo) {
+		if (contactos.stream().filter(g -> g instanceof Grupo).anyMatch(g -> g.getNombre().equals(grupo.getNombre()))) {
+			return false;
+		}
 		return contactos.add(grupo);
 	}
 
@@ -214,6 +223,14 @@ public class Usuario {
 	public Contacto recuperarContactoPorUsuario(Usuario u) {
 		return getContactosIndividuales().stream().filter(c -> c.getUsuario().equals(u)).findFirst().orElse(null);
 	}
+
+	public List<Mensaje> recuperarConversacion(Contacto contacto) {
+		if (contacto instanceof Grupo) {
+			return mensajes.get(String.valueOf(contacto.getId()));
+		} else {
+			return mensajes.get(((ContactoIndividual) contacto).getUsuario().getNumTelefono());
+		}
+
 
 	// Comprueba el número de mensajes que ha enviado el usuario en el último mes
 	// para ver si merece el descuento
