@@ -2,7 +2,6 @@ package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,16 +19,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import um.tds.Controlador.Controlador;
@@ -42,9 +37,6 @@ public class VentanaModificarGrupo implements ActionListener {
 
 	private JFrame frmAppchat;
 	private Grupo grupo;
-	private JMenuBar menuBar;
-	private JMenu mnPerfil;
-	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
 	private JPanel panel;
 	private JLabel lblModificar, lblNombre, lblImagen, lblError, lblMiembros, lblNoMiembros, lblEliminar, lblAnadir;
 	private JButton btnAtras, btnAceptar, btnRestaurar;
@@ -300,9 +292,6 @@ public class VentanaModificarGrupo implements ActionListener {
 		btnAceptar.addActionListener(this);
 		btnAtras.addActionListener(this);
 		btnRestaurar.addActionListener(this);
-		mntmContactos.addActionListener(this);
-		mntmCerrarSesion.addActionListener(this);
-		mntmEditarPerfil.addActionListener(this);
 		listMiembros.addListSelectionListener(e -> {
 		    if (!e.getValueIsAdjusting()) {
 		        eliminarMiembro();
@@ -354,20 +343,6 @@ public class VentanaModificarGrupo implements ActionListener {
 			lblError.setVisible(false);
 			
 			// RESTAURAR CAMBIOS MIEMBROS
-		}
-		if (e.getSource() == mntmContactos) {
-			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
-			frmAppchat.dispose();
-			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
-		}
-		if (e.getSource() == mntmCerrarSesion) {
-			Controlador.getUnicaInstancia().cerrarSesion();
-			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
-			frmAppchat.dispose();
-		}
-		if (e.getSource() == mntmEditarPerfil) {
-			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
-			frmAppchat.dispose();
 		}
 
 	}

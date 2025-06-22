@@ -26,6 +26,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -34,6 +35,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import tds.BubbleText;
 import um.tds.Controlador.Controlador;
@@ -98,12 +100,21 @@ public class VentanaMain implements ActionListener {
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
 
-		mntmPremium = new JMenuItem("PREMIUM");
+		mntmPremium = new JMenuItem("");
 		mntmPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmPremium.setBackground(new Color(255, 255, 255));
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmPremium);
-
+		if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
+			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
+			mntmPremium.setSize(new Dimension(64, 32));
+			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_premium.png"));
+		} else {
+			mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
+			mntmPremium.setSize(new Dimension(64, 32));
+			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+		}
+		
 		mntmContactos = new JMenuItem("Contactos");
 		mntmContactos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmContactos.setBackground(new Color(255, 255, 255));
@@ -316,7 +327,6 @@ public class VentanaMain implements ActionListener {
 		 * GridBagConstraints.SOUTH; gbc_bubble_1_2.gridx = 0; gbc_bubble_1_2.gridy = 4;
 		 * panelMensajes.add(bubble_3, gbc_bubble_1_2);
 		 */
-
 		actualizarMensajes();
 
 		panelCentral.setVisible(false);
@@ -380,8 +390,19 @@ public class VentanaMain implements ActionListener {
 			frmAppchat.dispose();
 		}
 		if (e.getSource() == mntmPremium) {
-			new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaMain");
-			frmAppchat.dispose();
+			if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
+				int res = JOptionPane.showConfirmDialog(frmAppchat, "¿Está seguro de que desea dejar de ser Premium?",
+						"Dejar de ser premium", JOptionPane.YES_NO_OPTION);
+				if (res == JOptionPane.YES_OPTION) {
+					Controlador.getUnicaInstancia().setPremium(false);
+					mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
+					mntmPremium.setSize(new Dimension(64, 32));
+					ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+				}
+			} else {
+				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
+				frmAppchat.dispose();
+			}
 		}
 		if (e.getSource() == mntmContactos) {
 			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());

@@ -16,7 +16,6 @@ public class Usuario {
 	private LocalDate fechaRegistro; // fecha en la que el usuario se registro, para poder calcular el descuento
 	private boolean premium;
 	private List<Contacto> contactos; // lista de contactos que tiene el usuario
-	private Descuento descuento;
 	/* private List<Mensaje> mensajes; */ // Lista con los mensajes que ha recibido o enviado el usuario
 	private Map<String, List<Mensaje>> mensajes; // Mapa con los mensajes intercambiados con otros usuarios
 
@@ -86,10 +85,6 @@ public class Usuario {
 		return premium;
 	}
 
-	public Descuento getDescuento() {
-		return descuento;
-	}
-
 	public boolean esEnPeriodo(LocalDate inicio, LocalDate fin) {
 		return (this.fechaRegistro.isAfter(inicio) && this.fechaRegistro.isBefore(fin));
 	}
@@ -157,10 +152,6 @@ public class Usuario {
 		this.premium = premium;
 	}
 
-	public void setDescuento(Descuento descuento) {
-		this.descuento = descuento;
-	}
-
 	public void addMensaje(Mensaje mensaje) {
 		/* mensajes.add(mensaje); */
 		if (mensaje.getEmisor().equals(String.valueOf(getId()))) { // lo guarda en la lista del receptor (el otro)
@@ -224,6 +215,15 @@ public class Usuario {
 			return mensajes.get(((ContactoIndividual) contacto).getUsuario().getNumTelefono());
 		}
 
+
+	// Comprueba el número de mensajes que ha enviado el usuario en el último mes
+	// para ver si merece el descuento
+	public int getNumMensajesEnviadosUltimoMes() {
+		return (int) mensajes.values().stream().flatMap(List::stream)
+				.filter(m -> m.getEmisor().equals(this.getNumTelefono())
+						&& m.getFechaHora().getMonth().equals(LocalDate.now().minusMonths(1).getMonth())
+						&& m.getFechaHora().getYear() == LocalDate.now().minusMonths(1).getYear())
+				.count();
 	}
 
 }

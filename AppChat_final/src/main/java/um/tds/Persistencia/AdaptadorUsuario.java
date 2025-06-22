@@ -75,7 +75,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 					new Propiedad("fechaRegistro", usuario.getFechaRegistro().format(dateFormat)),
 					new Propiedad("premium", String.valueOf(usuario.isPremium())),
 					new Propiedad("contactos", obtenerIdsContactos(usuario.getContactos())),
-					new Propiedad("descuento", String.valueOf(usuario.getDescuento())),
 					new Propiedad("mensajesEnviados", obtenerIdsMensajes(usuario.getMensajes())))));
 
 			// 5. Se registra la entidad y se asocia id al objeto almacenado.
@@ -115,8 +114,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				prop.setValor(String.valueOf(usuario.isPremium()));
 			} else if (prop.getNombre().equals("contactos")) {
 				prop.setValor(obtenerIdsContactos(usuario.getContactos()));
-			} else if (prop.getNombre().equals("descuento")) {
-				prop.setValor(String.valueOf(usuario.getDescuento()));
 			} else if (prop.getNombre().equals("mensajesEnviados")) {
 				prop.setValor(obtenerIdsMensajes(usuario.getMensajes()));
 			} 
@@ -142,7 +139,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		LocalDate fechaRegistro = null;
 		boolean premium;
 		List<Contacto> contactos;
-		Descuento descuento;
 		List<Mensaje> mensajes;
 
 		// Recupero la entidad
@@ -164,13 +160,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		Usuario usuario = new Usuario(nombre, numTelefono, email, contrasena, fechaNacimiento, mensajeSaludo,
 				imagenPerfil);
 		usuario.setId(id);
-		/*
-		 * usuario.setNombre(nombre); usuario.setContrasena(contrasena);
-		 * usuario.setNumTelefono(numTelefono); usuario.setEmail(email);
-		 * usuario.setFechaNacimiento(fechaNacimiento);
-		 * usuario.setImagenPerfil(imagenPerfil);
-		 * usuario.setMensajeSaludo(mensajeSaludo);
-		 */
 		usuario.setFechaRegistro(fechaRegistro);
 		usuario.setPremium(premium);
 
@@ -185,9 +174,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				usuario.addGrupo((Grupo) c);
 			}
 		}
-
-		// descuento = servPersistencia.recuperarPropiedadEntidad(eUsuario,"descuento");
-		// usuario.setDescuento(descuento);
 
 		mensajes = obtenerMensajesDesdeIds(
 				servPersistencia.recuperarPropiedadEntidad(eUsuario, "mensajesEnviados"));

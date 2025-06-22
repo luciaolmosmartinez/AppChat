@@ -1,10 +1,9 @@
 package um.tds.Modelado;
 
-import java.time.LocalDate;
-
 public class DescuentoMensaje implements Descuento {
-	public boolean calcularDescuento(LocalDate registroU) {
-		boolean descuento = true;
-		return descuento;
+	private final static double DESCUENTO_MUCHOS_MENSAJES = 0.50;
+
+	public double calcularDescuento(double precio) {
+		return (1.0 - DESCUENTO_MUCHOS_MENSAJES) * precio ;
 	}
 }

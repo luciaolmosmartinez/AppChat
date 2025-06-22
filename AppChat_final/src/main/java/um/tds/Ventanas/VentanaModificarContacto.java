@@ -2,7 +2,6 @@ package um.tds.Ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,13 +17,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import um.tds.Controlador.Controlador;
@@ -34,9 +29,6 @@ public class VentanaModificarContacto implements ActionListener {
 
 	private JFrame frmAppchat;
 	private ContactoIndividual contacto;
-	private JMenuBar menuBar;
-	private JMenu mnPerfil;
-	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
 	private JPanel panel;
 	private JLabel lblModificar, lblNombre, lblTelefono, lblTelf, lblImagen, lblError;
 	private JButton btnAtras, btnAceptar, btnRestaurar;
@@ -78,40 +70,6 @@ public class VentanaModificarContacto implements ActionListener {
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setBounds(300, 300, 907, 680);
 		frmAppchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		menuBar = new JMenuBar();
-		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
-		frmAppchat.setJMenuBar(menuBar);
-
-		mntmPremium = new JMenuItem("PREMIUM");
-		mntmPremium.setBackground(new Color(255, 255, 255));
-		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
-		menuBar.add(mntmPremium);
-
-		mntmContactos = new JMenuItem("Contactos");
-		mntmContactos.setBackground(new Color(255, 255, 255));
-		menuBar.add(mntmContactos);
-
-		mntmMensajes = new JMenuItem("Mensajes");
-		mntmMensajes.setBackground(new Color(255, 255, 255));
-		menuBar.add(mntmMensajes);
-
-		mnPerfil = new JMenu("Perfil");
-		mnPerfil.setBackground(Color.WHITE);
-		mnPerfil.setSize(30, 30);
-		mnPerfil.setIcon(new ImageIcon(
-				VentanaMain.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil())));
-		ImageInJLabel.resizeImage(mnPerfil,
-				VentanaPerfil.class.getResource(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfil()));
-		menuBar.add(mnPerfil);
-
-		mntmEditarPerfil = new JMenuItem("Editar perfil");
-		mntmEditarPerfil.setBackground(new Color(255, 255, 255));
-		mnPerfil.add(mntmEditarPerfil);
-
-		mntmCerrarSesion = new JMenuItem("Cerrar sesión");
-		mntmCerrarSesion.setBackground(new Color(255, 255, 255));
-		mnPerfil.add(mntmCerrarSesion);
 
 		panel = new JPanel();
 		panel.setBackground(new Color(255, 244, 244));
@@ -232,9 +190,6 @@ public class VentanaModificarContacto implements ActionListener {
 		btnAceptar.addActionListener(this);
 		btnAtras.addActionListener(this);
 		btnRestaurar.addActionListener(this);
-		mntmContactos.addActionListener(this);
-		mntmCerrarSesion.addActionListener(this);
-		mntmEditarPerfil.addActionListener(this);
 
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
@@ -270,20 +225,6 @@ public class VentanaModificarContacto implements ActionListener {
 		if (e.getSource() == btnRestaurar) {
 			textFieldNombre.setText(contacto.getNombre());
 			lblError.setVisible(false);
-		}
-		if (e.getSource() == mntmContactos) {
-			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
-			frmAppchat.dispose();
-			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
-		}
-		if (e.getSource() == mntmCerrarSesion) {
-			Controlador.getUnicaInstancia().cerrarSesion();
-			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
-			frmAppchat.dispose();
-		}
-		if (e.getSource() == mntmEditarPerfil) {
-			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
-			frmAppchat.dispose();
 		}
 	}
 }

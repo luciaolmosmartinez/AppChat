@@ -313,11 +313,12 @@ public class Controlador { // clase controlador
 	}
 
 	public double getPrecioFinal() {
-		return servicioDescuento.getPrecioFinal();
+		return servicioDescuento.calcualarPrecioFinal(usuarioActual);
 	}
 
 	public void setPremium(boolean premium) {
 		usuarioActual.setPremium(premium);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 	public List<Mensaje> recuperarConversacion(Contacto contacto) {
 		return usuarioActual.recuperarConversacion(contacto);
