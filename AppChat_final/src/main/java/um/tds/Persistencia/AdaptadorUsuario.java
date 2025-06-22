@@ -229,10 +229,17 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	// Combierte un String en una lista de contactos
 	private List<Contacto> obtenerContactosDesdeIds(String lista) {
 		List<Contacto> contactos = new LinkedList<Contacto>();
+		if (lista == null || lista.trim().isEmpty()) {
+	        return contactos; // Retornar lista vacia si no hay contactos
+	    }
 		StringTokenizer strTok = new StringTokenizer(lista, " ");
 		AdaptadorContacto adaptadorC = AdaptadorContacto.getUnicaInstancia();
 		while (strTok.hasMoreTokens()) {
-			contactos.add(adaptadorC.recuperarContacto(Integer.valueOf((String) strTok.nextElement())));
+			String token = (String) strTok.nextElement();
+	        if (token != null && !token.trim().isEmpty()) {
+	            contactos.add(adaptadorC.recuperarContacto(Integer.valueOf(token)));
+	        }
+			//contactos.add(adaptadorC.recuperarContacto(Integer.valueOf((String) strTok.nextElement())));
 		}
 		return contactos;
 	}

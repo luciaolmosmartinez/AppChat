@@ -54,7 +54,8 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 		// 4. Se le añaden las propiedades a la entidad creada
 		eGrupo.setPropiedades(new ArrayList<Propiedad>(
 				Arrays.asList(new Propiedad("nombre", grupo.getNombre()), new Propiedad("imagen", grupo.getImagen()),
-						new Propiedad("miembros", obtenerIdsMiembros(grupo.getMiembros())))));
+						new Propiedad("miembros", obtenerIdsMiembros(grupo.getMiembros())),
+						new Propiedad("tipo", "grupo"))));
 
 		// 5. Se registra la entidad y se asocia id al objeto almacenado.
 		eGrupo = servPersistencia.registrarEntidad(eGrupo);
@@ -137,7 +138,7 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 				prop.setValor(grupo.getNombre());
 			} else if (prop.getNombre().equals("imagen")) {
 				prop.setValor(grupo.getImagen());
-			}else if (prop.getNombre().equals("miembros")) {
+			} else if (prop.getNombre().equals("miembros")) {
 				prop.setValor(obtenerIdsMiembros(grupo.getMiembros()));
 			}
 			servPersistencia.modificarPropiedad(prop);
@@ -161,7 +162,9 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 		StringTokenizer strTok = new StringTokenizer(lista, " ");
 		AdaptadorContacto adaptadorC = AdaptadorContacto.getUnicaInstancia();
 		while (strTok.hasMoreTokens()) {
-			miembros.add(adaptadorC.recuperarContacto((int) strTok.nextElement()));
+			String s = (String) strTok.nextElement();
+			int id = Integer.parseInt(s);
+			miembros.add((ContactoIndividual) adaptadorC.recuperarContacto(id));
 		}
 		return miembros;
 	}

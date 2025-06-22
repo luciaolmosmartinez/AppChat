@@ -161,8 +161,14 @@ public class Usuario {
 	public void addMensaje(Mensaje mensaje) {
 		/* mensajes.add(mensaje); */
 		if (mensaje.getEmisor().equals(String.valueOf(getId()))) { // lo guarda en la lista del receptor (el otro)
+			if (!mensajes.containsKey(mensaje.getReceptor())) {
+		        mensajes.put(mensaje.getReceptor(), new LinkedList<>());
+		    }
 			mensajes.get(mensaje.getReceptor()).add(mensaje);
 		} else { // lo guarda en la lista del emisor (el otro)
+			if (!mensajes.containsKey(mensaje.getEmisor())) {
+		        mensajes.put(mensaje.getEmisor(), new LinkedList<>());
+		    }
 			mensajes.get(mensaje.getEmisor()).add(mensaje);
 		}
 
@@ -170,23 +176,20 @@ public class Usuario {
 
 	// Para añadir contactos, primero comprueba que no tenga un contacto con el nombre del nuevo. 
 	// En el caso de que ya le haya asignado un contacto a este usuario, lo actualiza, si no simplemente lo añade
-	public boolean addContacto(ContactoIndividual contacto) {
-		if (contactos.stream().filter(c -> c instanceof ContactoIndividual)
-				.anyMatch(c -> c.getNombre().equals(contacto.getNombre()))) {
-			contactos.stream().filter(c -> c instanceof ContactoIndividual).forEach(c -> System.out.println(c.getNombre()));
-			return false;
+	public String addContacto(ContactoIndividual contacto) {
+		if (contactos.stream().filter(c -> c instanceof ContactoIndividual).map(c -> (ContactoIndividual) c) 
+				.anyMatch(c -> (c.getNombre().equals(contacto.getNombre()) || c.getUsuario().equals(contacto.getUsuario())))) {
+			// ya existe un contacto individual con este nombre
+			return "Ya existe este contacto";
 		}
 		
-		contactos.removeIf(c -> c instanceof ContactoIndividual
-				&& ((ContactoIndividual) c).getUsuario().equals(contacto.getUsuario()));
-		
-		return contactos.add(contacto);
+		/*contactos.removeIf(c -> c instanceof ContactoIndividual
+				&& ((ContactoIndividual) c).getUsuario().equals(contacto.getUsuario()));*/
+		contactos.add(contacto);
+		return "";
 	}
 
 	public boolean addGrupo(Grupo grupo) {
-		if (contactos.stream().filter(g -> g instanceof Grupo).anyMatch(g -> g.getNombre().equals(grupo.getNombre()))) {
-			return false;
-		}
 		return contactos.add(grupo);
 	}
 
@@ -195,6 +198,10 @@ public class Usuario {
 		// mensaje = mensaje.enviarMensaje(texto, emoticono, this.getNumTelefono(),
 		// receptor, tipoReceptor);
 		// return mensaje;
+	}
+	
+	public Contacto recuperarContactoPorUsuario(Usuario u) {
+		return contactos.stream().filter( c -> ((ContactoIndividual) c).getUsuario().equals(u)).findFirst().orElse(null);
 	}
 
 }

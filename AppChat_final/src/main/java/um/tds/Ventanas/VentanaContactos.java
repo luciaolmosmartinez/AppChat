@@ -45,15 +45,18 @@ public class VentanaContactos implements ActionListener {
 	private DefaultListModel<Contacto> contactos;
 	private JButton btnNuevoContacto, btnNuevoGrupo, btnAtras;
 	private JLabel lblInfo;
+	private JButton btnEnviarMensaje;
+	private javax.swing.event.ListSelectionListener listenerModificar;
+	private javax.swing.event.ListSelectionListener listenerMandarMensaje;
 
 	/**
 	 * Create the frame.
 	 */
-	/*public void mostrarContactos(Dimension tam, Point ubi) {
-		frmAppchat.setVisible(true);
-		frmAppchat.setSize(tam);
-		frmAppchat.setLocation(ubi);
-	}*/
+	/*
+	 * public void mostrarContactos(Dimension tam, Point ubi) {
+	 * frmAppchat.setVisible(true); frmAppchat.setSize(tam);
+	 * frmAppchat.setLocation(ubi); }
+	 */
 
 	/**
 	 * Create the application.
@@ -66,6 +69,8 @@ public class VentanaContactos implements ActionListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Dimension tam, Point ubi) {
+		listenerModificar = l -> contactoSeleccionadoModificar();
+		listenerMandarMensaje = l -> contactoSeleccionadoMandarMensaje();
 		frmAppchat = new JFrame();
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setIconImage(
@@ -133,7 +138,7 @@ public class VentanaContactos implements ActionListener {
 		gbc_btnAtras.gridx = 0;
 		gbc_btnAtras.gridy = 0;
 		panel.add(btnAtras, gbc_btnAtras);
-		
+
 		lblInfo = new JLabel("Pulsa sobre el contacto o el grupo para modificarlo:");
 		lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_lblInfo = new GridBagConstraints();
@@ -180,16 +185,31 @@ public class VentanaContactos implements ActionListener {
 		gbc_btnNuevoGrupo.gridx = 4;
 		gbc_btnNuevoGrupo.gridy = 4;
 		panel.add(btnNuevoGrupo, gbc_btnNuevoGrupo);
-		
+
+		btnEnviarMensaje = new JButton("Enviar mensaje a");
+		btnEnviarMensaje.setSize(new Dimension(130, 31));
+		btnEnviarMensaje.setPreferredSize(new Dimension(130, 31));
+		btnEnviarMensaje.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnEnviarMensaje.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		btnEnviarMensaje.setBackground(Color.WHITE);
+		GridBagConstraints gbc_btnEnviarMensaje = new GridBagConstraints();
+		gbc_btnEnviarMensaje.fill = GridBagConstraints.BOTH;
+		gbc_btnEnviarMensaje.insets = new Insets(0, 0, 0, 5);
+		gbc_btnEnviarMensaje.gridx = 2;
+		gbc_btnEnviarMensaje.gridy = 6;
+		panel.add(btnEnviarMensaje, gbc_btnEnviarMensaje);
+
 		btnNuevoContacto.addActionListener(this);
 		btnAtras.addActionListener(this);
 		mntmPremium.addActionListener(this);
 		mntmContactos.addActionListener(this);
 		mntmCerrarSesion.addActionListener(this);
 		mntmEditarPerfil.addActionListener(this);
-		list.addListSelectionListener(e -> contactoSeleccionado());
+		btnNuevoGrupo.addActionListener(this);
+		btnEnviarMensaje.addActionListener(this);
+		list.addListSelectionListener(listenerModificar);
 		actualizarContactos();
-		
+
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
@@ -198,14 +218,23 @@ public class VentanaContactos implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnNuevoContacto) {
-			new VentanaAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaContactos");
+			new VentanaAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaContactos");
 			frmAppchat.dispose();
-			//aContacto.mostrarAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(),this);
+			// aContacto.mostrarAnadirContacto(frmAppchat.getSize(),
+			// frmAppchat.getLocation(),this);
 		}
 		if (e.getSource() == btnAtras) {
-			new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation());
+			new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
 			frmAppchat.dispose();
-			//vMain.mostrarMain(frmAppchat.getSize(), frmAppchat.getLocation());
+			// vMain.mostrarMain(frmAppchat.getSize(), frmAppchat.getLocation());
+		}
+		if (e.getSource() == btnNuevoGrupo) {
+			new VentanaCrearGrupo(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaContactos");
+			frmAppchat.dispose();
+		}
+		if (e.getSource() == btnEnviarMensaje) {
+			list.removeListSelectionListener(listenerModificar);
+			list.addListSelectionListener(listenerMandarMensaje);
 		}
 		if (e.getSource() == mntmPremium) {
 			new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaContactos");
@@ -216,29 +245,34 @@ public class VentanaContactos implements ActionListener {
 			frmAppchat.dispose();
 			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
-		if(e.getSource() == mntmCerrarSesion){
+		if (e.getSource() == mntmCerrarSesion) {
 			Controlador.getUnicaInstancia().cerrarSesion();
 			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
 		}
-		if(e.getSource() == mntmEditarPerfil) {
-			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaContactos");
+		if (e.getSource() == mntmEditarPerfil) {
+			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaContactos");
 			frmAppchat.dispose();
 		}
 	}
 
-	private void contactoSeleccionado() {
+	private void contactoSeleccionadoModificar() {
 		if (list.getSelectedValue() instanceof Grupo) {
 			new VentanaModificarGrupo((Grupo) list.getSelectedValue(), frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
 		} else {
-			new VentanaModificarContacto((ContactoIndividual) list.getSelectedValue(), frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
+			new VentanaModificarContacto((ContactoIndividual) list.getSelectedValue(), frmAppchat.getSize(),
+					frmAppchat.getLocation());
 		}
+	}
+
+	private void contactoSeleccionadoMandarMensaje() {
+		new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), list.getSelectedValue());
 	}
 
 	private void actualizarContactos() {
 		Controlador.getUnicaInstancia().recuperarContactos().stream().forEach(c -> contactos.addElement(c));
 	}
-	
+
 }
