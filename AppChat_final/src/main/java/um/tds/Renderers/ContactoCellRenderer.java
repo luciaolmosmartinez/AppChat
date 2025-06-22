@@ -33,18 +33,16 @@ public class ContactoCellRenderer extends JPanel implements ListCellRenderer<Con
 	public Component getListCellRendererComponent(JList<? extends Contacto> list, Contacto contacto, int index,
 			boolean isSelected, boolean cellHasFocus) {
 		if (contacto != null) {
-	    	nameLabel.setText(contacto.getNombre());
-	    	try {
+			nameLabel.setText(contacto.getNombre());
+			try {
 				imageLabel.setIcon(new ImageIcon(contacto.getImagenDirecta()));
-				imageLabel.setSize(50,50);
+				imageLabel.setSize(50, 50);
 				ImageInJLabel.resizeImage(imageLabel, contacto.getImagenDirecta());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-	    }
+		}
 
-		
-		
 		// Set background and foreground based on selection
 		if (isSelected) {
 			setBackground(Color.PINK);

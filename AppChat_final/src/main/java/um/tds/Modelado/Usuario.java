@@ -22,12 +22,11 @@ public class Usuario {
 	private String numTelefono;
 	private String email;
 	private LocalDate fechaNacimiento;
-	private String imagenPerfil; // sera el link de la imagen
-	private String mensajeSaludo; // deberia ser de tipo mensaje?
+	private String imagenPerfil; // el link/ruta de la imagen
+	private String mensajeSaludo;
 	private LocalDate fechaRegistro; // fecha en la que el usuario se registro, para poder calcular el descuento
 	private boolean premium;
 	private List<Contacto> contactos; // lista de contactos que tiene el usuario
-	/* private List<Mensaje> mensajes; */ // Lista con los mensajes que ha recibido o enviado el usuario
 	private Map<String, List<Mensaje>> mensajes; // Mapa con los mensajes intercambiados con otros usuarios
 
 	public Usuario(String nombre, String numTelefono, String email, char[] contrasena, LocalDate fechaNacimiento,
@@ -106,18 +105,20 @@ public class Usuario {
 		return fechaRegistro;
 	}
 
-	public boolean isPremium() {
-		return premium;
-	}
-
-	public boolean esEnPeriodo(LocalDate inicio, LocalDate fin) {
-		return (this.fechaRegistro.isAfter(inicio) && this.fechaRegistro.isBefore(fin));
-	}
-
 	public LinkedList<Contacto> getContactos() {
 		return new LinkedList<Contacto>(contactos);
 	}
 
+	public boolean isPremium() {
+		return premium;
+	}
+
+	// Indica si la fecha esta entre las dos fechas indicadas
+	public boolean esEnPeriodo(LocalDate inicio, LocalDate fin) {
+		return (this.fechaRegistro.isAfter(inicio) && this.fechaRegistro.isBefore(fin));
+	}
+
+	//Toma solo los contactos individuales
 	public LinkedList<ContactoIndividual> getContactosIndividuales() {
 		LinkedList<ContactoIndividual> contactosIndividuales = contactos.stream()
 				.filter(c -> c instanceof ContactoIndividual).map(c -> (ContactoIndividual) c)
@@ -125,6 +126,7 @@ public class Usuario {
 		return new LinkedList<ContactoIndividual>(contactosIndividuales);
 	}
 
+	//Toma solo los grupos
 	public LinkedList<Grupo> getContactosGrupos() {
 		LinkedList<Grupo> grupos = contactos.stream().filter(c -> c instanceof Grupo).map(c -> (Grupo) c)
 				.collect(Collectors.toCollection(LinkedList::new));
@@ -135,12 +137,14 @@ public class Usuario {
 		return new HashMap<String, List<Mensaje>>(mensajes);
 	}
 
+	//Recupera el ultimo mensaje intercambiado en cada conversacion
 	public List<Mensaje> getUltimosMensajes() {
 		List<Mensaje> m = mensajes.values().stream().map(lista -> lista.get(lista.size() - 1))
 				.collect(Collectors.toList());
 		return m;
 	}
 
+	//Comprueba si tiene como contacto el usuario indicado
 	public boolean isContacto(String otroUsuario) {
 		return contactos.stream().anyMatch(c -> {
 			if (c instanceof ContactoIndividual) {
@@ -191,6 +195,7 @@ public class Usuario {
 		this.premium = premium;
 	}
 
+	//Añade el mensaje a su mapa de mensajes
 	public void addMensaje(Mensaje mensaje) {
 		/* mensajes.add(mensaje); */
 		if (mensaje.getEmisor().equals(String.valueOf(getId()))) { // lo guarda en la lista del receptor (el otro)
@@ -255,7 +260,7 @@ public class Usuario {
 		}
 	}
 
-	// Comprueba el número de mensajes que ha enviado el usuario en el último mes
+	// Comprueba el número de mensajes que ha enviado el usuario en el ultimo mes
 	// para ver si merece el descuento
 	public int getNumMensajesEnviadosUltimoMes() {
 		return (int) mensajes.values().stream().flatMap(List::stream)
@@ -265,6 +270,7 @@ public class Usuario {
 				.count();
 	}
 
+	//Manda a filtrar los mensajes segun el filtro indicado
 	public List<Mensaje> buscarMensajes(Filtro f) {
 		List<Mensaje> listaMensajes = new LinkedList<>();
 		for (List<Mensaje> lista : mensajes.values()) {

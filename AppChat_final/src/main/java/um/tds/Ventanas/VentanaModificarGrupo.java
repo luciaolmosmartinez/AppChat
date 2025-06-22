@@ -58,21 +58,11 @@ public class VentanaModificarGrupo implements ActionListener {
 	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
 	private JMenu mnPerfil;
 
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the application.
-	 */
 	public VentanaModificarGrupo(Grupo grupo, Dimension tam, Point ubi) {
 		this.grupo = grupo;
 		initialize(tam, ubi);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize(Dimension tam, Point ubi) {
 		frmAppchat = new JFrame();
 		frmAppchat.setBackground(new Color(255, 244, 244));
@@ -108,7 +98,8 @@ public class VentanaModificarGrupo implements ActionListener {
 		mnPerfil.setSize(30, 30);
 
 		try {
-			mnPerfil.setIcon(new ImageIcon(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta()));
+			mnPerfil.setIcon(
+					new ImageIcon(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta()));
 			ImageInJLabel.resizeImage(mnPerfil,
 					Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta());
 			menuBar.add(mnPerfil);
@@ -165,7 +156,7 @@ public class VentanaModificarGrupo implements ActionListener {
 		lblImagen = new JLabel("");
 		lblImagen.setMinimumSize(new Dimension(10, 10));
 		lblImagen.setSize(250, 250);
-		
+
 		try {
 			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/gato_perfil.png"));
 			lblImagen.setIcon(new ImageIcon(image));
@@ -173,7 +164,7 @@ public class VentanaModificarGrupo implements ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		gbc_lblImagen = new GridBagConstraints();
 		gbc_lblImagen.gridwidth = 2;
 		gbc_lblImagen.gridheight = 4;
@@ -364,8 +355,6 @@ public class VentanaModificarGrupo implements ActionListener {
 			actualizarContactosMiembros();
 			actualizarContactosNoMiembros();
 			lblError.setVisible(false);
-
-			// RESTAURAR CAMBIOS MIEMBROS
 		}
 
 	}

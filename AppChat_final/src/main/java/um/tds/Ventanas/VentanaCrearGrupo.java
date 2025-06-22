@@ -52,13 +52,6 @@ public class VentanaCrearGrupo implements ActionListener {
 	private List<Contacto> cSeleccionados;
 	private JLabel lblNewLabel;
 
-	/**
-	 * Create the frame.
-	 */
-
-	/**
-	 * Create the frame.
-	 */
 	public VentanaCrearGrupo(Dimension tam, Point ubi, String ventanaAnterior) {
 		frmAppchat = new JFrame();
 		frmAppchat.setTitle("AppChat");
@@ -95,7 +88,6 @@ public class VentanaCrearGrupo implements ActionListener {
 		gbc_list.gridx = 1;
 		gbc_list.gridy = 1;
 		list.setCellRenderer(new ContactoCellRenderer());
-		//panel.add(list, gbc_list);
 
 		scrollPane.setViewportView(list);
 
@@ -118,7 +110,7 @@ public class VentanaCrearGrupo implements ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		gbc_lblImagen = new GridBagConstraints();
 		gbc_lblImagen.gridheight = 3;
 		gbc_lblImagen.insets = new Insets(0, 0, 5, 5);
@@ -162,8 +154,9 @@ public class VentanaCrearGrupo implements ActionListener {
 		gbc_txtRutaImagen.gridx = 3;
 		gbc_txtRutaImagen.gridy = 3;
 		panel_1.add(txtRutaImagen, gbc_txtRutaImagen);
-		
-		lblNewLabel = new JLabel("<html><div style='text-align: center;'>Para seleccionar más de un miembro para el grupo,<br>haga click sobre ellos mientras mantiene pulsada la tecla \"CTRL\"</html>");
+
+		lblNewLabel = new JLabel(
+				"<html><div style='text-align: center;'>Para seleccionar más de un miembro para el grupo,<br>haga click sobre ellos mientras mantiene pulsada la tecla \"CTRL\"</html>");
 		lblNewLabel.setBackground(new Color(255, 244, 244));
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();

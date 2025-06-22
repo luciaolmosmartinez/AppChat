@@ -16,6 +16,8 @@ public class FiltroContacto extends FiltroDecorator {
 
 	@Override
 	public List<Mensaje> filtrarMensajes(List<Mensaje> lista) {
+		// Consigue los mensajes que tienen como receptor o emisor el contacto con el
+		// nombre indicado
 		List<Mensaje> l = lista.stream()
 				.filter(m -> Controlador.getUnicaInstancia().recuperarContactoMensaje(m).getNombre().equals(busqueda))
 				.collect(Collectors.toList());

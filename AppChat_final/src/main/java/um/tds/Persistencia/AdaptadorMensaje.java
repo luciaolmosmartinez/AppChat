@@ -88,16 +88,9 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		//Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor);
 		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor, tipoReceptor);
 		mensaje.setId(id);
-		/*mensaje.setTexto(texto);
-		mensaje.setEmoticono(emoticono);*/
 		mensaje.setFechaHora(fechaHora);
 
-		PoolDAO.getUnicaInstancia().addObjeto(id, mensaje);
-
-		// 4. Se recuperan los objetos referenciados y se actualiza el objeto
-		//tipoReceptor = servPersistencia.recuperarPropiedadEntidad(eMensaje,"tipoReceptor");
-		//mensaje.setTipoReceptor(tipoReceptor);
-		
+		PoolDAO.getUnicaInstancia().addObjeto(id, mensaje);		
 
 		// 5. Se retorna el objeto
 		return mensaje;

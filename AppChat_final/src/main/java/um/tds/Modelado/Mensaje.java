@@ -7,22 +7,14 @@ public class Mensaje {
 	private String texto; // null si hay emoticono y no texto?
 	private int emoticono; // se determinara a partir de un numero que identifica el emoticono, null si no
 							// hay emoticono?
-	private String emisor; //numero de telefono
-	private String receptor; //numero de telefono de quien lo reciba o id del grupo al que se manda
+	private String emisor; // numero de telefono
+	private String receptor; // numero de telefono de quien lo reciba o id del grupo al que se manda
 	private LocalDateTime fechaHora;
 	private TipoReceptor tipoReceptor;
-	
+
 	public int getLength() {
 		return this.texto.length();
 	}
-
-	/*public Mensaje(String texto, Usuario emisor, Usuario receptor) {
-		this(texto, -1, emisor, receptor);
-	}
-
-	public Mensaje(int emoticono, Usuario emisor, Usuario receptor) {
-		this("", emoticono, emisor, receptor);
-	}*/
 
 	public Mensaje(String texto, int emoticono, String emisor, String receptor, TipoReceptor tipoReceptor) {
 		this.texto = texto;
@@ -31,13 +23,13 @@ public class Mensaje {
 		this.receptor = receptor;
 		this.fechaHora = LocalDateTime.now();
 		this.tipoReceptor = tipoReceptor;
-		this.id = 0;	//Se actualizará al registrarse en la base de datos
+		this.id = 0; // Se actualizará al registrarse en la base de datos
 	}
 
 	public int getId() {
 		return id;
 	}
-	
+
 	public String getTexto() {
 		return texto;
 	}
@@ -62,11 +54,10 @@ public class Mensaje {
 		return tipoReceptor;
 	}
 
-	
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public void setTexto(String texto) {
 		this.texto = texto;
 	}
@@ -90,10 +81,5 @@ public class Mensaje {
 	public void setTipoReceptor(TipoReceptor tipoReceptor) {
 		this.tipoReceptor = tipoReceptor;
 	}
-
-	/*public Mensaje enviarMensaje(String texto, int emoticono, String emisor, String receptor, TipoReceptor tipoReceptor) {
-		Mensaje mensaje = new Mensaje(texto, emoticono, emisor, receptor, tipoReceptor);
-		return mensaje;
-	}*/
 
 }

@@ -363,8 +363,7 @@ public class VentanaMain implements ActionListener {
 					mensajes.addElement(m);
 				}
 				list.setModel(mensajes);
-				list.setCellRenderer(
-						new MensajeCellRenderer(/* frmAppchat.getSize(), frmAppchat.getLocation(), frmAppchat */));
+				list.setCellRenderer(new MensajeCellRenderer());
 				textMensaje.setText("");
 				mostrarVentanaConvo(u);
 				panelMensajes.revalidate();
@@ -597,7 +596,7 @@ public class VentanaMain implements ActionListener {
 			mensajes.addElement(m);
 		}
 		list.setModel(mensajes);
-		list.setCellRenderer(new MensajeCellRenderer(/* frmAppchat.getSize(), frmAppchat.getLocation(), frmAppchat */));
+		list.setCellRenderer(new MensajeCellRenderer());
 		textMensaje.setText("");
 		mostrarVentanaConvo(u);
 		panelMensajes.revalidate();

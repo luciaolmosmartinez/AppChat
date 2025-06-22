@@ -276,7 +276,6 @@ public class VentanaAnadirContacto implements ActionListener {
 						txtNombre.getText());
 				if (texto.equals("")) {
 					new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
-					// vContactos.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 					frmAppchat.dispose();
 				} else {
 					lblError.setText(texto);
@@ -339,7 +338,6 @@ public class VentanaAnadirContacto implements ActionListener {
 		if (e.getSource() == mntmContactos) {
 			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
-			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
 		if (e.getSource() == mntmCerrarSesion) {
 			Controlador.getUnicaInstancia().cerrarSesion();

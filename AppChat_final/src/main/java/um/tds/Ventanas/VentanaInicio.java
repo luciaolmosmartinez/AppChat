@@ -31,22 +31,10 @@ public class VentanaInicio implements ActionListener {
 	private JLabel titulo, lblNewLabel;
 	private JButton btnInicioSesion, btnRegistro;
 
-	/*public void mostrarInicio(Dimension tam, Point ubi) {
-		frmAppchat.setVisible(true);
-		frmAppchat.setSize(tam);
-		frmAppchat.setLocation(ubi);
-	}*/
-
-	/**
-	 * Create the application.
-	 */
 	public VentanaInicio(Dimension tam, Point ubi) {
 		initialize(tam, ubi);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize(Dimension tam, Point ubi) {
 		frmAppchat = new JFrame();
 		frmAppchat.setVisible(true);
@@ -85,7 +73,7 @@ public class VentanaInicio implements ActionListener {
 		lblNewLabel.setPreferredSize(new Dimension(300, 300));
 		lblNewLabel.setIconTextGap(0);
 		lblNewLabel.setSize(300, 300);
-		
+
 		try {
 			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/gatoVentana2_2048.png"));
 			lblNewLabel.setIcon(new ImageIcon(image));
@@ -93,8 +81,7 @@ public class VentanaInicio implements ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.fill = GridBagConstraints.VERTICAL;
@@ -145,27 +132,22 @@ public class VentanaInicio implements ActionListener {
 		// Manejadores
 		btnInicioSesion.addActionListener(this);
 		btnRegistro.addActionListener(this);
-		
+
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
 	}
 
-
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnInicioSesion) {
-			new VentanaLogin(frmAppchat.getSize(),frmAppchat.getLocation());
-			//login.setLocation(frmAppchat.getX(), frmAppchat.getY());
+			new VentanaLogin(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
-			//login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;
 		}
 
 		if (e.getSource() == btnRegistro) {
-			new VentanaRegistro(frmAppchat.getSize(),frmAppchat.getLocation());
-			//registro.setLocation(frmAppchat.getX(), frmAppchat.getY());
+			new VentanaRegistro(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
-			//registro.mostrarRegistro(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;
 		}
 		return;

@@ -41,22 +41,10 @@ public class VentanaLogin implements ActionListener {
 	private GridBagConstraints gbc_lblTelefono, gbc_textTelf, gbc_btnAcceder, gbc_lblContrasea, gbc_password,
 			gbc_btnNoRecuerdo, gbc_titulo, gbc_imagen, gbc_btnCancelar, gbc_lblError;
 
-	/*public void mostrarLogin(Dimension tam, Point ubi) {
-		frmAppchat.setVisible(true);
-		frmAppchat.setSize(tam);
-		frmAppchat.setLocation(ubi);
-	}*/
-
-	/**
-	 * Create the application.
-	 */
 	public VentanaLogin(Dimension tam, Point ubi) {
 		initialize(tam, ubi);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize(Dimension tam, Point ubi) {
 		frmAppchat = new JFrame();
 		frmAppchat.getContentPane().setBackground(new Color(255, 244, 244));
@@ -75,8 +63,7 @@ public class VentanaLogin implements ActionListener {
 		gbl_panelCentro.columnWidths = new int[] { 50, 150, 259, 96, 99, 150, 50, 0 };
 		gbl_panelCentro.rowHeights = new int[] { 0, 20, 0, 0, 0, 0, 0, 0, 50, 0 };
 		gbl_panelCentro.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
-		gbl_panelCentro.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
-				Double.MIN_VALUE };
+		gbl_panelCentro.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		panelCentro.setLayout(gbl_panelCentro);
 
 		btnAcceder = new JButton("Acceder");
@@ -110,7 +97,7 @@ public class VentanaLogin implements ActionListener {
 		imagen.setVerticalTextPosition(SwingConstants.BOTTOM);
 		imagen.setVerticalAlignment(SwingConstants.BOTTOM);
 		imagen.setSize(new Dimension(140, 80));
-		
+
 		try {
 			BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/gato_enter.png"));
 			imagen.setIcon(new ImageIcon(image));
@@ -118,8 +105,7 @@ public class VentanaLogin implements ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		gbc_imagen = new GridBagConstraints();
 		gbc_imagen.gridwidth = 2;
 		gbc_imagen.anchor = GridBagConstraints.SOUTH;
@@ -215,7 +201,7 @@ public class VentanaLogin implements ActionListener {
 		btnAcceder.addActionListener(this);
 		btnCancelar.addActionListener(this);
 		btnNoRecuerdo.addActionListener(this);
-		
+
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
@@ -224,7 +210,6 @@ public class VentanaLogin implements ActionListener {
 	public static boolean esTelfValido(String telf) {
 		return Pattern.matches("\\d{9}", telf);
 	}
-
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnAcceder) {
@@ -238,10 +223,8 @@ public class VentanaLogin implements ActionListener {
 			} else {
 				if (esTelfValido(textTelf.getText())) {
 					if (Controlador.getUnicaInstancia().iniciarSesion(textTelf.getText(), password.getPassword())) {
-						new VentanaMain(frmAppchat.getSize(),frmAppchat.getLocation(), null);
-						//main.setLocationRelativeTo(frmAppchat);
+						new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
 						frmAppchat.dispose();
-						//main.mostrarMain(frmAppchat.getSize(),frmAppchat.getLocation());
 					} else {
 						textTelf.setText("");
 						password.setText("");
@@ -256,23 +239,9 @@ public class VentanaLogin implements ActionListener {
 			}
 
 		} else if (e.getSource() == btnCancelar) {
-			new VentanaInicio(frmAppchat.getSize(),frmAppchat.getLocation());
-			//inicio.setLocationRelativeTo(frmAppchat);
+			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
-			//inicio.mostrarInicio(frmAppchat.getSize(),frmAppchat.getLocation());
 			return;
-		}/* else if (e.getSource() == btnNoRecuerdo) {
-			VentanaNoRecuerdo nR = new VentanaNoRecuerdo();
-			frmAppchat.setEnabled(false);
-			nR.mostrarNoRecuerdo(frmAppchat.getSize(),frmAppchat.getLocation());
-			// ARREGLAR
-			nR.addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosing(WindowEvent e) { // Cambiar de windowClosed a windowClosing
-					frmAppchat.setEnabled(true); // Vuelve a habilitar la ventana padre
-					frmAppchat.toFront(); // La trae al frente por si queda detrás de otras
-				}
-			});
-		}*/
+		}
 	}
 }

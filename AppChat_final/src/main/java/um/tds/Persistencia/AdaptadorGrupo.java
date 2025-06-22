@@ -52,13 +52,12 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 		eGrupo.setNombre("grupo");
 
 		// 4. Se le añaden las propiedades a la entidad creada
-		eGrupo.setPropiedades(new ArrayList<Propiedad>(
-				Arrays.asList(new Propiedad("nombre", grupo.getNombre()), new Propiedad("imagen", grupo.getImagenRuta()),
-						new Propiedad("miembros", obtenerIdsMiembros(grupo.getMiembros())),
-						new Propiedad("tipo", "grupo"))));
+		eGrupo.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre", grupo.getNombre()),
+				new Propiedad("imagen", grupo.getImagenRuta()),
+				new Propiedad("miembros", obtenerIdsMiembros(grupo.getMiembros())), new Propiedad("tipo", "grupo"))));
 
 		System.out.println("EGRUPO TIENE COMO NOMBRE: " + grupo.getNombre());
-		
+
 		// 5. Se registra la entidad y se asocia id al objeto almacenado.
 		eGrupo = servPersistencia.registrarEntidad(eGrupo);
 		grupo.setId(eGrupo.getId());
@@ -146,10 +145,6 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 			servPersistencia.modificarPropiedad(prop);
 		}
 	}
-
-	/*
-	 * public boolean eliminarGrupo(Grupo grupo) { return false; }
-	 */
 
 	private String obtenerIdsMiembros(List<ContactoIndividual> miembros) {
 		String lista = "";

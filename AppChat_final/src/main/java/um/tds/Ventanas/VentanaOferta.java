@@ -33,20 +33,10 @@ public class VentanaOferta implements ActionListener {
 	private JLabel lblHaztePremium, lblPrecio, lblPrecioDescuento, lblBeneficios;
 	private JButton btnPremium;
 
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the application.
-	 */
 	public VentanaOferta(Dimension tam, Point ubi, String ventanaAnterior) {
 		initialize(tam, ubi, ventanaAnterior);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize(Dimension tam, Point ubi, String ventanaAnterior) {
 		this.ventanaAnterior = ventanaAnterior;
 

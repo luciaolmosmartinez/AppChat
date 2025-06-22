@@ -38,21 +38,11 @@ public class VentanaModificarContacto implements ActionListener {
 	private JTextField textFieldNombre;
 	private GridBagConstraints gbc_lblImagen;
 
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the application.
-	 */
 	public VentanaModificarContacto(ContactoIndividual contacto, Dimension tam, Point ubi) {
 		this.contacto = contacto;
 		initialize(tam, ubi);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize(Dimension tam, Point ubi) {
 		frmAppchat = new JFrame();
 		frmAppchat.setBackground(new Color(255, 244, 244));

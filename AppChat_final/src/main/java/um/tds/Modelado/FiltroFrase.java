@@ -11,12 +11,11 @@ public class FiltroFrase extends FiltroDecorator {
 		super(f);
 		this.busqueda = b;
 	}
-	
+
 	@Override
 	public List<Mensaje> filtrarMensajes(List<Mensaje> lista) {
-		List<Mensaje> l = lista.stream()
-				.filter(m -> m.getTexto().contains(busqueda))
-				.collect(Collectors.toList());
+		//// Consigue los mensajes que contienen la cadena indicada
+		List<Mensaje> l = lista.stream().filter(m -> m.getTexto().contains(busqueda)).collect(Collectors.toList());
 		return super.filtrarMensajes(l);
 	}
 

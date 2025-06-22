@@ -56,20 +56,10 @@ public class VentanaContactos implements ActionListener {
 	private javax.swing.event.ListSelectionListener listenerModificar;
 	private javax.swing.event.ListSelectionListener listenerMandarMensaje;
 
-	/**
-	 * Create the frame.
-	 */
-
-	/**
-	 * Create the application.
-	 */
 	public VentanaContactos(Dimension tam, Point ubi) {
 		initialize(tam, ubi);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize(Dimension tam, Point ubi) {
 		listenerModificar = l -> contactoSeleccionadoModificar();
 		listenerMandarMensaje = l -> contactoSeleccionadoMandarMensaje();
@@ -85,7 +75,7 @@ public class VentanaContactos implements ActionListener {
 		menuBar = new JMenuBar();
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
-		
+
 		mnPdf = new JMenu("Documento PDF");
 		mnPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mnPdf.setHorizontalAlignment(SwingConstants.LEFT);
@@ -120,7 +110,7 @@ public class VentanaContactos implements ActionListener {
 
 		} else {
 			try {
-				BufferedImage  image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
 				mntmPremium.setIcon(new ImageIcon(image));
 				mntmPremium.setSize(new Dimension(64, 32));
 				ImageInJLabel.resizeImage(mntmPremium, image);
@@ -146,14 +136,14 @@ public class VentanaContactos implements ActionListener {
 		mnPerfil.setSize(30, 30);
 
 		try {
-			mnPerfil.setIcon(new ImageIcon(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta()));
+			mnPerfil.setIcon(
+					new ImageIcon(Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta()));
 			ImageInJLabel.resizeImage(mnPerfil,
 					Controlador.getUnicaInstancia().getUsuarioActual().getImagenPerfilDirecta());
 			menuBar.add(mnPerfil);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 
 		mntmEditarPerfil = new JMenuItem("Editar perfil");
 		mntmEditarPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -281,13 +271,10 @@ public class VentanaContactos implements ActionListener {
 		if (e.getSource() == btnNuevoContacto) {
 			new VentanaAnadirContacto(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaContactos");
 			frmAppchat.dispose();
-			// aContacto.mostrarAnadirContacto(frmAppchat.getSize(),
-			// frmAppchat.getLocation(),this);
 		}
 		if (e.getSource() == btnAtras) {
 			new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
 			frmAppchat.dispose();
-			// vMain.mostrarMain(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
 		if (e.getSource() == btnNuevoGrupo) {
 			new VentanaCrearGrupo(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaContactos");
@@ -303,16 +290,16 @@ public class VentanaContactos implements ActionListener {
 						"Dejar de ser premium", JOptionPane.YES_NO_OPTION);
 				if (res == JOptionPane.YES_OPTION) {
 					Controlador.getUnicaInstancia().setPremium(false);
-					
+
 					try {
 						BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
 						mntmPremium.setIcon(new ImageIcon(image));
 						mntmPremium.setSize(new Dimension(64, 32));
-						ImageInJLabel.resizeImage(mntmPremium,image);
+						ImageInJLabel.resizeImage(mntmPremium, image);
 					} catch (IOException ex) {
 						ex.printStackTrace();
 					}
-					
+
 				}
 			} else {
 				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
@@ -334,8 +321,8 @@ public class VentanaContactos implements ActionListener {
 		}
 		if (e.getSource() == mntmMensajesPdf) {
 			if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
-					JOptionPane.showMessageDialog(frmAppchat, "Debes tener abierta la conversación que deseas exportar",
-							"Información", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(frmAppchat, "Debes tener abierta la conversación que deseas exportar",
+						"Información", JOptionPane.PLAIN_MESSAGE);
 			} else {
 				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
 				frmAppchat.dispose();
@@ -345,7 +332,6 @@ public class VentanaContactos implements ActionListener {
 		if (e.getSource() == mntmContactos) {
 			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
-			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
 		if (e.getSource() == mntmCerrarSesion) {
 			Controlador.getUnicaInstancia().cerrarSesion();

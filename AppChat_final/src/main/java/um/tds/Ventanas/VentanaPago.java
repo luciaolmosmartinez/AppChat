@@ -34,20 +34,10 @@ public class VentanaPago implements ActionListener {
 	private JLabel lblIntroduzca, lblNumCuenta, lblFechaCaducidad, lblCvv, lblError;
 	private JTextField textNumeroCuenta, textFechaCaducidad, textCvv;
 
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the application.
-	 */
 	public VentanaPago(Dimension tam, Point ubi, String ventanaAnterior) {
 		initialize(tam, ubi, ventanaAnterior);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize(Dimension tam, Point ubi, String ventanaAnterior) {
 		this.ventanaAnterior = ventanaAnterior;
 

@@ -357,8 +357,6 @@ public class VentanaRegistro implements ActionListener {
 										fechaNacimiento, testSaludo.getText(), textImagen.getText())) {
 									new VentanaLogin(frmAppchat.getSize(), frmAppchat.getLocation());
 									frmAppchat.dispose();
-									// login.mostrarLogin(frmAppchat.getSize(),frmAppchat.getLocation());
-
 								} else {
 									textTelefono.setText("");
 									textEmail.setText("");

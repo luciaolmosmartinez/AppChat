@@ -75,7 +75,8 @@ public class RepositorioUsuarios {
 		usuarios.replace(usuario.getNumTelefono(), usuario);
 	}
 
-	// Actualiza el contacto dado en usuario y ello actualiza automáticamente el usuario en la lista de
+	// Actualiza el contacto dado en usuario y ello actualiza automáticamente el
+	// usuario en la lista de
 	// usuarios del repositorio
 	public Usuario modificarContacto(ContactoIndividual contacto, String nombre, Usuario usuario) {
 		if (usuario.getContactos().stream().filter(c -> c instanceof ContactoIndividual)
@@ -87,9 +88,10 @@ public class RepositorioUsuarios {
 
 		return usuario;
 	}
-	
+
 	// Actualiza el grupo sin importar si ya existe otro grupo con el mismo nombre.
-	public Usuario modificarGrupo(Grupo grupo, String nombre, String imagen, Usuario usuario, List<ContactoIndividual> miembros) {
+	public Usuario modificarGrupo(Grupo grupo, String nombre, String imagen, Usuario usuario,
+			List<ContactoIndividual> miembros) {
 		grupo.setNombre(nombre);
 		grupo.setImagen(imagen);
 

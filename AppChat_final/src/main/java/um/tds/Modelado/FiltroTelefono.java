@@ -16,6 +16,8 @@ public class FiltroTelefono extends FiltroDecorator {
 
 	@Override
 	public List<Mensaje> filtrarMensajes(List<Mensaje> lista) {
+		// Consigue los mensajes que tienen un receptor o emisor con el numero de
+		// telefono indicado
 		List<Mensaje> l = lista.stream()
 				.filter(m -> m.getEmisor().equals(busqueda)
 						|| (esNumeroTelefono(m.getReceptor()) && m.getReceptor().equals(busqueda))

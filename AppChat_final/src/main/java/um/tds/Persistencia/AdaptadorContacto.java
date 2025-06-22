@@ -57,37 +57,6 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 		contacto.setId(eContacto.getId());
 	}
 
-	/*
-	 * public ContactoIndividual recuperarContacto(int id) { // 1. Si el objeto está
-	 * en el pool se retorna if (PoolDAO.getUnicaInstancia().contiene(id)) return
-	 * (ContactoIndividual) PoolDAO.getUnicaInstancia().getObjeto(id);
-	 * 
-	 * // 2. Si no lo está se recupera entidad y las propiedades de campos de tipo
-	 * // primitivo String nombre = null; Usuario usuario = null;
-	 * 
-	 * // Recupero la entidad Entidad eContactoIndividual =
-	 * servPersistencia.recuperarEntidad(id);
-	 * 
-	 * // Recupero las propiedades de tipo primitivo nombre =
-	 * servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, "nombre");
-	 * 
-	 * // 3. Se crea el objeto, se inicializa con propiedades anteriores y se añade
-	 * al // pool si es necesario ContactoIndividual contactoIndividual = new
-	 * ContactoIndividual(usuario, nombre); contactoIndividual.setId(id);
-	 * //contactoIndividual.setNombre(nombre);
-	 * 
-	 * PoolDAO.getUnicaInstancia().addObjeto(id, contactoIndividual);
-	 * 
-	 * // 4. Se recuperan los objetos referenciados y se actualiza el objeto
-	 * AdaptadorUsuario adaptadorUsuario = AdaptadorUsuario.getUnicaInstancia(); int
-	 * idUsuario = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(
-	 * eContactoIndividual, "usuario")); usuario =
-	 * adaptadorUsuario.recuperarUsuarioId(idUsuario);
-	 * contactoIndividual.setUsuario(usuario);
-	 * 
-	 * // 5. Se retorna el objeto return contactoIndividual; }
-	 */
-
 	public List<ContactoIndividual> recuperarTodosContactos() {
 		List<ContactoIndividual> contactos = new ArrayList<>();
 		List<Entidad> eContactos = servPersistencia.recuperarEntidades("contacto");

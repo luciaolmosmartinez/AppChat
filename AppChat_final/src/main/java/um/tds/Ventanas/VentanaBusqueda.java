@@ -77,8 +77,6 @@ public class VentanaBusqueda implements ActionListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Dimension tam, Point ubi) {
-		// listenerModificar = l -> contactoSeleccionadoModificar();
-		// listenerMandarMensaje = l -> contactoSeleccionadoMandarMensaje();
 		frmAppchat = new JFrame();
 		frmAppchat.setTitle("AppChat");
 		frmAppchat.setIconImage(
@@ -97,7 +95,7 @@ public class VentanaBusqueda implements ActionListener {
 		mntmPremium.setBackground(new Color(255, 255, 255));
 		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
 		menuBar.add(mntmPremium);
-		
+
 		mnPdf = new JMenu("Documento PDF");
 		mnPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mnPdf.setHorizontalAlignment(SwingConstants.LEFT);
@@ -124,7 +122,7 @@ public class VentanaBusqueda implements ActionListener {
 		mntmMensajes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mntmMensajes.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmMensajes);
-		
+
 		mnPerfil = new JMenu("Perfil");
 		mnPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mnPerfil.setBackground(Color.WHITE);
@@ -285,7 +283,6 @@ public class VentanaBusqueda implements ActionListener {
 		if (e.getSource() == btnAtras) {
 			new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(), null);
 			frmAppchat.dispose();
-			// vMain.mostrarMain(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
 		if (e.getSource() == btnBuscar) {
 			if (txtContacto.getText().equals("") && txtTelefono.getText().equals("") && txtFrase.getText().equals("")) {
@@ -316,8 +313,8 @@ public class VentanaBusqueda implements ActionListener {
 		}
 		if (e.getSource() == mntmMensajesPdf) {
 			if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
-					JOptionPane.showMessageDialog(frmAppchat, "Debes tener abierta la conversación que deseas exportar",
-							"Información", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(frmAppchat, "Debes tener abierta la conversación que deseas exportar",
+						"Información", JOptionPane.PLAIN_MESSAGE);
 			} else {
 				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
 				frmAppchat.dispose();
@@ -326,7 +323,6 @@ public class VentanaBusqueda implements ActionListener {
 		if (e.getSource() == mntmContactos) {
 			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 			frmAppchat.dispose();
-			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
 		}
 		if (e.getSource() == mntmCerrarSesion) {
 			Controlador.getUnicaInstancia().cerrarSesion();
@@ -360,29 +356,8 @@ public class VentanaBusqueda implements ActionListener {
 		}
 	}
 
-	/*
-	 * private void contactoSeleccionadoModificar() { if (list.getSelectedValue()
-	 * instanceof Grupo) { new VentanaModificarGrupo((Grupo)
-	 * list.getSelectedValue(), frmAppchat.getSize(), frmAppchat.getLocation());
-	 * frmAppchat.dispose(); } else { frmAppchat.dispose(); new
-	 * VentanaModificarContacto((ContactoIndividual) list.getSelectedValue(),
-	 * frmAppchat.getSize(), frmAppchat.getLocation()); } }
-	 */
-
-	/*
-	 * private void contactoSeleccionadoMandarMensaje() { new
-	 * VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation(),
-	 * list.getSelectedValue()); frmAppchat.dispose(); }
-	 */
-
 	private void actualizarMensajes(List<Mensaje> m) {
 		m.stream().forEach(c -> mensajes.addElement(c));
 	}
-
-	/*
-	 * private void actualizarMensajesFiltrados() { //
-	 * Controlador.getUnicaInstancia().getMensajesFiltrados().stream().forEach(c ->
-	 * // mensajes.addElement(c)); }
-	 */
 
 }

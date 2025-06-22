@@ -95,16 +95,6 @@ public class MensajeCellRenderer extends JPanel implements ListCellRenderer<Mens
 
 		timeLabel.setText(mensaje.getFechaHora().format(formatoFecha));
 
-		/*
-		 * btnAnadir.setIcon(new
-		 * ImageIcon(MensajeCellRenderer.class.getResource("/imagenes/agregar.png")));
-		 * btnAnadir.setSize(50,50); ImageInJLabel.resizeImage(imageLabel,
-		 * VentanaPerfil.class.getResource(
-		 * Controlador.getUnicaInstancia().recuperarUsuarioTelefono(mensaje.getReceptor(
-		 * )).getImagenPerfil()));
-		 * btnAnadir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		 */
-
 		// Cambiar el fondo si el elemento está seleccionado
 		if (isSelected) {
 			setBackground(Color.PINK);
@@ -114,14 +104,6 @@ public class MensajeCellRenderer extends JPanel implements ListCellRenderer<Mens
 			panelEste.setBackground(Color.WHITE);
 		}
 
-		// btnAnadir.addActionListener(this);
-
 		return this; // Retornar el componente renderizado
 	}
-
-	/*
-	 * @Override public void actionPerformed(ActionEvent e) { if (e.getSource() ==
-	 * btnAnadir) { new VentanaAnadirContacto(tam, ubi, ""); frame.dispose(); //
-	 * vAC.mostrarAnadirContacto(tam,ubi); } }
-	 */
 }
