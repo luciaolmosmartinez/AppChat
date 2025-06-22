@@ -390,6 +390,7 @@ public class VentanaPerfil implements ActionListener {
 		mntmContactos.addActionListener(this);
 		mntmCerrarSesion.addActionListener(this);
 		mntmEditarPerfil.addActionListener(this);
+		mntmPremium.addActionListener(this);
 
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);

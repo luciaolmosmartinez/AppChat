@@ -1,7 +1,9 @@
-package um.tds.Modelado;
+package um.tds.ServicioDescuento;
 
 import java.time.LocalDate;
 import java.time.Month;
+
+import um.tds.Modelado.*;
 
 public class ServicioDescuento {
 	private static final double PRECIO_PREMIUM = 19.95;

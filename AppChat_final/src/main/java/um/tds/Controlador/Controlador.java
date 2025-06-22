@@ -1,12 +1,17 @@
 package um.tds.Controlador;
 
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.itextpdf.text.DocumentException;
+
 import um.tds.Modelado.*;
 import um.tds.Persistencia.*;
 import um.tds.Repositorio.RepositorioUsuarios;
+import um.tds.ServicioDescuento.ServicioDescuento;
 
 public class Controlador { // clase controlador
 	private static Controlador unicaInstancia;
@@ -180,10 +185,6 @@ public class Controlador { // clase controlador
 		// repoU.addMensaje(mensaje);
 	}
 
-	public void crearPDF() {
-		CreadorPDF.crearPDF();
-	}
-
 	public Contacto recuperarContactoMensaje(Mensaje mensaje) {
 		if (mensaje.getEmisor().equals(usuarioActual.getNumTelefono())) { // quiero recuperar el contacto al que se lo
 																			// he enviado
@@ -284,5 +285,15 @@ public class Controlador { // clase controlador
 	public void setPremium(boolean premium) {
 		usuarioActual.setPremium(premium);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
+	}
+	
+	public boolean createPdfContactos(Path ruta) {
+		CreadorPDF creador = new CreadorPDF();
+		return creador.createPdfContactos(usuarioActual, ruta);
+	}
+	
+	public boolean createPdfMensajes(Contacto contacto, Path ruta) {
+		CreadorPDF creador = new CreadorPDF();
+		return creador.createPdfMensajes(usuarioActual, contacto, ruta);
 	}
 }

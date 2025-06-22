@@ -2,6 +2,7 @@ package um.tds.Persistencia;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import beans.Entidad;
@@ -126,6 +127,13 @@ public class AdaptadorContacto implements IAdaptadorContactoDAO {
 			// Otro tipo o error
 			throw new RuntimeException("Tipo de contacto desconocido: " + tipo);
 		}
+	}
+	
+	public Contacto recuperarContacto(String numTelf) {
+		return recuperarTodosContactos().stream()
+		        .filter(contacto -> contacto.getUsuario().getNumTelefono().equals(numTelf))
+		        .findFirst()
+		        .orElse(null);
 	}
 
 	private ContactoIndividual recuperarContactoIndividual(int id, Entidad eContactoIndividual) {

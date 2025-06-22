@@ -12,11 +12,15 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -31,6 +35,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+
+import com.itextpdf.text.DocumentException;
 
 import tds.BubbleText;
 import um.tds.Controlador.Controlador;
@@ -50,8 +56,9 @@ public class VentanaMain implements ActionListener {
 	private JLabel lblImagen, lblContacto;
 	private JButton btnEmoticono, btnEnviar;
 	private JTextField textField;
-	private JMenu mnPerfil;
-	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion;
+	private JMenu mnPerfil, mnPdf;
+	private JMenuItem mntmPremium, mntmContactos, mntmMensajes, mntmEditarPerfil, mntmCerrarSesion, mntmContactosPdf,
+			mntmMensajesPdf;
 	private JList<Mensaje> list;
 	private GridBagConstraints gbc_bubble_1, gbc_lblImagen, gbc_lblConrtacto, gbc_btnEmoticono, gbc_textField,
 			gbc_btnEnviar, gbc_bubble_1_2, gbc_bubble_1_1;
@@ -108,8 +115,23 @@ public class VentanaMain implements ActionListener {
 			mntmPremium.setSize(new Dimension(64, 32));
 			ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
 		}
-		
+
+		mnPdf = new JMenu("Documento PDF");
+		mnPdf.setHorizontalAlignment(SwingConstants.LEFT);
+		mnPdf.setPreferredSize(new Dimension(180, 26));
+		mnPdf.setBackground(Color.WHITE);
+		menuBar.add(mnPdf);
+
+		mntmContactosPdf = new JMenuItem("Generar documento con información de contactos");
+		mntmContactosPdf.setBackground(new Color(255, 255, 255));
+		mnPdf.add(mntmContactosPdf);
+
+		mntmMensajesPdf = new JMenuItem("Generar documento con la conversación");
+		mntmMensajesPdf.setBackground(new Color(255, 255, 255));
+		mnPdf.add(mntmMensajesPdf);
+
 		mntmContactos = new JMenuItem("Contactos");
+		mntmContactos.setHorizontalAlignment(SwingConstants.CENTER);
 		mntmContactos.setBackground(new Color(255, 255, 255));
 		menuBar.add(mntmContactos);
 
@@ -307,6 +329,8 @@ public class VentanaMain implements ActionListener {
 		mntmCerrarSesion.addActionListener(this);
 		mntmEditarPerfil.addActionListener(this);
 		mntmPremium.addActionListener(this);
+		mntmContactosPdf.addActionListener(this);
+		mntmMensajesPdf.addActionListener(this);
 		list.addListSelectionListener(e -> conversacionSeleccionada(list.getSelectedValue()));
 
 		frmAppchat.setVisible(true);
@@ -347,7 +371,52 @@ public class VentanaMain implements ActionListener {
 					Controlador.getUnicaInstancia().setPremium(false);
 					mntmPremium.setIcon(new ImageIcon(VentanaPerfil.class.getResource("/imagenes/orejas_premium.png")));
 					mntmPremium.setSize(new Dimension(64, 32));
-					ImageInJLabel.resizeImage(mntmPremium, VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+					ImageInJLabel.resizeImage(mntmPremium,
+							VentanaPerfil.class.getResource("/imagenes/orejas_No_premium.png"));
+				}
+			} else {
+				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");
+				frmAppchat.dispose();
+			}
+		}
+		if (e.getSource() == mntmContactosPdf) {
+			JFileChooser fileC = new JFileChooser();
+			int seleccion = fileC.showSaveDialog(null);
+
+			if (seleccion == JFileChooser.APPROVE_OPTION) {
+				Path ruta = Paths.get(fileC.getSelectedFile().getAbsolutePath());
+				// Genera el pdf
+				if (!Controlador.getUnicaInstancia().createPdfContactos(ruta)) {
+					JOptionPane.showMessageDialog(frmAppchat, "Ha habido un error al crear el documento", "Error",
+							JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		}
+		if (e.getSource() == mntmMensajesPdf) {
+			if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
+				if (panelCentral.isVisible()) {
+					JFileChooser fileC = new JFileChooser();
+					int seleccion = fileC.showSaveDialog(null);
+
+					if (seleccion == JFileChooser.APPROVE_OPTION) {
+						Path ruta = Paths.get(fileC.getSelectedFile().getAbsolutePath());
+						// Genera el pdf
+						if (contacto == null) {
+							if (!Controlador.getUnicaInstancia().createPdfMensajes(, ruta)) {
+								JOptionPane.showMessageDialog(frmAppchat, "Ha habido un error al crear el documento",
+										"Error", JOptionPane.PLAIN_MESSAGE);
+							}
+						} else {
+							if (!Controlador.getUnicaInstancia().createPdfMensajes(contacto, ruta)) {
+								JOptionPane.showMessageDialog(frmAppchat, "Ha habido un error al crear el documento",
+										"Error", JOptionPane.PLAIN_MESSAGE);
+							}
+						}
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(frmAppchat, "Debes tener abierta la conversación que deseas exportar",
+							"Información", JOptionPane.PLAIN_MESSAGE);
 				}
 			} else {
 				new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaMain");

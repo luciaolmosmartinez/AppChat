@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import um.tds.Controlador.Controlador;
+
 public class Usuario {
 	private int id;
 	private String nombre;
@@ -93,6 +95,20 @@ public class Usuario {
 		return new LinkedList<Contacto>(contactos);
 	}
 
+	public LinkedList<ContactoIndividual> getContactosIndividuales() {
+		LinkedList<ContactoIndividual> contactosIndividuales = contactos.stream()
+				.filter(c -> c instanceof ContactoIndividual).map(c -> (ContactoIndividual) c)
+				.collect(Collectors.toCollection(LinkedList::new));
+		return new LinkedList<ContactoIndividual>(contactosIndividuales);
+	}
+	
+	public LinkedList<Grupo> getContactosGrupos() {
+		LinkedList<Grupo> grupos = contactos.stream()
+				.filter(c -> c instanceof Grupo).map(c -> (Grupo) c)
+				.collect(Collectors.toCollection(LinkedList::new));
+		return new LinkedList<Grupo>(grupos);
+	}
+
 	public Map<String, List<Mensaje>> getMensajes() {
 		return new HashMap<String, List<Mensaje>>(mensajes);
 	}
@@ -170,7 +186,7 @@ public class Usuario {
 	// En el caso de que ya le haya asignado un contacto a este usuario, lo
 	// actualiza, si no simplemente lo añade
 	public String addContacto(ContactoIndividual contacto) {
-		if (contactos.stream().filter(c -> c instanceof ContactoIndividual).map(c -> (ContactoIndividual) c).anyMatch(
+		if (getContactosIndividuales().stream().anyMatch(
 				c -> (c.getNombre().equals(contacto.getNombre()) || c.getUsuario().equals(contacto.getUsuario())))) {
 			// ya existe un contacto individual con este nombre
 			return "Ya existe este contacto";
@@ -196,7 +212,7 @@ public class Usuario {
 	}
 
 	public Contacto recuperarContactoPorUsuario(Usuario u) {
-		return contactos.stream().filter(c -> ((ContactoIndividual) c).getUsuario().equals(u)).findFirst().orElse(null);
+		return getContactosIndividuales().stream().filter(c -> c.getUsuario().equals(u)).findFirst().orElse(null);
 	}
 
 	// Comprueba el número de mensajes que ha enviado el usuario en el último mes
