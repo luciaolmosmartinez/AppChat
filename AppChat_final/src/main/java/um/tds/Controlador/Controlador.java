@@ -21,6 +21,8 @@ public class Controlador { // clase controlador
 	private String contactoActual;
 	private TipoReceptor tReceptor;
 
+	private ServicioDescuento servicioDescuento;
+
 	/*
 	 * private static ControladorAppChat unicaInstancia; private FactoriaDAO
 	 * factoriaDAO; private Contacto contactoSeleccionado;
@@ -30,6 +32,7 @@ public class Controlador { // clase controlador
 	private Controlador() {
 		this.inicializarAdaptadores();
 		this.inicializarRepositorioUsuarios();
+		this.servicioDescuento = new ServicioDescuento();
 	}
 
 	public static Controlador getUnicaInstancia() {
@@ -201,7 +204,8 @@ public class Controlador { // clase controlador
 		return usuarioActual.getContactos();
 	}
 
-	// Recupera una lista con los contatos del usuario actual que no son miembros del grupo dado
+	// Recupera una lista con los contatos del usuario actual que no son miembros
+	// del grupo dado
 	public List<ContactoIndividual> recuperarNoMiembros(Grupo grupo) {
 		List<ContactoIndividual> contactos = usuarioActual.getContactos().stream()
 				.filter(c -> c instanceof ContactoIndividual).map(c -> (ContactoIndividual) c)
@@ -251,5 +255,17 @@ public class Controlador { // clase controlador
 			return true;
 		}
 		return false;
+	}
+
+	public double getPrecioPremium() {
+		return servicioDescuento.getPrecioPremium();
+	}
+
+	public double getPrecioFinal() {
+		return servicioDescuento.getPrecioFinal();
+	}
+
+	public void setPremium(boolean premium) {
+		usuarioActual.setPremium(premium);
 	}
 }

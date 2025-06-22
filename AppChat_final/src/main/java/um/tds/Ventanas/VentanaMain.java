@@ -297,6 +297,7 @@ public class VentanaMain implements ActionListener {
 		mntmContactos.addActionListener(this);
 		mntmCerrarSesion.addActionListener(this);
 		mntmEditarPerfil.addActionListener(this);
+		mntmPremium.addActionListener(this);
 		list.addListSelectionListener(e -> conversacionSeleccionada(list.getSelectedValue()));
 
 		frmAppchat.setVisible(true);
@@ -324,6 +325,10 @@ public class VentanaMain implements ActionListener {
 				scrollPane.revalidate();
 				scrollPane.repaint();
 			}
+		}
+		if (e.getSource() == mntmPremium) {
+			new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaMain");
+			frmAppchat.dispose();
 		}
 		if (e.getSource() == mntmContactos) {
 			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());

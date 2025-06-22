@@ -178,9 +178,8 @@ public class VentanaPerfil implements ActionListener {
 			btnimagenNoPremium.setSize(new Dimension(32, 32));
 			btnimagenNoPremium.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(frmAppchat, "¿Está seguro de que desea hacerse premium?",
-							"Confirmación", JOptionPane.PLAIN_MESSAGE);
-					// FALTA HACERSE PREMIUM
+					new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(), "VentanaPerfil");
+					frmAppchat.dispose();
 				}
 			});
 			gbc_btnimagenNoPremium = new GridBagConstraints();

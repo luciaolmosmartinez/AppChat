@@ -3,9 +3,11 @@ package um.tds.Ventanas;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,10 +47,13 @@ public class VentanaBusqueda implements ActionListener {
 	 * Launch the application.
 	 */
 
+	public VentanaBusqueda(Dimension tam, Point ubi) {
+		initialize(tam, ubi);
+	}
 	/**
 	 * Create the frame.
 	 */
-	public VentanaBusqueda() {
+	public void initialize(Dimension tam, Point ubi) {
 		frmAppchat.setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(VentanaBusqueda.class.getResource("/imagenes/gatoVentana2_2048.png")));
 		frmAppchat.setTitle("AppChat");
@@ -165,10 +170,36 @@ public class VentanaBusqueda implements ActionListener {
 		gbc_list.gridx = 2;
 		gbc_list.gridy = 1;
 		panel_1.add(list, gbc_list);
+		
+		mntmPremium.addActionListener(this);
+		mntmContactos.addActionListener(this);
+		mntmCerrarSesion.addActionListener(this);
+		mntmEditarPerfil.addActionListener(this);
+		
+		frmAppchat.setVisible(true);
+		frmAppchat.setSize(tam);
+		frmAppchat.setLocation(ubi);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-
+		if (e.getSource() == mntmPremium) {
+			new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaBusqueda");
+			frmAppchat.dispose();
+		}
+		if (e.getSource() == mntmContactos) {
+			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
+			frmAppchat.dispose();
+			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
+		}
+		if(e.getSource() == mntmCerrarSesion){
+			Controlador.getUnicaInstancia().cerrarSesion();
+			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
+			frmAppchat.dispose();
+		}
+		if(e.getSource() == mntmEditarPerfil) {
+			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaBusqueda");
+			frmAppchat.dispose();
+		}
 	}
 
 }

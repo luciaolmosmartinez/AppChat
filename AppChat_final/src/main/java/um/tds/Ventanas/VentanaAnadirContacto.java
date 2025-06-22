@@ -205,6 +205,10 @@ public class VentanaAnadirContacto implements ActionListener {
 
 		btnAceptar.addActionListener(this);
 		btnCancelar.addActionListener(this);
+		mntmPremium.addActionListener(this);
+		mntmContactos.addActionListener(this);
+		mntmCerrarSesion.addActionListener(this);
+		mntmEditarPerfil.addActionListener(this);
 		
 		frmAppchat.setVisible(true);
 		frmAppchat.setSize(tam);
@@ -232,6 +236,24 @@ public class VentanaAnadirContacto implements ActionListener {
 				new VentanaMain(frmAppchat.getSize(), frmAppchat.getLocation());
 				frmAppchat.dispose();
 			}
+		}
+		if (e.getSource() == mntmPremium) {
+			new VentanaOferta(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaAnadirContacto");
+			frmAppchat.dispose();
+		}
+		if (e.getSource() == mntmContactos) {
+			new VentanaContactos(frmAppchat.getSize(), frmAppchat.getLocation());
+			frmAppchat.dispose();
+			// contacto.mostrarContactos(frmAppchat.getSize(), frmAppchat.getLocation());
+		}
+		if(e.getSource() == mntmCerrarSesion){
+			Controlador.getUnicaInstancia().cerrarSesion();
+			new VentanaInicio(frmAppchat.getSize(), frmAppchat.getLocation());
+			frmAppchat.dispose();
+		}
+		if(e.getSource() == mntmEditarPerfil) {
+			new VentanaPerfil(frmAppchat.getSize(), frmAppchat.getLocation(),"VentanaAnadirContacto");
+			frmAppchat.dispose();
 		}
 	}
 
