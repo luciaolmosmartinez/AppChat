@@ -85,7 +85,7 @@ public class VentanaAnadirContacto implements ActionListener {
 
 		} else {
 			try {
-				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/no_premium_orejas.png"));
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_no_premium.png"));
 				mntmPremium.setIcon(new ImageIcon(image));
 				mntmPremium.setSize(new Dimension(64, 32));
 				ImageInJLabel.resizeImage(mntmPremium, image);

@@ -75,6 +75,13 @@ public class VentanaContactos implements ActionListener {
 		menuBar = new JMenuBar();
 		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
 		frmAppchat.setJMenuBar(menuBar);
+		
+		mntmPremium = new JMenuItem("");
+		mntmPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mntmPremium.setBackground(new Color(255, 255, 255));
+		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
+
+		menuBar.add(mntmPremium);
 
 		mnPdf = new JMenu("Documento PDF");
 		mnPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -93,11 +100,6 @@ public class VentanaContactos implements ActionListener {
 		mntmMensajesPdf.setBackground(new Color(255, 255, 255));
 		mnPdf.add(mntmMensajesPdf);
 
-		mntmPremium = new JMenuItem("");
-		mntmPremium.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		mntmPremium.setBackground(new Color(255, 255, 255));
-		mntmPremium.setHorizontalTextPosition(SwingConstants.CENTER);
-		menuBar.add(mntmPremium);
 		if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium()) {
 			try {
 				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
@@ -110,7 +112,7 @@ public class VentanaContactos implements ActionListener {
 
 		} else {
 			try {
-				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_premium.png"));
+				BufferedImage image = ImageIO.read(getClass().getResource("/imagenes/orejas_no_premium.png"));
 				mntmPremium.setIcon(new ImageIcon(image));
 				mntmPremium.setSize(new Dimension(64, 32));
 				ImageInJLabel.resizeImage(mntmPremium, image);

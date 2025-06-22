@@ -219,11 +219,12 @@ public class VentanaModificarGrupo implements ActionListener {
 		gbc_scrollMiembros.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollMiembros.gridx = 3;
 		gbc_scrollMiembros.gridy = 4;
-		listMiembros.setCellRenderer(new ContactoCellRenderer());
+
 		panel.add(scrollMiembros, gbc_scrollMiembros);
 
 		listMiembros = new JList<>(contactosMiembros);
 		listMiembros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listMiembros.setCellRenderer(new ContactoCellRenderer());
 		scrollMiembros.setViewportView(listMiembros);
 
 		scrollNoMiembros = new JScrollPane();
@@ -235,11 +236,11 @@ public class VentanaModificarGrupo implements ActionListener {
 		gbc_scrollNoMiembros.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollNoMiembros.gridx = 6;
 		gbc_scrollNoMiembros.gridy = 4;
-		listNoMiembros.setCellRenderer(new ContactoCellRenderer());
 		panel.add(scrollNoMiembros, gbc_scrollNoMiembros);
 
 		listNoMiembros = new JList<>(contactosNoMiembros);
 		listNoMiembros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listNoMiembros.setCellRenderer(new ContactoCellRenderer());
 		scrollNoMiembros.setViewportView(listNoMiembros);
 
 		textFieldImagen = new JTextField();
@@ -321,6 +322,8 @@ public class VentanaModificarGrupo implements ActionListener {
 		frmAppchat.setSize(tam);
 		frmAppchat.setLocation(ubi);
 		miembrosActualizados = grupo.getMiembros();
+		actualizarContactosMiembros();
+		actualizarContactosNoMiembros();
 	}
 
 	public void actionPerformed(ActionEvent e) {

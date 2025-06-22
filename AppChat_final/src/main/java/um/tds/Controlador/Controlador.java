@@ -332,15 +332,13 @@ public class Controlador { // clase controlador
 	// para el contacto como para el usuario
 	public boolean modificarGrupo(Grupo grupo, String nombre, String imagen,
 			List<ContactoIndividual> miembrosActualizados) {
-		Usuario usuario = RepositorioUsuarios.getUnicaInstancia().modificarGrupo(grupo, nombre, imagen, usuarioActual,
-				miembrosActualizados); // devuelve el usuario modificado
-
-		if (usuario != null) { // si se ha modificado
-			adaptadorGrupo.modificarGrupo(grupo);
-			adaptadorUsuario.modificarUsuario(usuario);
-			return true;
-		}
-		return false;
+		grupo.setNombre(nombre);
+		grupo.setImagen(imagen);
+		grupo.actualizarMiembros(miembrosActualizados);
+		
+		adaptadorGrupo.modificarGrupo(grupo);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		return true;
 	}
 
 	// METODOS SOBRE PREMIUM Y PDFs

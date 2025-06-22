@@ -1,11 +1,14 @@
 package um.tds.Repositorio;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import um.tds.Modelado.ContactoIndividual;
-import um.tds.Modelado.Grupo;
 import um.tds.Modelado.Usuario;
 import um.tds.Persistencia.DAOException;
 import um.tds.Persistencia.FactoriaDAO;
@@ -75,9 +78,8 @@ public class RepositorioUsuarios {
 		usuarios.replace(usuario.getNumTelefono(), usuario);
 	}
 
-	// Actualiza el contacto dado en usuario y ello actualiza automáticamente el
-	// usuario en la lista de
-	// usuarios del repositorio
+	// Actualiza el contacto dado un usuario actualiza automaticamente el
+	// usuario en la lista de usuarios del repositorio
 	public Usuario modificarContacto(ContactoIndividual contacto, String nombre, Usuario usuario) {
 		if (usuario.getContactos().stream().filter(c -> c instanceof ContactoIndividual)
 				.anyMatch(c -> c.getNombre().equals(nombre))) {
@@ -85,15 +87,6 @@ public class RepositorioUsuarios {
 		}
 
 		contacto.setNombre(nombre);
-
-		return usuario;
-	}
-
-	// Actualiza el grupo sin importar si ya existe otro grupo con el mismo nombre.
-	public Usuario modificarGrupo(Grupo grupo, String nombre, String imagen, Usuario usuario,
-			List<ContactoIndividual> miembros) {
-		grupo.setNombre(nombre);
-		grupo.setImagen(imagen);
 
 		return usuario;
 	}
